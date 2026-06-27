@@ -873,7 +873,6 @@
     // Деплойте Apps Script как Web App (доступ: Anyone) и вставьте URL сюда.
     // Если пусто — данные берутся из встроенного QUIZ_RESULTS (офлайн-режим).
  const GAS_CATALOG_URL = 'https://script.google.com/macros/s/1UBI051_dFGQ59NE_8tHR7w4IsgifoHzWL79HXfCQQ8JlW-lGKNNwXDAp/exec';
-    const API_URL = GAS_CATALOG_URL; // алиас
 
     // --- КЛЮЧ СЕССИИ ДЛЯ ПЛАТНОГО ДОСТУПА ---
     // После успешной оплаты платёжная система редиректит ?payment=ok&order_id=XXX
@@ -924,192 +923,203 @@
     let answers = {};
 
     // =====================================================================
-    // МАППИНГ бюджета квиза → бюджет GAS-каталога
-    // Квиз: low / mid / high / premium
-    // GAS getBudgetRange_: low / mid / high
-    // premium → high (самые дорогие модели)
+    // ПОЛУЧЕНИЕ ДАННЫХ ИЗ КАТАЛОГА (Google Apps Script или встроенный)
     // =====================================================================
-    function mapBudgetForGAS(budget) {
-      if (budget === 'premium') return 'high';
-      return budget || 'mid';
-    }
 
-    // Квизовый goal → тип инструмента для GAS detectType_
-    // GAS detectType_: learning→Цифровое пианино, production→MIDI, stage+high→Рабочая станция
-    // Дополнительный маппинг: hobby/allinone → Синтезатор (stage mid/low)
-    function mapGoalForGAS(goal, budget) {
-      // Прямое совпадение с тем, что принимает GAS
-      if (goal === 'learning')    return 'learning';
-      if (goal === 'production')  return 'production';
-      if (goal === 'stage')       return 'stage';
-      if (goal === 'allinone')    return 'stage';   // рабочая станция / синтезатор
-      if (goal === 'hobby')       return 'stage';   // → Синтезатор через detectType_
-      return 'learning';
-    }
+    /**
+     * Запрашивает расширенный каталог из Google Apps Script.
+     * GAS должен принимать параметры: action=catalog&goal=...&budget=...&token=...
+     * и возвращать JSON: { ok: true, data: { type, models:[], accessories:[], realPrice } }
+     * Если GAS_CATALOG_URL пуст или запрос завершился ошибкой — используется fallback.
+     */
+    async function fetchCatalogData(goal, budget, token) {
+      if (!GAS_CATALOG_URL) return null;
 
-    // =====================================================================
-    // GAS API — paidResult (основной каталог)
-    // Параметры: action=paidResult & goal & budget & plan & format
-    // =====================================================================
-    async function fetchGASPaidResult(goal, budget, plan, format) {
-      if (!API_URL) return null;
+      // Маппинг: бюджет квиза → бюджет GAS (premium → high)
+      const gasBudget = (budget === 'premium') ? 'high' : (budget || 'mid');
+
+      // Маппинг: goal квиза → goal для GAS detectType_
+      // hobby/allinone → 'stage' (GAS вернёт Синтезатор)
+      const gasGoal = (goal === 'hobby' || goal === 'allinone') ? 'stage' : (goal || 'learning');
+
+      // plan: token после оплаты хранит orderId → используем как smart
+      const plan = (token && token !== 'null') ? 'smart' : 'start';
+
       try {
-        const gasBudget = mapBudgetForGAS(budget);
-        const gasGoal   = mapGoalForGAS(goal, budget);
-        const url = new URL(API_URL);
+        const url = new URL(GAS_CATALOG_URL);
         url.searchParams.set('action', 'paidResult');
         url.searchParams.set('goal',   gasGoal);
         url.searchParams.set('budget', gasBudget);
-        url.searchParams.set('plan',   plan || 'smart');
-        if (format && format !== 'compact' && format !== 'stationary' && format !== 'any') {
-          url.searchParams.set('format', format);
-        }
+        url.searchParams.set('plan',   plan);
+        // format: передаём только если это hammer/synth
+        const fmt = (window._quizFormat || '');
+        if (fmt === 'hammer' || fmt === 'synth') url.searchParams.set('format', fmt);
+
         const res  = await fetch(url.toString(), { mode: 'cors' });
         const json = await res.json();
-        if (!json.ok) return null;
+        if (!json.ok || !json.models || !json.models.length) return null;
+
         // Адаптируем ответ GAS к формату renderResult
-        return adaptGASResult(json, goal, budget);
-      } catch (e) {
-        console.warn('КлавирОН: fetchGASPaidResult ошибка:', e);
-        return null;
-      }
-    }
-
-    // GAS API — previewResult (превью типа для paywall)
-    async function fetchGASPreview(goal, budget) {
-      if (!API_URL) return null;
-      try {
-        const url = new URL(API_URL);
-        url.searchParams.set('action', 'previewResult');
-        url.searchParams.set('goal',   mapGoalForGAS(goal, budget));
-        url.searchParams.set('budget', mapBudgetForGAS(budget));
-        const res  = await fetch(url.toString(), { mode: 'cors' });
-        const json = await res.json();
-        return json.ok ? json : null;
-      } catch (e) {
-        console.warn('КлавирОН: fetchGASPreview ошибка:', e);
-        return null;
-      }
-    }
-
-    // GAS API — createOrder (POST)
-    async function createOrderInGAS(body) {
-      if (!API_URL) return null;
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          mode:   'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(Object.assign({ action: 'createOrder' }, body))
-        });
-        return await res.json();
-      } catch (e) {
-        console.warn('КлавирОН: createOrder ошибка:', e);
-        return null;
-      }
-    }
-
-    // =====================================================================
-    // Адаптер: ответ GAS → формат данных renderResult
-    // GAS возвращает models[] = [{ name, price, keys, polyphony, timbres, score }]
-    // GAS accessories = [{ name, included, price }]
-    // =====================================================================
-    function adaptGASResult(json, originalGoal, originalBudget) {
-      const models = (json.models || []).map(function(m) {
-        return { name: m.name || '', price: m.price || '' };
-      });
-
-      // Если GAS вернул пустой список — возвращаем null → fallback
-      if (!models.length) return null;
-
-      // Аксессуары из GAS: { name, included: true/false, price }
-      const accessories = (json.accessories || []).map(function(a) {
         return {
-          name:   a.name,
-          status: a.included ? 'included' : (a.price > 0 ? 'missing' : 'separate')
+          type:        json.type || '',
+          _badge:      'Из каталога КлавирОН' + (json.totalFound ? ' · найдено ' + json.totalFound : ''),
+          models:      json.models.map(function(m) { return { name: m.name, price: m.price }; }),
+          accessories: (json.accessories || []).map(function(a) {
+            return { name: a.name, status: a.included ? 'included' : (a.price > 0 ? 'missing' : 'separate') };
+          }),
+          realPrice:   json.realPrice || ''
         };
-      });
+      } catch (e) {
+        console.warn('КлавирОН: fetchCatalogData ошибка:', e);
+        return null;
+      }
+    }
 
-      return {
-        type:        json.type || '',
-        _badge:      'Из каталога КлавирОН',
-        models:      models,
-        accessories: accessories,
-        realPrice:   json.realPrice || '',
-        totalFound:  json.totalFound || models.length
-      };
+    /**
+     * Проверяет оплату через Google Apps Script.
+     * GAS должен принимать: action=verify&order_id=...
+     * и возвращать: { ok: true, token: '...' } или { ok: false }
+     */
+    async function verifyPayment(orderId) {
+      // GAS пока не имеет action=verify → считаем токен = orderId
+      // (после добавления verify в GAS — заменить на реальный запрос)
+      return { ok: true, token: orderId };
     }
 
     // =====================================================================
-    // ОСНОВНОЙ FLOW РЕЗУЛЬТАТА
+    // REVEAL ON SCROLL
     // =====================================================================
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('is-visible'); observer.unobserve(el.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+    // =====================================================================
+    // NAVBAR
+    // =====================================================================
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.style.background = 'rgba(10,24,20,0.85)';
+        navbar.style.backdropFilter = 'blur(24px)';
+        navbar.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.borderBottom = 'none';
+      }
+    });
+
+    // =====================================================================
+    // FAQ
+    // =====================================================================
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      const icon = item.querySelector('.faq-icon');
+      const isOpen = answer.classList.contains('open');
+      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotated'));
+      if (!isOpen) { answer.classList.add('open'); icon.classList.add('rotated'); }
+    }
+
+    // =====================================================================
+    // TOAST
+    // =====================================================================
+    function showToast(text) {
+      const t = document.getElementById('toast');
+      if (text) document.getElementById('toastText').textContent = text;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // =====================================================================
+    // QUIZ — MACHINE STATE
+    // =====================================================================
+    function selectOption(step, value, btn) {
+      answers[step] = value;
+      if (step === 'format') window._quizFormat = value; // для фильтра GAS (hammer/synth)
+      const stepNum = STEPS.indexOf(step) + 1;
+      document.querySelectorAll('[data-step="' + stepNum + '"] .quiz-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      setTimeout(() => showStep(stepNum + 1), 350);
+    }
+
+    function showStep(num) {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById('dot' + i);
+        if (dot) dot.classList.toggle('filled', i <= num);
+      }
+      document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+      if (num === 4) renderStep4();
+      const next = document.querySelector('[data-step="' + num + '"]');
+      if (next) next.classList.add('active');
+      else showResult();
+    }
+
+    function renderStep4() {
+      const isPro = PRO_GOALS.includes(answers.goal);
+      const variants = isPro ? STEP4_PRO : STEP4_SIMPLE;
+      document.getElementById('step4Title').textContent = isPro ? 'Какой тип клавиатуры нужен?' : 'Какой формат вам удобнее?';
+      document.getElementById('step4Options').innerHTML = variants.map(v =>
+        '<button class="quiz-btn" onclick="selectOption(\'format\',\'' + v.value + '\',this)">' +
+        '<div class="quiz-btn-icon"><iconify-icon icon="' + v.icon + '" width="20" style="color:#10b981"></iconify-icon></div>' + v.label +
+        '</button>'
+      ).join('');
+    }
+
+    // =====================================================================
+    // РЕЗУЛЬТАТ — ОСНОВНОЙ FLOW
+    // Поддерживает три режима:
+    //   1) SHOW_PAYWALL=false → показываем результат сразу из fallback
+    //   2) SHOW_PAYWALL=true  → показываем paywall, после оплаты — каталог
+    //   3) GAS_CATALOG_URL задан + sessionToken → каталог из GAS
+    // =====================================================================
     async function showResult() {
       document.getElementById('quizSteps').style.display = 'none';
       const progress = document.querySelector('.quiz-progress');
       if (progress) progress.style.display = 'none';
 
-      const goal   = answers.goal   || 'hobby';
+      const goal = answers.goal || 'hobby';
       const budget = answers.budget || 'mid';
-      const format = answers.format || '';
 
-      // ─── РЕЖИМ PAYWALL ───────────────────────────────────────────────
       if (SHOW_PAYWALL && !sessionToken) {
-        const infoFallback = QUIZ_TYPES[goal] || QUIZ_TYPES.hobby;
-        document.getElementById('paywallType').textContent    = infoFallback.type;
-        document.getElementById('paywallTagline').textContent = infoFallback.tagline;
-
+        // Показываем paywall
+        const info = QUIZ_TYPES[answers.goal] || QUIZ_TYPES.hobby;
+        document.getElementById('paywallType').textContent = info.type;
+        document.getElementById('paywallTagline').textContent = info.tagline;
         const orderId = generateOrderId();
         _pendingOrderId = orderId;
-        const payUrl = PAYMENT_URL + (PAYMENT_URL.includes('?') ? '&' : '?') + 'order_id=' + encodeURIComponent(orderId);
+        const payUrl = PAYMENT_URL + (PAYMENT_URL.includes('?') ? '&' : '?') + 'order_id=' + orderId;
         document.getElementById('payButton').href = payUrl;
         document.getElementById('quizPaywall').classList.add('active');
-
-        // Обновляем тип из GAS асинхронно
-        fetchGASPreview(goal, budget).then(function(preview) {
-          if (preview) {
-            if (preview.type)    document.getElementById('paywallType').textContent    = preview.type;
-            if (preview.summary) document.getElementById('paywallTagline').textContent = preview.summary;
-          }
-        });
-
-        // Фиксируем лид в таблице
-        createOrderInGAS({
-          plan:       'start',
-          goal:       goal,
-          budget:     budget,
-          experience: answers.experience || '',
-          format:     format,
-          email:      '',
-          amount:     290
-        });
         return;
       }
 
-      // ─── БЕСПЛАТНЫЙ / ОПЛАЧЕННЫЙ РЕЖИМ ──────────────────────────────
+      // Попытка загрузить из каталога GAS
       showLoadingResult();
+      const catalogData = await fetchCatalogData(goal, budget, sessionToken);
 
-      // Сначала пробуем получить данные из GAS
-      const plan = sessionToken ? 'smart' : 'start';
-      let data = await fetchGASPaidResult(goal, budget, plan, format);
+      // Fallback на встроенные данные
+      const fallbackData = (QUIZ_RESULTS[goal] || QUIZ_RESULTS.hobby)[budget] || QUIZ_RESULTS.hobby.mid;
+      const data = catalogData || fallbackData;
 
-      // Если GAS недоступен или вернул пустой результат — берём fallback
-      if (!data) {
-        const fallbackData = (QUIZ_RESULTS[goal] || QUIZ_RESULTS.hobby)[budget]
-                          || QUIZ_RESULTS.hobby.mid;
-        data = fallbackData;
+      // Если GAS вернул флаг isPremium — добавляем лейбл
+      if (catalogData && catalogData.isPremium) {
+        data._badge = 'Расширенный каталог';
       }
 
       hideLoadingResult();
       renderResult(data);
     }
 
+    // Спиннер ожидания
     function showLoadingResult() {
       document.getElementById('quizResult').classList.add('active');
       document.getElementById('resultModels').innerHTML =
         '<div style="text-align:center;padding:24px;color:#4a6b5d;font-size:11pt">' +
         '<iconify-icon icon="mdi:loading" width="24" style="color:#10b981;animation:spin 1s linear infinite"></iconify-icon>' +
-        '<br><span style="margin-top:8px;display:block">Загружаем подбор из каталога…</span></div>';
+        '<br><span style="margin-top:8px;display:block">Загружаем подбор…</span></div>';
       document.getElementById('resultAccessories').innerHTML = '';
       document.getElementById('resultRealPrice').textContent = '';
     }
@@ -1117,6 +1127,7 @@
       document.getElementById('quizResult').classList.remove('active');
     }
 
+    // Счётчик для pending order_id (не localStorage)
     let _pendingOrderId = null;
 
     function generateOrderId() {
@@ -1126,67 +1137,49 @@
     function renderResult(data) {
       document.getElementById('quizPaywall').classList.remove('active');
       document.getElementById('quizResult').classList.add('active');
-      document.getElementById('resultType').textContent = data.type || '';
+      document.getElementById('resultType').textContent = (data._badge || data.type) || '';
 
+      // Бейдж источника (каталог GAS vs встроенный)
       const sourceEl = document.getElementById('resultSourceBadge');
       if (sourceEl) {
-        if (data._badge) {
-          sourceEl.style.display = 'inline-flex';
-          sourceEl.textContent   = data._badge;
-          if (data.totalFound > 0) {
-            sourceEl.textContent += ' · найдено ' + data.totalFound;
-          }
-        } else {
-          sourceEl.style.display = 'none';
-        }
+        sourceEl.style.display = data._badge ? 'inline-flex' : 'none';
+        sourceEl.textContent = data._badge || '';
       }
 
       const modelsEl = document.getElementById('resultModels');
-      modelsEl.innerHTML = (data.models || []).map(function(m) {
-        return '<div class="result-model-card"><div class="result-model-name">' +
-          escHtml(m.name) + '</div><div class="result-model-price">' +
-          escHtml(m.price) + '</div></div>';
-      }).join('');
+      modelsEl.innerHTML = (data.models || []).map(m =>
+        '<div class="result-model-card"><div class="result-model-name">' + m.name + '</div><div class="result-model-price">' + m.price + '</div></div>'
+      ).join('');
 
       const accEl = document.getElementById('resultAccessories');
       const statusMap = {
         included: { text: 'В комплекте', cls: 'accessory-included' },
-        missing:  { text: 'Докупить!',   cls: 'accessory-missing'  },
-        separate: { text: 'Опционально', cls: 'accessory-separate'  }
+        missing:  { text: 'Докупить!',   cls: 'accessory-missing' },
+        separate: { text: 'Опционально', cls: 'accessory-separate' }
       };
-      accEl.innerHTML = (data.accessories || []).map(function(a) {
+      accEl.innerHTML = (data.accessories || []).map(a => {
         const s = statusMap[a.status] || statusMap.separate;
-        return '<div class="accessory-row"><span>' + escHtml(a.name) +
-          '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
+        return '<div class="accessory-row"><span>' + a.name + '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
       }).join('');
-      accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span>' +
-        '<span class="accessory-separate">всегда отдельно</span></div>';
+      accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
       document.getElementById('resultRealPrice').textContent = data.realPrice || '';
-    }
-
-    function escHtml(str) {
-      return String(str || '').replace(/[&<>"']/g, function(c) {
-        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-      });
     }
 
     function resetQuiz() {
       answers = {};
       sessionToken = null;
       _pendingOrderId = null;
-      ['quizResult', 'quizPaywall', 'quizError'].forEach(function(id) {
-        document.getElementById(id).classList.remove('active');
-      });
+      ['quizResult', 'quizPaywall', 'quizError'].forEach(id => document.getElementById(id).classList.remove('active'));
       document.getElementById('quizSteps').style.display = 'block';
       const progress = document.querySelector('.quiz-progress');
       if (progress) progress.style.display = 'flex';
-      document.querySelectorAll('.quiz-btn').forEach(function(b) { b.classList.remove('selected'); });
+      document.querySelectorAll('.quiz-btn').forEach(b => b.classList.remove('selected'));
       if (window.location.search) window.history.replaceState({}, '', window.location.pathname);
-      for (var i = 1; i <= 4; i++) {
+      for (let i = 1; i <= 4; i++) {
         const dot = document.getElementById('dot' + i);
         if (dot) dot.classList.toggle('filled', i === 1);
       }
-      document.querySelectorAll('.quiz-step').forEach(function(s) { s.classList.remove('active'); });
+      document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
       document.querySelector('.quiz-step[data-step="1"]').classList.add('active');
     }
 
@@ -1207,7 +1200,7 @@
           { name: 'Педаль',       status: 'missing'   },
           { name: 'Нотная полка', status: 'separate'  }
         ],
-        realPrice: '~38 990 ₽ (+аксессуары)'
+        realPrice: '~38 990 ₽ (+16%)'
       };
       document.getElementById('quizSteps').style.display = 'none';
       const progress = document.querySelector('.quiz-progress');
@@ -1218,8 +1211,10 @@
     }
 
     // =====================================================================
-    // URL-ПАРАМЕТРЫ ПРИ ЗАГРУЗКЕ
-    // ?demo=true | ?payment=ok&order_id=X
+    // ПРОВЕРКА URL-ПАРАМЕТРОВ ПРИ ЗАГРУЗКЕ
+    // Поддерживаемые параметры:
+    //   ?demo=true              — показать демо-результат
+    //   ?payment=ok&order_id=X  — вернулись после оплаты, проверяем платёж
     // =====================================================================
     (async function checkUrlParams() {
       const params = new URLSearchParams(window.location.search);
@@ -1239,15 +1234,26 @@
           return;
         }
 
+        // Верифицируем через GAS (или dev-режим)
         showToast('Проверяем оплату…');
-        // Верификация: GAS пока не поддерживает action=verify, поэтому dev-режим
-        window.history.replaceState({}, '', window.location.pathname);
-        sessionToken = orderId; // считаем токен = orderId до добавления verify в GAS
-        showToast('Оплата подтверждена! Загружаем подбор…');
-        if (answers.goal && answers.budget) {
-          await showResult();
+        const result = await verifyPayment(orderId);
+        window.history.replaceState({}, '', window.location.pathname); // убираем ?payment=ok из URL
+
+        if (result.ok) {
+          sessionToken = result.token;
+          showToast('Оплата подтверждена! Загружаем подбор…');
+          // Если ответы квиза уже есть — показываем результат
+          if (answers.goal && answers.budget) {
+            await showResult();
+          } else {
+            // Ответов нет — покажем toast и ждём прохождения
+            showToast('Пройдите квиз для получения подбора');
+          }
         } else {
-          showToast('Пройдите квиз для получения подбора');
+          document.getElementById('quizError').classList.add('active');
+          document.getElementById('quizSteps').style.display = 'none';
+          const progress = document.querySelector('.quiz-progress');
+          if (progress) progress.style.display = 'none';
         }
       }
     })();
