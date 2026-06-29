@@ -711,6 +711,7 @@
             <div style="margin-top:12px;padding-top:12px;border-top:2px solid #c5dfd3;display:flex;justify-content:space-between;align-items:center">
               <span style="font-size:10pt;font-weight:600;color:#0a1814">Реальная цена:</span>
               <span style="font-size:14pt;font-weight:700;color:#ef4444" id="resultRealPrice"></span>
+              <div style="font-size:9pt;color:#94a3b8;margin-top:4px">Цены актуальны на июнь 2026 · могут отличаться от текущих</div>
             </div>
           </div>
           <button onclick="resetQuiz()" style="background:#f2f8f6;border:1px solid #c5dfd3;padding:12px 28px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:11pt;font-weight:600;color:#0a1814;cursor:pointer" onmouseover="this.style.background='#e1efe8'" onmouseout="this.style.background='#f2f8f6'">Пройти заново</button>
@@ -888,34 +889,34 @@
 
     const QUIZ_RESULTS = {
       hobby: {
-        low: { type: 'Обучающий синтезатор', models: [{ name: 'Casio CT-S300', price: '8 990 ₽' }, { name: 'Yamaha PSR-E373', price: '13 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'included' }], realPrice: '~14 990 ₽' },
-        mid: { type: 'Обучающий синтезатор', models: [{ name: 'Yamaha PSR-SX600', price: '22 990 ₽' }, { name: 'Casio CT-X700', price: '17 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'separate' }, { name: 'Наушники', status: 'separate' }], realPrice: '~28 990 ₽' },
-        high: { type: 'Синтезатор Pro', models: [{ name: 'Yamaha PSR-SX700', price: '38 990 ₽' }, { name: 'Korg PA300', price: '42 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~44 990 ₽' },
+        low:     { type: 'Обучающий синтезатор', models: [{ name: 'Casio CT-S300', price: '8 990 ₽' }, { name: 'Yamaha PSR-E373', price: '13 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'included' }], realPrice: '~13 990 ₽' },
+        mid:     { type: 'Обучающий синтезатор', models: [{ name: 'Yamaha PSR-SX600', price: '22 990 ₽' }, { name: 'Casio CT-X700', price: '17 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'separate' }, { name: 'Наушники', status: 'separate' }], realPrice: '~28 990 ₽' },
+        high:    { type: 'Синтезатор Pro', models: [{ name: 'Yamaha PSR-SX700', price: '38 990 ₽' }, { name: 'Korg PA300', price: '42 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~44 990 ₽' },
         premium: { type: 'Синтезатор Pro', models: [{ name: 'Yamaha PSR-SX900', price: '89 990 ₽' }, { name: 'Korg PA700', price: '79 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~95 990 ₽' }
       },
       learning: {
-        low: { type: 'Цифровое пианино', models: [{ name: 'Casio CDP-S100', price: '18 990 ₽' }, { name: 'Yamaha P-45', price: '21 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'separate' }], realPrice: '~25 990 ₽' },
-        mid: { type: 'Цифровое пианино', models: [{ name: 'Casio PX-S1100', price: '28 990 ₽' }, { name: 'Yamaha P-125', price: '29 990 ₽' }], accessories: [{ name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'separate' }], realPrice: '~36 990 ₽' },
-        high: { type: 'Цифровое пианино Pro', models: [{ name: 'Roland FP-60X', price: '49 990 ₽' }, { name: 'Casio PX-S5000', price: '44 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~57 990 ₽' },
-        premium: { type: 'Цифровое пианино Pro', models: [{ name: 'Yamaha P-515', price: '69 990 ₽' }, { name: 'Roland FP-90X', price: '89 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~80 990 ₽' }
+        low:     { type: 'Цифровое пианино', models: [{ name: 'Casio CDP-S350', price: '14 990 ₽' }, { name: 'Yamaha P-45A', price: '13 490 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~14 990 ₽' },
+        mid:     { type: 'Цифровое пианино', models: [{ name: 'Casio PX-S1100', price: '28 990 ₽' }, { name: 'Yamaha P-125A', price: '29 990 ₽' }], accessories: [{ name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'separate' }], realPrice: '~33 990 ₽' },
+        high:    { type: 'Цифровое пианино Pro', models: [{ name: 'Roland FP-60X', price: '49 990 ₽' }, { name: 'Casio PX-S5000', price: '44 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~57 990 ₽' },
+        premium: { type: 'Цифровое пианино Pro', models: [{ name: 'Yamaha CLP-745', price: '119 990 ₽' }, { name: 'Roland FP-90X', price: '89 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~109 990 ₽' }
       },
       production: {
-        low: { type: 'MIDI-клавиатура', models: [{ name: 'Arturia MiniLab Mk3', price: '7 990 ₽' }, { name: 'Akai MPK Mini Mk3', price: '8 990 ₽' }], accessories: [{ name: 'Кабель USB', status: 'included' }, { name: 'DAW-лицензия', status: 'separate' }], realPrice: '~11 990 ₽' },
-        mid: { type: 'MIDI-клавиатура', models: [{ name: 'Arturia KeyLab Essential 49', price: '17 990 ₽' }, { name: 'Native Instruments S49 Mk3', price: '24 990 ₽' }], accessories: [{ name: 'DAW', status: 'separate' }, { name: 'Аудиоинтерфейс', status: 'separate' }], realPrice: '~28 990 ₽' },
-        high: { type: 'Рабочая станция', models: [{ name: 'Roland FA-06', price: '54 990 ₽' }, { name: 'Korg Kronos 61', price: '149 000 ₽' }], accessories: [{ name: 'Стойка', status: 'separate' }], realPrice: '~62 990 ₽' },
-        premium: { type: 'Рабочая станция Pro', models: [{ name: 'Yamaha Montage M6', price: '199 000 ₽' }, { name: 'Korg Kronos 88', price: '269 000 ₽' }], accessories: [{ name: 'Стойка', status: 'separate' }, { name: 'Педаль тройная', status: 'separate' }], realPrice: '~215 000 ₽' }
+        low:     { type: 'MIDI-клавиатура', models: [{ name: 'Arturia MiniLab Mk3', price: '7 990 ₽' }, { name: 'Akai MPK Mini Mk3', price: '8 990 ₽' }], accessories: [{ name: 'Кабель USB', status: 'included' }, { name: 'DAW-лицензия', status: 'separate' }], realPrice: '~11 990 ₽' },
+        mid:     { type: 'MIDI-клавиатура', models: [{ name: 'Arturia KeyLab Essential 49', price: '17 990 ₽' }, { name: 'Native Instruments S49 Mk3', price: '24 990 ₽' }], accessories: [{ name: 'DAW', status: 'separate' }, { name: 'Аудиоинтерфейс', status: 'separate' }], realPrice: '~28 990 ₽' },
+        high:    { type: 'Рабочая станция', models: [{ name: 'Yamaha MX61', price: '39 990 ₽' }, { name: 'Roland FA-06', price: '54 990 ₽' }], accessories: [{ name: 'Стойка', status: 'separate' }], realPrice: '~54 990 ₽' },
+        premium: { type: 'Рабочая станция Pro', models: [{ name: 'Yamaha Montage M6', price: '199 000 ₽' }, { name: 'Korg Kronos 61', price: '149 000 ₽' }], accessories: [{ name: 'Стойка', status: 'separate' }, { name: 'Педаль тройная', status: 'separate' }], realPrice: '~165 000 ₽' }
       },
       stage: {
-        low: { type: 'Сценический синтезатор', models: [{ name: 'Roland Juno-DS61', price: '36 990 ₽' }, { name: 'Korg Kross 2 61', price: '28 990 ₽' }], accessories: [{ name: 'Кейс', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~40 990 ₽' },
-        mid: { type: 'Сценический синтезатор', models: [{ name: 'Yamaha MX49 MkII', price: '29 990 ₽' }, { name: 'Roland Juno-X', price: '64 990 ₽' }], accessories: [{ name: 'Стойка', status: 'missing' }, { name: 'Педаль', status: 'missing' }], realPrice: '~42 990 ₽' },
-        high: { type: 'Сценическое пианино', models: [{ name: 'Roland RD-2000', price: '89 990 ₽' }, { name: 'Yamaha CP73', price: '79 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~99 990 ₽' },
-        premium: { type: 'Сценическое пианино Pro', models: [{ name: 'Nord Stage 4', price: '289 000 ₽' }, { name: 'Yamaha CP88', price: '129 000 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'included' }], realPrice: '~310 000 ₽' }
+        low:     { type: 'Синтезатор начального уровня', models: [{ name: 'Casio CT-X3000', price: '12 490 ₽' }, { name: 'Yamaha PSR-E473', price: '14 990 ₽' }], accessories: [{ name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~14 990 ₽' },
+        mid:     { type: 'Сценический синтезатор', models: [{ name: 'Korg Kross 2 61', price: '28 990 ₽' }, { name: 'Roland Juno-DS61', price: '34 990 ₽' }], accessories: [{ name: 'Кейс', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Педаль', status: 'missing' }], realPrice: '~34 990 ₽' },
+        high:    { type: 'Сценическое пианино', models: [{ name: 'Roland FP-60X', price: '49 990 ₽' }, { name: 'Yamaha CP73', price: '67 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~59 990 ₽' },
+        premium: { type: 'Сценическое пианино Pro', models: [{ name: 'Yamaha CP88', price: '129 000 ₽' }, { name: 'Nord Stage 4', price: '289 000 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'included' }], realPrice: '~149 000 ₽' }
       },
       allinone: {
-        low: { type: 'Обучающий синтезатор', models: [{ name: 'Casio CT-S500', price: '12 990 ₽' }, { name: 'Yamaha PSR-E373', price: '13 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~18 990 ₽' },
-        mid: { type: 'Синтезатор всё в одном', models: [{ name: 'Yamaha PSR-SX600', price: '22 990 ₽' }, { name: 'Casio WK-7600', price: '24 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~30 990 ₽' },
-        high: { type: 'Синтезатор топ', models: [{ name: 'Yamaha PSR-SX700', price: '38 990 ₽' }, { name: 'Roland BK-9', price: '54 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~48 990 ₽' },
-        premium: { type: 'Флагман', models: [{ name: 'Yamaha PSR-SX900', price: '89 990 ₽' }, { name: 'Korg PA700', price: '79 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~98 990 ₽' }
+        low:     { type: 'Обучающий синтезатор', models: [{ name: 'Casio CT-S500', price: '12 990 ₽' }, { name: 'Casio CT-S300', price: '8 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~12 990 ₽' },
+        mid:     { type: 'Аранжировщик', models: [{ name: 'Yamaha PSR-SX600', price: '22 990 ₽' }, { name: 'Casio CT-X700', price: '17 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~28 990 ₽' },
+        high:    { type: 'Рабочая станция / Аранжировщик Pro', models: [{ name: 'Korg PA300', price: '42 990 ₽' }, { name: 'Roland BK-9', price: '54 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~54 990 ₽' },
+        premium: { type: 'Топовый аранжировщик', models: [{ name: 'Korg PA700', price: '79 990 ₽' }, { name: 'Yamaha PSR-SX900', price: '89 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~89 990 ₽' }
       }
     };
 
@@ -935,15 +936,17 @@
     async function fetchCatalogData(goal, budget, token) {
       if (!GAS_CATALOG_URL) return null;
 
-      // Маппинг: бюджет квиза → бюджет GAS (premium → high)
+      // budget квиза: low/mid/high/premium → GAS знает только low/mid/high
       const gasBudget = (budget === 'premium') ? 'high' : (budget || 'mid');
 
-      // Маппинг: goal квиза → goal для GAS detectType_
-      // hobby/allinone → 'stage' (GAS вернёт Синтезатор)
+      // goal квиза → goal для GAS (hobby/allinone → stage → Синтезатор)
       const gasGoal = (goal === 'hobby' || goal === 'allinone') ? 'stage' : (goal || 'learning');
 
-      // plan: token после оплаты хранит orderId → используем как smart
-      const plan = (token && token !== 'null') ? 'smart' : 'start';
+      // hammer/synth — передаём из шага 4 квиза
+      const fmt = answers.format || '';
+
+      // plan: после оплаты token = orderId → smart; иначе start
+      const plan = (token && typeof token === 'string' && token.length > 2) ? 'smart' : 'start';
 
       try {
         const url = new URL(GAS_CATALOG_URL);
@@ -951,23 +954,21 @@
         url.searchParams.set('goal',   gasGoal);
         url.searchParams.set('budget', gasBudget);
         url.searchParams.set('plan',   plan);
-        // format: передаём только если это hammer/synth
-        const fmt = (window._quizFormat || '');
         if (fmt === 'hammer' || fmt === 'synth') url.searchParams.set('format', fmt);
 
         const res  = await fetch(url.toString(), { mode: 'cors' });
         const json = await res.json();
         if (!json.ok || !json.models || !json.models.length) return null;
 
-        // Адаптируем ответ GAS к формату renderResult
+        // Адаптируем формат GAS → renderResult
         return {
-          type:        json.type || '',
-          _badge:      'Из каталога КлавирОН' + (json.totalFound ? ' · найдено ' + json.totalFound : ''),
-          models:      json.models.map(function(m) { return { name: m.name, price: m.price }; }),
+          type:   json.type || '',
+          _badge: 'Из каталога КлавирОН' + (json.totalFound ? ' · найдено ' + json.totalFound : ''),
+          models: json.models.map(function(m) { return { name: m.name, price: m.price }; }),
           accessories: (json.accessories || []).map(function(a) {
             return { name: a.name, status: a.included ? 'included' : (a.price > 0 ? 'missing' : 'separate') };
           }),
-          realPrice:   json.realPrice || ''
+          realPrice: json.realPrice || ''
         };
       } catch (e) {
         console.warn('КлавирОН: fetchCatalogData ошибка:', e);
@@ -981,8 +982,9 @@
      * и возвращать: { ok: true, token: '...' } или { ok: false }
      */
     async function verifyPayment(orderId) {
-      // GAS пока не имеет action=verify → считаем токен = orderId
-      // (после добавления verify в GAS — заменить на реальный запрос)
+      // GAS не имеет action=verify — используем orderId как токен.
+      // Перед запуском с реальной оплатой добавить action=verify в GAS.
+      if (!orderId || orderId.length < 4) return { ok: false };
       return { ok: true, token: orderId };
     }
 
@@ -1038,7 +1040,6 @@
     // =====================================================================
     function selectOption(step, value, btn) {
       answers[step] = value;
-      if (step === 'format') window._quizFormat = value; // для фильтра GAS (hammer/synth)
       const stepNum = STEPS.indexOf(step) + 1;
       document.querySelectorAll('[data-step="' + stepNum + '"] .quiz-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
@@ -1090,6 +1091,7 @@
         document.getElementById('paywallTagline').textContent = info.tagline;
         const orderId = generateOrderId();
         _pendingOrderId = orderId;
+        try { sessionStorage.setItem('kv_pending_order', orderId); } catch(e){}
         const payUrl = PAYMENT_URL + (PAYMENT_URL.includes('?') ? '&' : '?') + 'order_id=' + orderId;
         document.getElementById('payButton').href = payUrl;
         document.getElementById('quizPaywall').classList.add('active');
@@ -1101,8 +1103,43 @@
       const catalogData = await fetchCatalogData(goal, budget, sessionToken);
 
       // Fallback на встроенные данные
-      const fallbackData = (QUIZ_RESULTS[goal] || QUIZ_RESULTS.hobby)[budget] || QUIZ_RESULTS.hobby.mid;
+      // Учитываем answers.format: hammer → молоточковая клавиатура, synth → синтезаторная
+      const fmt = answers.format || '';
+      let effectiveGoal = goal;
+      if (fmt === 'hammer' && (goal === 'stage' || goal === 'allinone' || goal === 'hobby')) {
+        // Молоточковая клавиатура — переключаемся на ветку learning (цифровые пианино)
+        effectiveGoal = 'learning';
+      }
+      const fallbackBase = (QUIZ_RESULTS[effectiveGoal] || QUIZ_RESULTS.hobby)[budget] || QUIZ_RESULTS.hobby.mid;
+      // Клонируем чтобы не мутировать константу
+      const fallbackData = Object.assign({}, fallbackBase);
+      if (fmt === 'hammer' && effectiveGoal === 'learning') {
+        fallbackData._badge = 'С молоточковой клавиатурой';
+      } else if (fmt === 'synth' && goal === 'learning') {
+        fallbackData._badge = 'С синтезаторной клавиатурой';
+      }
       const data = catalogData || fallbackData;
+      // Учитываем answers.experience: beginner / confident
+      const exp = answers.experience || '';
+      if (!catalogData && data.models && data.models.length > 1) {
+        if (exp === 'beginner') {
+          // Ставим первой более доступную модель (меньшая цена)
+          data.models = data.models.slice().sort(function(a, b) {
+            const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 999999;
+            const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 999999;
+            return pa - pb;
+          });
+          if (!data._badge) data._badge = 'Рекомендуем для начинающих';
+        } else if (exp === 'confident') {
+          // Ставим первой более продвинутую модель (большая цена)
+          data.models = data.models.slice().sort(function(a, b) {
+            const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 0;
+            const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 0;
+            return pb - pa;
+          });
+          if (!data._badge) data._badge = 'Для уверенных музыкантов';
+        }
+      }
 
       // Если GAS вернул флаг isPremium — добавляем лейбл
       if (catalogData && catalogData.isPremium) {
@@ -1128,7 +1165,7 @@
     }
 
     // Счётчик для pending order_id (не localStorage)
-    let _pendingOrderId = null;
+    let _pendingOrderId = (function(){ try { return sessionStorage.getItem('kv_pending_order') || null; } catch(e){ return null; } })();
 
     function generateOrderId() {
       return 'kv_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
@@ -1161,7 +1198,11 @@
         const s = statusMap[a.status] || statusMap.separate;
         return '<div class="accessory-row"><span>' + a.name + '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
       }).join('');
-      accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
+      // Банкетка нужна только для пианинных инструментов (learning + hobby), не для MIDI/сцены
+      const _g = answers.goal || '';
+      if (_g === 'learning' || _g === 'hobby' || _g === 'allinone') {
+        accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
+      }
       document.getElementById('resultRealPrice').textContent = data.realPrice || '';
     }
 
@@ -1169,6 +1210,7 @@
       answers = {};
       sessionToken = null;
       _pendingOrderId = null;
+      try { sessionStorage.removeItem('kv_pending_order'); } catch(e){}
       ['quizResult', 'quizPaywall', 'quizError'].forEach(id => document.getElementById(id).classList.remove('active'));
       document.getElementById('quizSteps').style.display = 'block';
       const progress = document.querySelector('.quiz-progress');
@@ -1241,13 +1283,16 @@
 
         if (result.ok) {
           sessionToken = result.token;
-          showToast('Оплата подтверждена! Загружаем подбор…');
-          // Если ответы квиза уже есть — показываем результат
+          try { sessionStorage.removeItem('kv_pending_order'); } catch(e){}
           if (answers.goal && answers.budget) {
+            // Ответы уже есть — сразу показываем результат
+            showToast('Оплата подтверждена! Загружаем подбор…');
             await showResult();
           } else {
-            // Ответов нет — покажем toast и ждём прохождения
-            showToast('Пройдите квиз для получения подбора');
+            // Ответов нет — прокручиваем к квизу с подсказкой
+            showToast('Оплата подтверждена! Пройдите квиз ниже 👇');
+            const quizEl = document.getElementById('quiz');
+            if (quizEl) quizEl.scrollIntoView({ behavior: 'smooth' });
           }
         } else {
           document.getElementById('quizError').classList.add('active');
