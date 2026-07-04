@@ -1057,7 +1057,7 @@
       ).join('');
     }
 
-    // =====================================================================
+        // =====================================================================
     // РЕЗУЛЬТАТ — ОСНОВНОЙ FLOW
     // Поддерживает три режима:
     //   1) SHOW_PAYWALL=false → показываем результат сразу из fallback
@@ -1071,10 +1071,17 @@
 
       const goal = answers.goal || 'hobby';
       const budget = answers.budget || 'mid';
+      const fmt = answers.format || '';
 
       if (SHOW_PAYWALL && !sessionToken) {
-        // Показываем paywall
-        const info = QUIZ_TYPES[answers.goal] || QUIZ_TYPES.hobby;
+        // ПРАВКА: Точный тип для Paywall в зависимости от формата
+        let info = QUIZ_TYPES[goal] || QUIZ_TYPES.hobby;
+        if (goal === 'stage') {
+          info = Object.assign({}, info, { type: fmt === 'hammer' ? 'Сценическое пианино' : 'Сценический синтезатор' });
+        } else if (goal === 'production') {
+          info = Object.assign({}, info, { type: fmt === 'hammer' ? 'Рабочая станция' : 'MIDI-клавиатура' });
+        }
+        
         document.getElementById('paywallType').textContent = info.type;
         document.getElementById('paywallTagline').textContent = info.tagline;
         const orderId = generateOrderId();
@@ -1090,43 +1097,50 @@
       showLoadingResult();
       const catalogData = await fetchCatalogData(goal, budget, sessionToken);
 
-      // Fallback на встроенные данные
-      // Учитываем answers.format: hammer → молоточковая клавиатура, synth → синтезаторная
-      const fmt = answers.format || '';
+      // ПРАВКА: Точное определение типа для Fallback
       let effectiveGoal = goal;
-      if (fmt === 'hammer' && (goal === 'stage' || goal === 'allinone' || goal === 'hobby')) {
-        // Молоточковая клавиатура — переключаемся на ветку learning (цифровые пианино)
-        effectiveGoal = 'learning';
+      let displayTypeOverride = null;
+
+      if (fmt === 'hammer' && goal === 'hobby') {
+        effectiveGoal = 'learning'; // Хобби + молоточковая = Цифровое пианино
       }
+
+      // Определяем правильное название типа для сцены и продакшена
+      if (goal === 'stage' && fmt === 'hammer') {
+        displayTypeOverride = 'Сценическое пианино';
+      } else if (goal === 'stage') {
+        displayTypeOverride = 'Сценический синтезатор';
+      } else if (goal === 'production' && fmt === 'hammer') {
+        displayTypeOverride = 'Рабочая станция';
+      } else if (goal === 'production') {
+        displayTypeOverride = 'MIDI-клавиатура';
+      }
+
       const fallbackBase = (QUIZ_RESULTS[effectiveGoal] || QUIZ_RESULTS.hobby)[budget] || QUIZ_RESULTS.hobby.mid;
       // Клонируем чтобы не мутировать константу
       const fallbackData = Object.assign({}, fallbackBase);
-      if (fmt === 'hammer' && effectiveGoal === 'learning') {
+      
+      // Применяем точный тип и бейджи
+      if (displayTypeOverride) {
+        fallbackData.type = displayTypeOverride;
+      }
+      if (fmt === 'hammer' && (effectiveGoal === 'learning' || goal === 'stage')) {
         fallbackData._badge = 'С молоточковой клавиатурой';
       } else if (fmt === 'synth' && goal === 'learning') {
         fallbackData._badge = 'С синтезаторной клавиатурой';
       }
+
       const data = catalogData || fallbackData;
-      // Учитываем answers.experience: beginner / confident
+      
+      // ПРАВКА: Сортировка опыта применяется и к данным из GAS
       const exp = answers.experience || '';
-      if (!catalogData && data.models && data.models.length > 1) {
-        if (exp === 'beginner') {
-          // Ставим первой более доступную модель (меньшая цена)
-          data.models = data.models.slice().sort(function(a, b) {
-            const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 999999;
-            const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 999999;
-            return pa - pb;
-          });
-          if (!data._badge) data._badge = 'Рекомендуем для начинающих';
-        } else if (exp === 'confident') {
-          // Ставим первой более продвинутую модель (большая цена)
-          data.models = data.models.slice().sort(function(a, b) {
-            const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 0;
-            const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 0;
-            return pb - pa;
-          });
-          if (!data._badge) data._badge = 'Для уверенных музыкантов';
-        }
+      if (data.models && data.models.length > 1 && (exp === 'beginner' || exp === 'confident')) {
+        data.models = data.models.slice().sort(function(a, b) {
+          const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 0;
+          const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 0;
+          return exp === 'beginner' ? pa - pb : pb - pa;
+        });
+        if (!data._badge) data._badge = exp === 'beginner' ? 'Рекомендуем для начинающих' : 'Для уверенных музыкантов';
       }
 
       // Если GAS вернул флаг isPremium — добавляем лейбл
@@ -1147,6 +1161,59 @@
         '<br><span style="margin-top:8px;display:block">Загружаем подбор…</span></div>';
       document.getElementById('resultAccessories').innerHTML = '';
       document.getElementById('resultRealPrice').textContent = '';
+    }
+    function hideLoadingResult() {
+      document.getElementById('quizResult').classList.remove('active');
+    }
+
+    // Счётчик для pending order_id (не localStorage)
+    let _pendingOrderId = (function(){ try { return sessionStorage.getItem('kv_pending_order') || null; } catch(e){ return null; } })();
+
+    function generateOrderId() {
+      return 'kv_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+    }
+
+    function renderResult(data) {
+      document.getElementById('quizPaywall').classList.remove('active');
+      document.getElementById('quizResult').classList.add('active');
+      document.getElementById('resultType').textContent = data.type || '';
+
+      // Бейдж источника (каталог GAS vs встроенный)
+      const sourceEl = document.getElementById('resultSourceBadge');
+      if (sourceEl) {
+        sourceEl.style.display = data._badge ? 'inline-flex' : 'none';
+        sourceEl.textContent = data._badge || '';
+      }
+
+      const modelsEl = document.getElementById('resultModels');
+      
+      // ПРАВКА: Защита от пустого массива моделей
+      if (!data.models || data.models.length === 0) {
+        modelsEl.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;font-size:11pt;">Модели не найдены. Попробуйте другие параметры.</div>';
+      } else {
+        modelsEl.innerHTML = data.models.map(m =>
+          '<div class="result-model-card"><div class="result-model-name">' + m.name + '</div><div class="result-model-price">' + m.price + '</div></div>'
+        ).join('');
+      }
+
+      const accEl = document.getElementById('resultAccessories');
+      const statusMap = {
+        included: { text: 'В комплекте', cls: 'accessory-included' },
+        missing:  { text: 'Докупить!',   cls: 'accessory-missing' },
+        separate: { text: 'Опционально', cls: 'accessory-separate' }
+      };
+      accEl.innerHTML = (data.accessories || []).map(a => {
+        const s = statusMap[a.status] || statusMap.separate;
+        return '<div class="accessory-row"><span>' + a.name + '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
+      }).join('');
+      
+      // ПРАВКА: Банкетка ТОЛЬКО для домашних (learning и hobby), не для сцены/MIDI/станций
+      const _g = answers.goal || '';
+      if (_g === 'learning' || _g === 'hobby') {
+        accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
+      }
+      
+      document.getElementById('resultRealPrice').textContent = data.realPrice || '';
     }
     function hideLoadingResult() {
       document.getElementById('quizResult').classList.remove('active');
