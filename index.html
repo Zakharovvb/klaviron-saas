@@ -970,11 +970,26 @@
      * и возвращать: { ok: true, token: '...' } или { ok: false }
      */
     async function verifyPayment(orderId) {
-      // GAS не имеет action=verify — используем orderId как токен.
-      // Перед запуском с реальной оплатой добавить action=verify в GAS.
-      if (!orderId || orderId.length < 4) return { ok: false };
-      return { ok: true, token: orderId };
+  if (!orderId || orderId.length < 4) return { ok: false };
+
+  try {
+    const url = new URL(GAS_CATALOG_URL);
+    url.searchParams.set('action', 'verify');
+    url.searchParams.set('order_id', orderId);
+
+    const res = await fetch(url.toString(), { mode: 'cors' });
+    const json = await res.json();
+
+    if (json && json.ok) {
+      return { ok: true, token: json.token || orderId };
     }
+
+    return { ok: false, error: json && json.error ? json.error : 'verify_failed' };
+  } catch (e) {
+    console.warn('КлавирОН: verifyPayment ошибка:', e);
+    return { ok: false, error: 'network_error' };
+  }
+}
 
     // =====================================================================
     // REVEAL ON SCROLL
@@ -1164,45 +1179,49 @@
       return 'kv_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
     }
 
-    function renderResult(data) {
-      document.getElementById('quizPaywall').classList.remove('active');
-      document.getElementById('quizResult').classList.add('active');
-      document.getElementById('resultType').textContent = data.type || '';
+   function renderResult(data) {
+  document.getElementById('quizPaywall').classList.remove('active');
+  document.getElementById('quizResult').classList.add('active');
+  document.getElementById('resultType').textContent = data.type || '';
 
-      const sourceEl = document.getElementById('resultSourceBadge');
-      if (sourceEl) {
-        sourceEl.style.display = data._badge ? 'inline-flex' : 'none';
-        sourceEl.textContent = data._badge || '';
-      }
+  const sourceEl = document.getElementById('resultSourceBadge');
+  if (sourceEl) {
+    sourceEl.style.display = data._badge ? 'inline-flex' : 'none';
+    sourceEl.textContent = data._badge || '';
+  }
 
-      const modelsEl = document.getElementById('resultModels');
-      
-      if (!data.models || data.models.length === 0) {
-        modelsEl.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;font-size:11pt;">Модели не найдены. Попробуйте другие параметры.</div>';
-      } else {
-        modelsEl.innerHTML = data.models.map(m =>
-          '<div class="result-model-card"><div class="result-model-name">' + m.name + '</div><div class="result-model-price">' + m.price + '</div></div>'
-        ).join('');
-      }
+  const modelsEl = document.getElementById('resultModels');
 
-      const accEl = document.getElementById('resultAccessories');
-      const statusMap = {
-        included: { text: 'В комплекте', cls: 'accessory-included' },
-        missing:  { text: 'Докупить!',   cls: 'accessory-missing' },
-        separate: { text: 'Опционально', cls: 'accessory-separate' }
-      };
-      accEl.innerHTML = (data.accessories || []).map(a => {
-        const s = statusMap[a.status] || statusMap.separate;
-        return '<div class="accessory-row"><span>' + a.name + '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
-      }).join('');
-      
-      const _g = answers.goal || '';
-      if (_g === 'learning' || _g === 'hobby') {
-        accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
-      }
-      
-      document.getElementById('resultRealPrice').textContent = data.realPrice || '';
-    }
+  if (!data.models || data.models.length === 0) {
+    modelsEl.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;font-size:11pt;">Модели не найдены. Попробуйте другие параметры.</div>';
+  } else {
+    modelsEl.innerHTML = data.models.map(m =>
+      '<div class="result-model-card">' +
+        '<div class="result-model-name">' + m.name + '</div>' +
+        '<div class="result-model-price">' + m.price + '</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  const accEl = document.getElementById('resultAccessories');
+  const statusMap = {
+    included: { text: 'В комплекте', cls: 'accessory-included' },
+    missing:  { text: 'Докупить!', cls: 'accessory-missing' },
+    separate: { text: 'Опционально', cls: 'accessory-separate' }
+  };
+
+  accEl.innerHTML = (data.accessories || []).map(a => {
+    const s = statusMap[a.status] || statusMap.separate;
+    return '<div class="accessory-row"><span>' + a.name + '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
+  }).join('');
+
+  const _g = answers.goal || '';
+  if (_g === 'learning' || _g === 'hobby') {
+    accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
+  }
+
+  document.getElementById('resultRealPrice').textContent = data.realPrice || '';
+}
 
     function resetQuiz() {
       answers = {};
