@@ -925,7 +925,7 @@
       if (!GAS_CATALOG_URL) return null;
 
       // budget квиза: low/mid/high/premium → GAS знает только low/mid/high
-      const gasBudget = { low: 'xlow', mid: 'low', high: 'mid', premium: 'high' }[budget] || 'mid';
+      const gasBudget = (budget === 'premium') ? 'high' : (budget || 'mid');
 
       // goal квиза → goal для GAS (hobby/allinone → stage → Синтезатор)
       const gasGoal = (goal === 'hobby' || goal === 'allinone') ? 'stage' : (goal || 'learning');
@@ -951,7 +951,7 @@
         // Адаптируем формат GAS → renderResult
         return {
           type:   json.type || '',
-          _badge: '',
+          _badge: 'Из каталога КлавирОН' + (json.totalFound ? ' · найдено ' + json.totalFound : ''),
           models: json.models.map(function(m) { return { name: m.name, price: m.price }; }),
           accessories: (json.accessories || []).map(function(a) {
             return { name: a.name, status: a.included ? 'included' : (a.price > 0 ? 'missing' : 'separate') };
@@ -1162,7 +1162,7 @@
     function renderResult(data) {
       document.getElementById('quizPaywall').classList.remove('active');
       document.getElementById('quizResult').classList.add('active');
-      document.getElementById('resultType').textContent = data.type || '';
+      document.getElementById('resultType').textContent = (data._badge || data.type) || '';
 
       // Бейдж источника (каталог GAS vs встроенный)
       const sourceEl = document.getElementById('resultSourceBadge');
