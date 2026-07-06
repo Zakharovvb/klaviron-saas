@@ -1946,10 +1946,21 @@
       const payload = { ...quizState.answers };
 
       try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
+        // GAS Web App expects GET with query params, not POST with JSON body
+        const params = new URLSearchParams({
+          action: 'previewResult',
+          goal: payload.goal || 'hobby',
+          experience: payload.experience || 'beginner',
+          format: payload.format || 'synth',
+          needBuiltInSounds: payload.needBuiltInSounds || 'no',
+          speakers: payload.speakers || 'yes',
+          accompaniment: payload.accompaniment || 'no',
+          budget: payload.budget || 'low'
+        });
+
+        const res = await fetch(API_URL + '?' + params.toString(), {
+          method: 'GET',
+          redirect: 'follow'
         });
 
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -1958,7 +1969,17 @@
         const normalized = normalizeApiResult(data);
 
         if (normalized) {
-          renderResult(normalized);
+          // Merge API data with local catalog for models/accessories/prices
+          const localData = pickLocalResult(payload);
+          renderResult({
+            type: normalized.type,
+            summary: normalized.summary,
+            models: normalized.models.length ? normalized.models : localData.models,
+            accessories: normalized.accessories.length ? normalized.accessories : localData.accessories,
+            realPrice: normalized.realPrice || localData.realPrice || '',
+            why: normalized.why.length ? normalized.why : localData.why,
+            warnings: normalized.warnings.length ? normalized.warnings : localData.warnings
+          });
         } else {
           renderResult(pickLocalResult(payload));
         }
