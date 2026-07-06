@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Как выбрать клавишный инструмент и не ошибиться | КлавирON</title>
-  <meta name="description" content="Гайд по выбору клавишных инструментов: синтезатор, цифровое пианино, рабочая станция, сценические инструменты или MIDI-клавиатура.">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta
+    name="description"
+    content="Гайд по выбору клавишных инструментов: синтезатор, цифровое пианино, рабочая станция, сценические инструменты или MIDI-клавиатура."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -16,177 +24,526 @@
         extend: {
           colors: {
             forest: {
-              50: '#f2f8f6', 100: '#e1efe8', 200: '#c5dfd3', 300: '#96c3ad',
-              400: '#6aa688', 500: '#478a6b', 600: '#356e55', 700: '#2c5945',
-              800: '#264838', 900: '#1d3930', 950: '#0a1814'
+              50: '#f2f8f6',
+              100: '#e1efe8',
+              200: '#c5dfd3',
+              300: '#96c3ad',
+              400: '#6aa688',
+              500: '#478a6b',
+              600: '#356e55',
+              700: '#2c5945',
+              800: '#264838',
+              900: '#1d3930',
+              950: '#0a1814'
             }
           },
-          fontFamily: { 'dm-sans': ['"DM Sans"', 'system-ui', 'sans-serif'] }
+          fontFamily: {
+            'dm-sans': ['"DM Sans"', 'system-ui', 'sans-serif']
+          }
         }
       }
-    }
+    };
   </script>
+
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box }
-    html { scroll-behavior: smooth; scroll-padding-top: 80px }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     body {
       font-family: 'DM Sans', system-ui, sans-serif;
-      background: #f2f8f6; color: #0a1814; overflow-x: hidden;
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale
+      background: #f2f8f6;
+      color: #0a1814;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    :focus-visible { outline: 3px solid #34d399; outline-offset: 2px }
+    :focus-visible { outline: 3px solid #34d399; outline-offset: 2px; }
 
-    /* ===== TAILWIND FALLBACK ===== */
-    .flex { display: flex } .inline-flex { display: inline-flex } .grid { display: grid } .block { display: block } .hidden { display: none !important }
-    .flex-col { flex-direction: column } .flex-wrap { flex-wrap: wrap }
-    .items-center { align-items: center } .justify-center { justify-content: center } .justify-between { justify-content: space-between }
-    .gap-1 { gap: .25rem } .gap-2 { gap: .5rem } .gap-3 { gap: .75rem } .gap-4 { gap: 1rem } .gap-6 { gap: 1.5rem } .gap-8 { gap: 2rem } .gap-12 { gap: 3rem }
-    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) } .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) } .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) }
-    .relative { position: relative } .absolute { position: absolute } .fixed { position: fixed } .inset-0 { inset: 0 }
-    .top-0 { top: 0 } .bottom-0 { bottom: 0 } .left-0 { left: 0 } .right-0 { right: 0 }
-    .z-10 { z-index: 10 } .z-50 { z-index: 50 }
-    .overflow-hidden { overflow: hidden }
-    .whitespace-nowrap { white-space: nowrap }
-    .p-4 { padding: 1rem } .p-6 { padding: 1.5rem } .p-8 { padding: 2rem }
-    .px-3 { padding-left: .75rem; padding-right: .75rem } .px-4 { padding-left: 1rem; padding-right: 1rem } .px-5 { padding-left: 1.25rem; padding-right: 1.25rem } .px-6 { padding-left: 1.5rem; padding-right: 1.5rem } .px-8 { padding-left: 2rem; padding-right: 2rem }
-    .py-2 { padding-top: .5rem; padding-bottom: .5rem } .py-4 { padding-top: 1rem; padding-bottom: 1rem } .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem } .py-8 { padding-top: 2rem; padding-bottom: 2rem } .py-12 { padding-top: 3rem; padding-bottom: 3rem } .py-16 { padding-top: 4rem; padding-bottom: 4rem } .py-20 { padding-top: 5rem; padding-bottom: 5rem }
-    .pt-24 { padding-top: 6rem } .pb-16 { padding-bottom: 4rem }
-    .mb-1 { margin-bottom: .25rem } .mb-2 { margin-bottom: .5rem } .mb-3 { margin-bottom: .75rem } .mb-4 { margin-bottom: 1rem } .mb-5 { margin-bottom: 1.25rem } .mb-6 { margin-bottom: 1.5rem } .mb-8 { margin-bottom: 2rem } .mb-10 { margin-bottom: 2.5rem } .mb-12 { margin-bottom: 3rem } .mb-14 { margin-bottom: 3.5rem } .mb-16 { margin-bottom: 4rem }
-    .mt-1 { margin-top: .25rem } .mt-4 { margin-top: 1rem } .mt-6 { margin-top: 1.5rem } .mt-8 { margin-top: 2rem } .mt-14 { margin-top: 3.5rem } .mt-16 { margin-top: 4rem }
-    .mx-auto { margin-left: auto; margin-right: auto }
-    .text-center { text-align: center } .text-left { text-align: left }
-    .text-xs { font-size: .75rem; line-height: 1rem } .text-sm { font-size: .875rem; line-height: 1.25rem } .text-base { font-size: 1rem; line-height: 1.5rem } .text-lg { font-size: 1.125rem; line-height: 1.75rem } .text-xl { font-size: 1.25rem; line-height: 1.75rem } .text-2xl { font-size: 1.5rem; line-height: 2rem } .text-3xl { font-size: 1.875rem; line-height: 2.25rem } .text-4xl { font-size: 2.25rem; line-height: 2.5rem }
-    .font-light { font-weight: 300 } .font-normal { font-weight: 400 } .font-medium { font-weight: 500 } .font-semibold { font-weight: 600 } .font-bold { font-weight: 700 }
-    .uppercase { text-transform: uppercase }
-    .tracking-tight { letter-spacing: -.025em } .tracking-wide { letter-spacing: .025em } .tracking-wider { letter-spacing: .05em } .tracking-widest { letter-spacing: .1em }
-    .leading-tight { line-height: 1.25 } .leading-relaxed { line-height: 1.625 }
-    .rounded { border-radius: .25rem } .rounded-lg { border-radius: .5rem } .rounded-xl { border-radius: .75rem } .rounded-2xl { border-radius: 1rem } .rounded-full { border-radius: 9999px }
-    .border { border-width: 1px; border-style: solid } .border-t { border-top-width: 1px; border-top-style: solid } .border-b { border-bottom-width: 1px; border-bottom-style: solid } .border-x { border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid }
-    .w-full { width: 100% } .w-10 { width: 2.5rem } .w-12 { width: 3rem } .w-14 { width: 3.5rem } .w-40 { width: 10rem } .w-\[600px\] { width: 600px } .w-\[800px\] { width: 800px }
-    .h-8 { height: 2rem } .h-10 { height: 2.5rem } .h-12 { height: 3rem } .h-14 { height: 3.5rem } .h-28 { height: 7rem } .h-32 { height: 8rem } .h-40 { height: 10rem } .h-\[800px\] { height: 800px }
-    .min-h-screen { min-height: 100vh }
-    .max-w-lg { max-width: 32rem } .max-w-xl { max-width: 36rem } .max-w-2xl { max-width: 42rem } .max-w-3xl { max-width: 48rem } .max-w-4xl { max-width: 56rem } .max-w-5xl { max-width: 64rem }
-    .flex-1 { flex: 1 1 0% } .flex-shrink-0 { flex-shrink: 0 }
-    .col-span-2 { grid-column: span 2 }
-    .opacity-50 { opacity: .5 } .pointer-events-none { pointer-events: none }
-    .bg-white { background: #fff } .bg-forest-50 { background: #f2f8f6 } .bg-forest-950 { background: #0a1814 } .bg-emerald-50 { background: #ecfdf5 } .bg-violet-50 { background: #f5f3ff } .bg-blue-50 { background: #eff6ff }
-    .bg-white\/5 { background: rgba(255, 255, 255, .05) } .bg-white\/10 { background: rgba(255, 255, 255, .1) }
-    .text-white { color: #fff } .text-forest-950 { color: #0a1814 }
-    .text-emerald-400 { color: #34d399 } .text-emerald-500 { color: #10b981 } .text-emerald-600 { color: #059669 }
-    .text-red-400 { color: #f87171 } .text-amber-400 { color: #fbbf24 }
-    .text-white\/20 { color: rgba(255, 255, 255, .2) } .text-white\/30 { color: rgba(255, 255, 255, .3) } .text-white\/40 { color: rgba(255, 255, 255, .4) } .text-white\/45 { color: rgba(255, 255, 255, .45) } .text-white\/50 { color: rgba(255, 255, 255, .5) } .text-white\/60 { color: rgba(255, 255, 255, .6) } .text-white\/70 { color: rgba(255, 255, 255, .7) } .text-white\/80 { color: rgba(255, 255, 255, .8) }
-    .blur-3xl { filter: blur(64px) }
-    .backdrop-blur-md { backdrop-filter: blur(12px) }
-    .animate-pulse { animation: pulse 2s cubic-bezier(.4, 0, .6, 1) infinite }
-    @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .5 } }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s cubic-bezier(.2, .8, .2, 1), transform 1s cubic-bezier(.2, .8, .2, 1);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
 
-    @media (min-width: 640px) {
-      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-      .sm\:flex-row { flex-direction: row }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
-    @media (min-width: 768px) {
-      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) }
-      .md\:flex-row { flex-direction: row }
-      .md\:col-span-2 { grid-column: span 2 }
-      .md\:text-xl { font-size: 1.25rem } .md\:text-4xl { font-size: 2.25rem } .md\:text-5xl { font-size: 3rem }
-      .md\:py-28 { padding-top: 7rem; padding-bottom: 7rem }
-      .md\:flex { display: flex }
-      .md\:block { display: block !important }
-      .md\:hidden { display: none !important }
+    .marquee-track {
+      animation: scroll-left 40s linear infinite;
+      will-change: transform;
     }
-    @media (min-width: 1024px) {
-      .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)) }
-      .lg\:col-span-4 { grid-column: span 4 } .lg\:col-span-5 { grid-column: span 5 } .lg\:col-span-7 { grid-column: span 7 } .lg\:col-span-8 { grid-column: span 8 }
-      .lg\:sticky { position: sticky } .lg\:top-32 { top: 8rem }
-      .lg\:text-7xl { font-size: 4.5rem }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: .4; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      background: #10b981;
+      animation: pulse-ring 2s cubic-bezier(.4, 0, .6, 1) infinite;
+      z-index: -1;
     }
 
-    /* ===== CUSTOM STYLES ===== */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1s cubic-bezier(.2, .8, .2, 1), transform 1s cubic-bezier(.2, .8, .2, 1) }
-    .reveal.is-visible { opacity: 1; transform: translateY(0) }
-    .reveal-delay-1 { transition-delay: .1s } .reveal-delay-2 { transition-delay: .2s } .reveal-delay-3 { transition-delay: .3s } .reveal-delay-4 { transition-delay: .4s } .reveal-delay-5 { transition-delay: .5s }
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+    .scroll-indicator { animation: bounce-down 2s ease-in-out infinite; }
 
-    @keyframes scroll-left { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
-    .marquee-track { animation: scroll-left 40s linear infinite; will-change: transform }
-    .marquee-track:hover { animation-play-state: paused }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    @keyframes pulse-ring { 0% { transform: scale(1); opacity: .4 } 100% { transform: scale(1.5); opacity: 0 } }
-    .pulse-ring::before { content: ''; position: absolute; inset: -4px; border-radius: 9999px; background: #10b981; animation: pulse-ring 2s cubic-bezier(.4, 0, .6, 1) infinite; z-index: -1 }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-    @keyframes bounce-down { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(8px) } }
-    .scroll-indicator { animation: bounce-down 2s ease-in-out infinite }
+    .gradient-border { position: relative; }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(16,185,129,.2), rgba(255,255,255,.8));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
 
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: translateY(0) } }
+    .card-hover {
+      transition: transform 700ms cubic-bezier(.2, .8, .2, 1), box-shadow 700ms cubic-bezier(.2, .8, .2, 1);
+    }
+    .card-hover:hover {
+      transform: scale(1.01);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,.15);
+    }
 
-    .gradient-border { position: relative }
-    .gradient-border::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(180deg, rgba(255, 255, 255, .8), rgba(16, 185, 129, .2), rgba(255, 255, 255, .8)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none }
+    .btn-primary {
+      background: linear-gradient(to right, #d1fae5, #34d399);
+      box-shadow:
+        0 15px 33px -12px rgba(16, 185, 129, .9),
+        inset 0 4px 6.3px rgba(209, 250, 229, 1),
+        inset 0 -5px 6.3px rgba(5, 150, 105, 1);
+      transition: transform 300ms, box-shadow 300ms;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 20px 40px -12px rgba(16, 185, 129, 1),
+        inset 0 4px 6.3px rgba(209, 250, 229, 1),
+        inset 0 -5px 6.3px rgba(5, 150, 105, 1);
+    }
 
-    .card-hover { transition: transform 700ms cubic-bezier(.2, .8, .2, 1), box-shadow 700ms cubic-bezier(.2, .8, .2, 1) }
-    .card-hover:hover { transform: scale(1.01); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .15) }
+    .hero-bg {
+      background: linear-gradient(135deg, #0a1814 0%, #1d3930 50%, #0a1814 100%);
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16,185,129,.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .stat-num {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .num-badge {
+      background: linear-gradient(135deg, #10b981, #059669);
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .cat-icon-bg {
+      width: 64px;
+      height: 64px;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .mistake-item {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .mistake-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    .pro-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0 16px;
+      padding: 0 4px;
+    }
+    .pro-divider span {
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: #478a6b;
+      white-space: nowrap;
+    }
+    .pro-divider::before,
+    .pro-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #c5dfd3, transparent);
+    }
 
-    .btn-primary { background: linear-gradient(to right, #d1fae5, #34d399); box-shadow: 0 15px 33px -12px rgba(16, 185, 129, .9), inset 0 4px 6.3px rgba(209, 250, 229, 1), inset 0 -5px 6.3px rgba(5, 150, 105, 1); transition: transform 300ms, box-shadow 300ms; text-decoration: none; cursor: pointer; border: none }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -12px rgba(16, 185, 129, 1), inset 0 4px 6.3px rgba(209, 250, 229, 1), inset 0 -5px 6.3px rgba(5, 150, 105, 1) }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .5s cubic-bezier(.2, .8, .2, 1), padding .3s;
+    }
+    .faq-answer.open { max-height: 300px; }
+    .faq-icon { transition: transform .3s; }
+    .faq-icon.rotated { transform: rotate(45deg); }
 
-    .hero-bg { background: linear-gradient(135deg, #0a1814 0%, #1d3930 50%, #0a1814 100%) }
-    .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(16, 185, 129, .15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #1d3930;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+      transform: translateY(120%);
+      transition: transform .5s cubic-bezier(.2, .8, .2, 1);
+      z-index: 100;
+      max-width: 360px;
+    }
+    .toast.show { transform: translateY(0); }
 
-    .stat-num { background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text }
-    .num-badge { background: linear-gradient(135deg, #10b981, #059669); min-width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 9999px; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0 }
-    .cat-icon-bg { width: 64px; height: 64px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0 }
-    .mistake-item { position: relative; padding-left: 2rem }
-    .mistake-item::before { content: ''; position: absolute; left: 0; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: #ef4444 }
-    .pro-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 16px; padding: 0 4px }
-    .pro-divider span { font-size: 9pt; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: #478a6b; white-space: nowrap }
-    .pro-divider::before, .pro-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, transparent, #c5dfd3, transparent) }
-
-    /* FAQ */
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(.2, .8, .2, 1), padding .3s }
-    .faq-answer.open { max-height: 300px }
-    .faq-icon { transition: transform .3s } .faq-icon.rotated { transform: rotate(45deg) }
-
-    /* TOAST */
-    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #1d3930; color: white; padding: 1rem 1.5rem; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25); transform: translateY(120%); transition: transform .5s cubic-bezier(.2, .8, .2, 1); z-index: 100; max-width: 360px }
-    .toast.show { transform: translateY(0) }
-
-    /* QUIZ */
-    #quizContainer { background: white; border-radius: 2rem; padding: 40px 36px; max-width: 600px; margin: 0 auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .08); position: relative }
-    .quiz-step { display: none } .quiz-step.active { display: block; animation: fadeUp .5s ease }
-    .quiz-question { font-size: 17pt; font-weight: 300; letter-spacing: -.02em; color: #0a1814; margin-bottom: 24px; text-align: center; line-height: 1.3 }
-    .quiz-options { display: flex; flex-direction: column; gap: 10px }
-    .quiz-btn { background: #f2f8f6; border: 2px solid transparent; border-radius: 14px; padding: 16px 20px; font-family: 'DM Sans', sans-serif; font-size: 12pt; font-weight: 500; color: #0a1814; cursor: pointer; text-align: left; transition: all .3s; display: flex; align-items: center; gap: 12px; width: 100% }
-    .quiz-btn:hover { background: #e1efe8; border-color: #96c3ad }
-    .quiz-btn.selected { background: #0a1814; color: white; border-color: #10b981 }
-    .quiz-btn-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(16, 185, 129, .1); flex-shrink: 0 }
-    .quiz-btn.selected .quiz-btn-icon { background: rgba(16, 185, 129, .2) }
-    .quiz-progress { display: flex; gap: 6px; margin-bottom: 32px }
-    .quiz-progress-dot { flex: 1; height: 4px; border-radius: 4px; background: #e1efe8; transition: background .4s }
-    .quiz-progress-dot.filled { background: #10b981 }
-
-    #quizPaywall { display: none } #quizPaywall.active { display: block; animation: fadeUp .5s ease }
-    #quizResult { display: none } #quizResult.active { display: block; animation: fadeUp .5s ease }
-    #quizError { display: none } #quizError.active { display: block; animation: fadeUp .5s ease }
-    .result-models { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; justify-content: center }
-    .result-model-card { background: #f2f8f6; border-radius: 14px; padding: 16px 20px; text-align: center; border: 1px solid #e1efe8; min-width: 140px }
-    .result-model-name { font-size: 11pt; font-weight: 600; color: #0a1814; margin-bottom: 4px }
-    .result-model-price { font-size: 14pt; font-weight: 700; color: #10b981 }
-    .accessory-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f2f8f6; font-size: 11pt }
-    .accessory-row:last-child { border-bottom: none }
-    .accessory-missing { color: #ef4444; font-weight: 600 }
-    .accessory-included { color: #10b981; font-weight: 600 }
-    .accessory-separate { color: #94a3b8; font-weight: 500 }
+    .quiz-section {
+      padding: 5rem 1.5rem 7rem;
+      background: #ffffff;
+    }
+    .quiz-shell {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .quiz-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 40px 36px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,.08);
+      border: 1px solid rgba(197,223,211,.6);
+    }
+    .quiz-step[hidden],
+    #quiz-steps[hidden],
+    #quiz-loading[hidden],
+    #quiz-error[hidden],
+    #quiz-result[hidden],
+    #result-why-wrap[hidden],
+    #result-warnings-wrap[hidden],
+    #result-models-wrap[hidden],
+    #result-accessories-wrap[hidden],
+    #result-price-wrap[hidden],
+    #quiz-back[hidden] {
+      display: none !important;
+    }
+    .quiz-kicker {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #059669;
+      display: block;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .quiz-title {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+      font-weight: 300;
+      color: #0a1814;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .quiz-subtitle {
+      text-align: center;
+      color: rgba(38,72,56,.68);
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 42rem;
+      margin: 0 auto 2rem;
+    }
+    .quiz-panel-title {
+      font-size: 1.6rem;
+      line-height: 1.2;
+      letter-spacing: -.03em;
+      font-weight: 500;
+      text-align: center;
+      color: #0a1814;
+      margin-bottom: 1.75rem;
+    }
+    .quiz-progress {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: 2rem;
+    }
+    .quiz-progress-dot {
+      height: 6px;
+      border-radius: 9999px;
+      background: #e1efe8;
+      flex: 1;
+      transition: background .25s ease;
+    }
+    .quiz-progress-dot.is-active,
+    .quiz-progress-dot.is-done {
+      background: #10b981;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: .875rem;
+    }
+    .quiz-option {
+      width: 100%;
+      border: 2px solid transparent;
+      background: #f2f8f6;
+      color: #0a1814;
+      border-radius: 1rem;
+      padding: 1rem 1.1rem;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .quiz-option:hover {
+      background: #e8f4ef;
+      border-color: #96c3ad;
+    }
+    .quiz-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .quiz-secondary {
+      background: transparent;
+      border: 1px solid #c5dfd3;
+      color: #2c5945;
+      border-radius: 9999px;
+      padding: .85rem 1.2rem;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .25s ease;
+      text-decoration: none;
+    }
+    .quiz-secondary:hover {
+      background: #f2f8f6;
+    }
+    .quiz-note {
+      font-size: .9rem;
+      line-height: 1.55;
+      color: rgba(38,72,56,.58);
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .quiz-loading-box,
+    .quiz-error-box,
+    .quiz-result-box {
+      border-radius: 1.5rem;
+      background: #f8fcfa;
+      border: 1px solid #d8ebe2;
+      padding: 1.5rem;
+      animation: fadeUp .4s ease;
+    }
+    .quiz-loading-box {
+      text-align: center;
+      color: #2c5945;
+    }
+    .quiz-spinner {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      border: 3px solid rgba(16,185,129,.2);
+      border-top-color: #10b981;
+      animation: spin 1s linear infinite;
+    }
+    .quiz-error-box {
+      color: #7f1d1d;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    .quiz-result-box h3 {
+      font-size: 1.9rem;
+      line-height: 1.15;
+      letter-spacing: -.03em;
+      font-weight: 600;
+      color: #0a1814;
+      margin-bottom: .75rem;
+    }
+    .quiz-result-summary {
+      color: rgba(38,72,56,.78);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+    .quiz-result-block + .quiz-result-block {
+      margin-top: 1.25rem;
+    }
+    .quiz-result-block h4 {
+      font-size: .95rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #059669;
+      margin-bottom: .75rem;
+    }
+    .quiz-result-list {
+      list-style: none;
+      display: grid;
+      gap: .65rem;
+      padding: 0;
+      margin: 0;
+    }
+    .quiz-result-list li {
+      background: white;
+      border: 1px solid #e1efe8;
+      border-radius: .9rem;
+      padding: .85rem 1rem;
+      color: #264838;
+      line-height: 1.55;
+    }
+    .result-models {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: .9rem;
+    }
+    .result-model-card {
+      background: #fff;
+      border: 1px solid #dceee6;
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+    .result-model-name {
+      font-size: .98rem;
+      line-height: 1.35;
+      font-weight: 600;
+      color: #0a1814;
+      margin-bottom: .35rem;
+    }
+    .result-model-price {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #059669;
+    }
+    .result-price-box {
+      background: linear-gradient(to right, rgba(16,185,129,.08), rgba(16,185,129,.02));
+      border: 1px solid rgba(16,185,129,.16);
+      border-radius: 1rem;
+      padding: 1rem 1.1rem;
+      color: #264838;
+    }
+    .result-price-main {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0a1814;
+      margin-top: .2rem;
+    }
+    .accessory-list {
+      display: grid;
+      gap: .6rem;
+    }
+    .accessory-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .9rem 1rem;
+      background: white;
+      border: 1px solid #e1efe8;
+      border-radius: .9rem;
+      font-size: .95rem;
+    }
+    .accessory-status {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .accessory-missing { color: #dc2626; }
+    .accessory-included { color: #059669; }
+    .accessory-separate { color: #64748b; }
 
     @media (max-width: 640px) {
-      #quizContainer { padding: 28px 20px; border-radius: 1.5rem }
-      .quiz-question { font-size: 14pt }
-      .quiz-btn { padding: 14px 16px; font-size: 11pt }
+      .quiz-card {
+        padding: 28px 20px;
+        border-radius: 1.5rem;
+      }
+      .quiz-panel-title {
+        font-size: 1.3rem;
+      }
+      .quiz-option {
+        font-size: .96rem;
+        padding: .95rem 1rem;
+      }
+      .quiz-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .quiz-secondary,
+      #quiz-restart {
+        width: 100%;
+        text-align: center;
+      }
+      .accessory-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
-    @keyframes spin { 0% { transform: rotate(0deg) } 100% { transform: rotate(360deg) } }
   </style>
 </head>
-<body class="font-dm-sans">
 
-  <!-- NAVIGATION -->
+<body class="font-dm-sans">
   <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="navbar">
     <div class="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
       <a href="#" class="flex items-center gap-2 text-white">
@@ -204,10 +561,9 @@
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden">
     <div class="hero-glow"></div>
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h60v60H0z\" fill=\"none\" stroke=\"white\" stroke-width=\"0.5\"/%3E%3C/svg%3E')"></div>
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%220.5%22/%3E%3C/svg%3E')"></div>
     <div class="relative z-10 max-w-4xl mx-auto px-6 text-center pt-24 pb-16">
       <div class="reveal inline-flex items-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 mb-8">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -221,10 +577,12 @@
       </p>
       <div class="reveal reveal-delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
         <a href="#quiz" class="relative pulse-ring btn-primary px-8 py-4 rounded-full text-emerald-950 font-semibold text-base tracking-wide inline-flex items-center gap-2">
-          Подобрать за 1 минуту<iconify-icon icon="mdi:arrow-right" width="20"></iconify-icon>
+          Подобрать за 1 минуту
+          <iconify-icon icon="mdi:arrow-right" width="20"></iconify-icon>
         </a>
         <a href="#categories" class="text-white/60 hover:text-white text-sm tracking-wide transition-colors duration-300 inline-flex items-center gap-1.5">
-          Узнать больше<iconify-icon icon="mdi:chevron-down" width="18" class="scroll-indicator"></iconify-icon>
+          Узнать больше
+          <iconify-icon icon="mdi:chevron-down" width="18" class="scroll-indicator"></iconify-icon>
         </a>
       </div>
       <div class="reveal reveal-delay-4 mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto">
@@ -236,7 +594,6 @@
     <div class="absolute bottom-0 left-0 right-0 h-32" style="background: linear-gradient(to top, #f2f8f6, transparent)"></div>
   </section>
 
-  <!-- MARQUEE -->
   <section class="py-8 bg-forest-50 overflow-hidden border-b" style="border-color: rgba(197,223,211,0.5)">
     <div class="flex whitespace-nowrap marquee-track" style="width:max-content">
       <div class="flex items-center gap-12 px-6">
@@ -256,7 +613,6 @@
     </div>
   </section>
 
-  <!-- WHO IS THIS FOR -->
   <section class="py-20 md:py-28 bg-forest-50">
     <div class="max-w-5xl mx-auto px-6">
       <div class="grid lg:grid-cols-12 gap-12 items-center">
@@ -294,9 +650,8 @@
     </div>
   </section>
 
-  <!-- PAIN POINTS -->
   <section class="py-20 md:py-28 bg-forest-950 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h60v60H0z\" fill=\"none\" stroke=\"white\" stroke-width=\"0.5\"/%3E%3C/svg%3E')"></div>
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%220.5%22/%3E%3C/svg%3E')"></div>
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <div class="max-w-3xl mx-auto text-center">
         <div class="reveal">
@@ -322,7 +677,6 @@
     </div>
   </section>
 
-  <!-- 6 CATEGORIES -->
   <section id="categories" class="py-20 md:py-28 bg-forest-50">
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-16">
@@ -331,7 +685,7 @@
           <h2 class="text-3xl md:text-5xl font-light tracking-tighter leading-tight text-forest-950 mb-4">С чего начать <span class="text-emerald-500 font-normal">выбор</span></h2>
         </div>
       </div>
-      <!-- Row 1: 3 basic types -->
+
       <div class="grid md:grid-cols-3 gap-6 mb-4">
         <div class="reveal reveal-delay-1 bg-white rounded-[2rem] p-8 card-hover gradient-border">
           <div class="cat-icon-bg mb-6" style="background:linear-gradient(to bottom right, #ede9fe, #f5f3ff)"><iconify-icon icon="mdi:piano" width="32" style="color:#7c3aed"></iconify-icon></div>
@@ -344,6 +698,7 @@
             <span class="text-[11px] px-3 py-1 rounded-full" style="background:#f2f8f6;color:#2c5945">Динамики</span>
           </div>
         </div>
+
         <div class="reveal reveal-delay-2 bg-forest-950 rounded-[2rem] p-8 card-hover relative overflow-hidden">
           <div class="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none" style="background:rgba(16,185,129,0.1);filter:blur(64px)"></div>
           <div class="cat-icon-bg mb-6" style="background:linear-gradient(to bottom right, rgba(16,185,129,0.2), rgba(16,185,129,0.05));border:1px solid rgba(16,185,129,0.2)"><iconify-icon icon="mdi:music-clef-treble" width="32" class="text-emerald-400"></iconify-icon></div>
@@ -356,6 +711,7 @@
             <span class="text-[11px] px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1)">Педаль</span>
           </div>
         </div>
+
         <div class="reveal reveal-delay-3 bg-white rounded-[2rem] p-8 card-hover gradient-border">
           <div class="cat-icon-bg mb-6" style="background:linear-gradient(to bottom right, #dbeafe, #eff6ff)"><iconify-icon icon="mdi:laptop" width="32" style="color:#2563eb"></iconify-icon></div>
           <div class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4" style="background:#eff6ff;color:#2563eb">Для продакшена</div>
@@ -368,9 +724,9 @@
           </div>
         </div>
       </div>
-      <!-- Divider -->
+
       <div class="pro-divider reveal"><span>Для продвинутых музыкантов</span></div>
-      <!-- Row 2: 3 pro types -->
+
       <div class="grid md:grid-cols-3 gap-6">
         <div class="reveal reveal-delay-1 bg-forest-950 rounded-[2rem] p-8 card-hover relative overflow-hidden">
           <div class="absolute bottom-0 left-0 w-40 h-40 rounded-full pointer-events-none" style="background:rgba(245,158,11,0.08);filter:blur(64px)"></div>
@@ -384,6 +740,7 @@
             <span class="text-[11px] px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1)">&plusmn;88 кл.</span>
           </div>
         </div>
+
         <div class="reveal reveal-delay-2 bg-forest-950 rounded-[2rem] p-8 card-hover relative overflow-hidden">
           <div class="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none" style="background:rgba(244,63,94,0.08);filter:blur(64px)"></div>
           <div class="cat-icon-bg mb-6" style="background:linear-gradient(to bottom right, rgba(244,63,94,0.2), rgba(244,63,94,0.05));border:1px solid rgba(244,63,94,0.15)"><iconify-icon icon="mdi:microphone-variant" width="32" style="color:#fb7185"></iconify-icon></div>
@@ -396,6 +753,7 @@
             <span class="text-[11px] px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1)">Без динамиков</span>
           </div>
         </div>
+
         <div class="reveal reveal-delay-3 bg-forest-950 rounded-[2rem] p-8 card-hover relative overflow-hidden">
           <div class="absolute bottom-0 left-0 w-40 h-40 rounded-full pointer-events-none" style="background:rgba(249,115,22,0.08);filter:blur(64px)"></div>
           <div class="cat-icon-bg mb-6" style="background:linear-gradient(to bottom right, rgba(249,115,22,0.2), rgba(249,115,22,0.05));border:1px solid rgba(249,115,22,0.15)"><iconify-icon icon="mdi:piano-off" width="32" style="color:#fb923c"></iconify-icon></div>
@@ -412,9 +770,8 @@
     </div>
   </section>
 
-  <!-- ARTICLE -->
   <section id="article" class="py-20 md:py-28 bg-forest-950 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h60v60H0z\" fill=\"none\" stroke=\"white\" stroke-width=\"0.5\"/%3E%3C/svg%3E')"></div>
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%220.5%22/%3E%3C/svg%3E')"></div>
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <div class="max-w-3xl mx-auto">
         <div class="reveal text-center mb-14">
@@ -422,6 +779,7 @@
           <h2 class="text-3xl md:text-4xl font-light tracking-tighter leading-tight text-white mb-5">Как выбрать синтезатор и другие<br><span class="text-emerald-400 font-normal">клавишные инструменты</span></h2>
           <p class="text-white/45 text-base leading-relaxed max-w-xl mx-auto">Синтезатор стоит выбирать не по количеству тембров, а по сценарию использования.</p>
         </div>
+
         <div class="reveal mb-12">
           <h3 class="text-xl font-semibold text-white tracking-tight mb-4 flex items-center gap-3">
             <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.15)"><iconify-icon icon="mdi:compass-outline" width="18" class="text-emerald-400"></iconify-icon></span>
@@ -447,7 +805,9 @@
             </div>
           </div>
         </div>
+
         <div class="h-px mb-12" style="background:linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent)"></div>
+
         <div class="reveal mb-12">
           <h3 class="text-xl font-semibold text-white tracking-tight mb-6 flex items-center gap-3">
             <span class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.15)"><iconify-icon icon="mdi:tune-vertical" width="18" class="text-emerald-400"></iconify-icon></span>
@@ -468,6 +828,7 @@
             </div>
           </div>
         </div>
+
         <div class="reveal rounded-2xl p-8 text-center" style="background:linear-gradient(to bottom right, rgba(16,185,129,0.1), transparent);border:1px solid rgba(16,185,129,0.15)">
           <iconify-icon icon="mdi:format-quote-open" width="32" style="color:rgba(16,185,129,0.3);margin-bottom:1rem"></iconify-icon>
           <p class="text-white text-base leading-relaxed font-light tracking-wide mb-6">Правильный выбор начинается не с бренда, а с понимания, какой из шести типов вам нужен.</p>
@@ -477,7 +838,6 @@
     </div>
   </section>
 
-  <!-- PARAMETERS -->
   <section id="params" class="py-20 md:py-28 bg-white">
     <div class="max-w-5xl mx-auto px-6">
       <div class="grid lg:grid-cols-12 gap-16 items-start">
@@ -502,6 +862,7 @@
               </div>
             </div>
           </div>
+
           <div class="reveal reveal-delay-2 bg-forest-50 rounded-2xl p-6 md:p-8 card-hover">
             <div class="flex items-start gap-4">
               <div class="num-badge">2</div>
@@ -516,6 +877,7 @@
               </div>
             </div>
           </div>
+
           <div class="reveal reveal-delay-3 bg-forest-50 rounded-2xl p-6 md:p-8 card-hover">
             <div class="flex items-start gap-4">
               <div class="num-badge">3</div>
@@ -525,12 +887,13 @@
               </div>
             </div>
           </div>
+
           <div class="reveal reveal-delay-4 bg-forest-50 rounded-2xl p-6 md:p-8 card-hover">
             <div class="flex items-start gap-4">
               <div class="num-badge">4</div>
               <div>
                 <h3 class="text-xl font-semibold tracking-tight text-forest-950 mb-2">Комплектация</h3>
-                <p class="text-sm leading-relaxed" style="color:rgba(38,72,56,0.6)">Стойка, педаль, нотная полка часто не входят — +3 000-7 000 &#8381; к цене. Casio комплектнее Yamaha.</p>
+                <p class="text-sm leading-relaxed" style="color:rgba(38,72,56,0.6)">Стойка, педаль, нотная полка часто не входят — +3 000-7 000 ₽ к цене. Casio комплектнее Yamaha.</p>
               </div>
             </div>
           </div>
@@ -539,9 +902,8 @@
     </div>
   </section>
 
-  <!-- MISTAKES -->
   <section id="mistakes" class="py-20 md:py-28 bg-forest-950 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h60v60H0z\" fill=\"none\" stroke=\"white\" stroke-width=\"0.5\"/%3E%3C/svg%3E')"></div>
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%220.5%22/%3E%3C/svg%3E')"></div>
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <div class="grid lg:grid-cols-12 gap-16 items-start">
         <div class="lg:col-span-5">
@@ -551,7 +913,7 @@
           </div>
         </div>
         <div class="lg:col-span-7" style="display:flex;flex-direction:column;gap:1.25rem">
-          <div class="reveal reveal-delay-1 mistake-item"><p class="text-white/80 text-base leading-relaxed">Покупать по принципу &laquo;чем больше функций, тем лучше&raquo;</p></div>
+          <div class="reveal reveal-delay-1 mistake-item"><p class="text-white/80 text-base leading-relaxed">Покупать по принципу «чем больше функций, тем лучше»</p></div>
           <div class="reveal reveal-delay-2 mistake-item"><p class="text-white/80 text-base leading-relaxed">Сравнивать только бренд, а не сценарий использования</p></div>
           <div class="reveal reveal-delay-3 mistake-item"><p class="text-white/80 text-base leading-relaxed">Брать сценический инструмент без динамиков для дома</p></div>
           <div class="reveal reveal-delay-4 mistake-item"><p class="text-white/80 text-base leading-relaxed">Путать рабочую станцию и обучающий синтезатор</p></div>
@@ -561,7 +923,6 @@
     </div>
   </section>
 
-  <!-- WHAT YOU GET -->
   <section class="py-20 md:py-28 bg-forest-50">
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-14">
@@ -577,162 +938,168 @@
         </div>
         <div class="reveal reveal-delay-2 text-center bg-white rounded-2xl p-6 card-hover gradient-border">
           <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4"><iconify-icon icon="mdi:check-decagram" width="28" class="text-emerald-600"></iconify-icon></div>
-          <p class="text-forest-950 text-sm font-medium leading-relaxed">Конкретные модели <strong>с ценами</strong></p>
+          <p class="text-forest-950 text-sm font-medium leading-relaxed">Подходящие <strong>модели и ориентиры</strong></p>
         </div>
         <div class="reveal reveal-delay-3 text-center bg-white rounded-2xl p-6 card-hover gradient-border">
           <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4"><iconify-icon icon="mdi:package-variant-closed" width="28" class="text-emerald-600"></iconify-icon></div>
-          <p class="text-forest-950 text-sm font-medium leading-relaxed">Реальная цена <strong>с аксессуарами</strong></p>
+          <p class="text-forest-950 text-sm font-medium leading-relaxed">Комплектацию и <strong>реальную цену</strong></p>
         </div>
         <div class="reveal reveal-delay-4 text-center bg-white rounded-2xl p-6 card-hover gradient-border">
           <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4"><iconify-icon icon="mdi:compare" width="28" class="text-emerald-600"></iconify-icon></div>
-          <p class="text-forest-950 text-sm font-medium leading-relaxed">Сравнение <strong>по параметрам</strong></p>
+          <p class="text-forest-950 text-sm font-medium leading-relaxed">Предупреждения, <strong>чего избегать</strong></p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- QUIZ -->
-  <section id="quiz" class="py-20 md:py-28 bg-white relative overflow-hidden">
-    <div class="absolute top-1/2 left-1/2 w-[800px] h-[800px] rounded-full bg-emerald-50 pointer-events-none" style="transform:translate(-50%,-50%);filter:blur(64px);opacity:0.5"></div>
-    <div class="max-w-5xl mx-auto px-6 relative z-10">
-      <div class="text-center mb-12">
-        <div class="reveal">
-          <span class="text-emerald-600" style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem;display:block">Квиз</span>
-          <h2 class="text-3xl md:text-5xl font-light tracking-tighter leading-tight text-forest-950 mb-4">Определите свой тип <span class="text-emerald-500 font-normal">за 1 минуту</span></h2>
-        </div>
+  <section id="quiz" class="quiz-section">
+    <div class="quiz-shell">
+      <div class="text-center mb-10">
+        <span class="quiz-kicker">Подбор</span>
+        <h2 class="quiz-title">Подберите свой<br><span class="text-emerald-500 font-normal">тип инструмента</span></h2>
+        <p class="quiz-subtitle">Ответьте на несколько вопросов, и страница подскажет подходящий класс инструмента, модели и ориентир по бюджету.</p>
       </div>
-      <div id="quizContainer" class="reveal">
-        <!-- Progress -->
-        <div class="quiz-progress">
-          <div class="quiz-progress-dot filled" id="dot1"></div>
-          <div class="quiz-progress-dot" id="dot2"></div>
-          <div class="quiz-progress-dot" id="dot3"></div>
-          <div class="quiz-progress-dot" id="dot4"></div>
-        </div>
 
-        <!-- Steps -->
-        <div id="quizSteps">
-          <!-- Step 1: Goal -->
-          <div class="quiz-step active" data-step="1">
-            <div class="quiz-question">Для чего вам нужен инструмент?</div>
-            <div class="quiz-options">
-              <button class="quiz-btn" onclick="selectOption('goal','hobby',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:music-note" width="20" style="color:#10b981"></iconify-icon></div>Хобби и развлечения
-              </button>
-              <button class="quiz-btn" onclick="selectOption('goal','learning',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:school" width="20" style="color:#10b981"></iconify-icon></div>Обучение игре на пианино
-              </button>
-              <button class="quiz-btn" onclick="selectOption('goal','production',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:laptop" width="20" style="color:#10b981"></iconify-icon></div>Создание музыки в студии
-              </button>
-              <button class="quiz-btn" onclick="selectOption('goal','stage',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:microphone-variant" width="20" style="color:#10b981"></iconify-icon></div>Живые выступления
-              </button>
-              <button class="quiz-btn" onclick="selectOption('goal','allinone',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:star-four-points" width="20" style="color:#10b981"></iconify-icon></div>Один инструмент на всё
-              </button>
-            </div>
-          </div>
-          <!-- Step 2: Experience -->
-          <div class="quiz-step" data-step="2">
-            <div class="quiz-question">Ваш уровень подготовки?</div>
-            <div class="quiz-options">
-              <button class="quiz-btn" onclick="selectOption('experience','beginner',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:seedling" width="20" style="color:#10b981"></iconify-icon></div>Совсем начинающий
-              </button>
-              <button class="quiz-btn" onclick="selectOption('experience','some',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:sprout" width="20" style="color:#10b981"></iconify-icon></div>Немного играю
-              </button>
-              <button class="quiz-btn" onclick="selectOption('experience','confident',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:tree" width="20" style="color:#10b981"></iconify-icon></div>Уверенный / профессионал
-              </button>
-            </div>
-          </div>
-          <!-- Step 3: Budget -->
-          <div class="quiz-step" data-step="3">
-            <div class="quiz-question">Какой бюджет вы планируете?</div>
-            <div class="quiz-options">
-              <button class="quiz-btn" onclick="selectOption('budget','low',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:cash" width="20" style="color:#10b981"></iconify-icon></div>До 15 000 &#8381;
-              </button>
-              <button class="quiz-btn" onclick="selectOption('budget','mid',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:cash-multiple" width="20" style="color:#10b981"></iconify-icon></div>15 000 - 35 000 &#8381;
-              </button>
-              <button class="quiz-btn" onclick="selectOption('budget','high',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:cash-plus" width="20" style="color:#10b981"></iconify-icon></div>35 000 - 70 000 &#8381;
-              </button>
-              <button class="quiz-btn" onclick="selectOption('budget','premium',this)">
-                <div class="quiz-btn-icon"><iconify-icon icon="mdi:diamond-stone" width="20" style="color:#10b981"></iconify-icon></div>От 70 000 &#8381;
-              </button>
-            </div>
-          </div>
-          <!-- Step 4: Format (dynamic) -->
-          <div class="quiz-step" data-step="4">
-            <div class="quiz-question" id="step4Title">Какой формат вам удобнее?</div>
-            <div class="quiz-options" id="step4Options"></div>
+      <div class="quiz-card">
+        <div id="quiz-intro">
+          <h3 class="quiz-panel-title">Начнём с короткого маршрута из 7 шагов</h3>
+          <p class="quiz-note">Результат включает тип, примеры моделей, комплектацию и ориентир по реальной стоимости.</p>
+          <div class="text-center mt-8">
+            <button id="quiz-start" type="button" class="btn-primary px-8 py-4 rounded-full text-emerald-950 font-semibold text-base tracking-wide inline-flex items-center gap-2">
+              Начать
+              <iconify-icon icon="mdi:arrow-right" width="20"></iconify-icon>
+            </button>
           </div>
         </div>
 
-        <!-- PAYWALL -->
-        <div id="quizPaywall">
-          <div style="text-align:center;margin-bottom:24px">
-            <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#d1fae5,#34d399);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
-              <iconify-icon icon="mdi:check-bold" width="28" style="color:#065f46"></iconify-icon>
+        <div id="quiz-steps" hidden>
+          <div class="quiz-progress" id="quiz-progress"></div>
+
+          <div class="quiz-step" data-step="goal">
+            <h3 class="quiz-panel-title">Для чего вам нужен инструмент?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="goal" data-value="hobby">Хобби и домашняя игра</button>
+              <button class="quiz-option" type="button" data-field="goal" data-value="learning">Обучение</button>
+              <button class="quiz-option" type="button" data-field="goal" data-value="production">Создание музыки / продакшен</button>
+              <button class="quiz-option" type="button" data-field="goal" data-value="stage">Выступления</button>
+              <button class="quiz-option" type="button" data-field="goal" data-value="allinone">Один инструмент на всё</button>
             </div>
-            <div class="quiz-question" style="font-size:14pt;margin-bottom:4px">Ваш тип определён</div>
-            <div id="paywallType" style="font-size:20pt;font-weight:700;color:#0a1814;margin-bottom:4px"></div>
-            <div id="paywallTagline" style="font-size:11pt;color:#4a6b5d;margin-bottom:24px"></div>
-            <div style="background:#f2f8f6;border-radius:14px;padding:20px;text-align:left;max-width:380px;margin:0 auto 24px">
-              <div style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#10b981;margin-bottom:12px">В полном подборе:</div>
-              <div style="display:flex;flex-direction:column;gap:8px">
-                <div style="display:flex;align-items:center;gap:8px;font-size:11pt;color:#0a1814"><iconify-icon icon="mdi:check-circle" width="16" style="color:#10b981;flex-shrink:0"></iconify-icon>Конкретные модели с актуальными ценами</div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:11pt;color:#0a1814"><iconify-icon icon="mdi:check-circle" width="16" style="color:#10b981;flex-shrink:0"></iconify-icon>Что входит в комплект, а что докупать</div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:11pt;color:#0a1814"><iconify-icon icon="mdi:check-circle" width="16" style="color:#10b981;flex-shrink:0"></iconify-icon>Реальная цена владения с аксессуарами</div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:11pt;color:#0a1814"><iconify-icon icon="mdi:check-circle" width="16" style="color:#10b981;flex-shrink:0"></iconify-icon>Сравнение по 10 параметрам</div>
+          </div>
+
+          <div class="quiz-step" data-step="experience" hidden>
+            <h3 class="quiz-panel-title">Ваш уровень подготовки?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="experience" data-value="beginner">Совсем начинающий</button>
+              <button class="quiz-option" type="button" data-field="experience" data-value="intermediate">Немного играю</button>
+              <button class="quiz-option" type="button" data-field="experience" data-value="advanced">Уверенный / профессионал</button>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="format" hidden>
+            <h3 class="quiz-panel-title">Какой формат клавиатуры вам ближе?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="format" data-value="hammer">Молоточковая, ближе к пианино</button>
+              <button class="quiz-option" type="button" data-field="format" data-value="synth">Лёгкая, синтезаторная</button>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="needBuiltInSounds" hidden>
+            <h3 class="quiz-panel-title">Нужны встроенные звуки без компьютера?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="needBuiltInSounds" data-value="yes">Да</button>
+              <button class="quiz-option" type="button" data-field="needBuiltInSounds" data-value="no">Нет, буду работать через DAW</button>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="speakers" hidden>
+            <h3 class="quiz-panel-title">Нужны встроенные динамики?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="speakers" data-value="yes">Да, инструмент будет дома</button>
+              <button class="quiz-option" type="button" data-field="speakers" data-value="no">Нет, не обязательно</button>
+              <button class="quiz-option" type="button" data-field="speakers" data-value="dontcare">Не знаю</button>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="accompaniment" hidden>
+            <h3 class="quiz-panel-title">Нужны ритмы и автоаккомпанемент?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="accompaniment" data-value="yes">Да</button>
+              <button class="quiz-option" type="button" data-field="accompaniment" data-value="no">Нет</button>
+              <button class="quiz-option" type="button" data-field="accompaniment" data-value="dontcare">Не знаю</button>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="budget" hidden>
+            <h3 class="quiz-panel-title">Какой бюджет?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" type="button" data-field="budget" data-value="xlow">До 15 000 ₽</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="low">15 000–35 000 ₽</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="mid">35 000–70 000 ₽</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="high">От 70 000 ₽</button>
+            </div>
+          </div>
+
+          <div class="quiz-actions">
+            <button id="quiz-back" class="quiz-secondary" type="button" hidden>Назад</button>
+            <div class="quiz-note" id="quiz-step-label">Шаг 1 из 7</div>
+          </div>
+        </div>
+
+        <div id="quiz-loading" hidden>
+          <div class="quiz-loading-box">
+            <div class="quiz-spinner"></div>
+            <div>Подбираем тип, модели и примерную комплектацию…</div>
+          </div>
+        </div>
+
+        <div id="quiz-error" hidden></div>
+
+        <div id="quiz-result" hidden>
+          <div class="quiz-result-box">
+            <h3 id="result-type"></h3>
+            <p id="result-summary" class="quiz-result-summary"></p>
+
+            <div id="result-price-wrap" class="quiz-result-block" hidden>
+              <h4>Ориентир по бюджету</h4>
+              <div class="result-price-box">
+                <div id="result-price-label">Реальная цена с учётом типовой комплектации</div>
+                <div id="result-real-price" class="result-price-main"></div>
               </div>
             </div>
-            <a id="payButton" href="#" target="_blank" class="btn-primary inline-flex items-center justify-center gap-2" style="width:100%;max-width:380px;border:none;padding:16px 28px;border-radius:14px;font-size:14pt;font-weight:700;color:#064e3b;letter-spacing:.02em;font-family:'DM Sans',sans-serif;text-decoration:none;display:flex">Получить подбор — 290 &#8381;</a>
-            <p style="text-align:center;color:#96c3ad;font-size:8pt;margin-top:10px">Мгновенный доступ после оплаты</p>
-          </div>
-        </div>
 
-        <!-- RESULT -->
-        <div id="quizResult">
-          <div style="text-align:center;margin-bottom:8px"><span style="font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#10b981" id="resultType"></span></div>
-          <div style="text-align:center;margin-bottom:4px"><span id="resultSourceBadge" style="display:none;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:.12em;background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:100px;"></span></div>
-          <div class="quiz-question" style="font-size:16pt;margin-bottom:4px">Вам подходит:</div>
-          <div id="resultModels" class="result-models"></div>
-          <div style="background:#f2f8f6;border-radius:14px;padding:20px;margin:20px auto;max-width:420px;text-align:left">
-            <div style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#0a1814;margin-bottom:12px;display:flex;align-items:center;gap:6px">
-              <iconify-icon icon="mdi:package-variant" width="14" style="color:#ef4444"></iconify-icon>
-              <span style="font-size:10pt;font-weight:600;color:#0a1814">Комплектация первой модели</span>
+            <div id="result-models-wrap" class="quiz-result-block" hidden>
+              <h4>Подходящие модели</h4>
+              <div id="result-models" class="result-models"></div>
             </div>
-            <div id="resultAccessories"></div>
-            <div style="margin-top:12px;padding-top:12px;border-top:2px solid #c5dfd3;display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:10pt;font-weight:600;color:#0a1814">Реальная цена:</span>
-              <span style="font-size:14pt;font-weight:700;color:#ef4444" id="resultRealPrice"></span>
-              <div style="font-size:9pt;color:#94a3b8;margin-top:4px">Цены актуальны на июнь 2026 · могут отличаться от текущих</div>
-            </div>
-          </div>
-          <button onclick="resetQuiz()" style="background:#f2f8f6;border:1px solid #c5dfd3;padding:12px 28px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:11pt;font-weight:600;color:#0a1814;cursor:pointer" onmouseover="this.style.background='#e1efe8'" onmouseout="this.style.background='#f2f8f6'">Пройти заново</button>
-        </div>
 
-        <!-- ERROR -->
-        <div id="quizError">
-          <div style="text-align:center">
-            <div style="width:56px;height:56px;border-radius:16px;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
-              <iconify-icon icon="mdi:alert-circle" width="28" style="color:#ef4444"></iconify-icon>
+            <div id="result-accessories-wrap" class="quiz-result-block" hidden>
+              <h4>Комплектация и аксессуары</h4>
+              <div id="result-accessories" class="accessory-list"></div>
             </div>
-            <div class="quiz-question" style="font-size:14pt;margin-bottom:8px">Оплата не найдена</div>
-            <p style="color:#4a6b5d;font-size:11pt;line-height:1.6;max-width:320px;margin:0 auto 20px">Если вы оплатили — напишите нам и мы решим вопрос.</p>
-            <button onclick="resetQuiz()" style="background:#f2f8f6;border:1px solid #c5dfd3;padding:12px 28px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:11pt;font-weight:600;color:#0a1814;cursor:pointer" onmouseover="this.style.background='#e1efe8'" onmouseout="this.style.background='#f2f8f6'">Пройти заново</button>
+
+            <div id="result-why-wrap" class="quiz-result-block" hidden>
+              <h4>Почему этот тип</h4>
+              <ul id="result-why" class="quiz-result-list"></ul>
+            </div>
+
+            <div id="result-warnings-wrap" class="quiz-result-block" hidden>
+              <h4>На что обратить внимание</h4>
+              <ul id="result-warnings" class="quiz-result-list"></ul>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3">
+              <button id="quiz-restart" type="button" class="quiz-secondary">Пройти заново</button>
+              <a href="#categories" class="btn-primary px-6 py-3 rounded-full text-emerald-950 font-semibold text-sm tracking-wide inline-flex items-center justify-center gap-2">
+                Сравнить типы
+                <iconify-icon icon="mdi:arrow-right" width="18"></iconify-icon>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TRUST -->
   <section class="py-16 bg-forest-50 border-t" style="border-color:rgba(197,223,211,0.5)">
     <div class="max-w-3xl mx-auto px-6 text-center">
       <div class="reveal">
@@ -748,7 +1115,6 @@
     </div>
   </section>
 
-  <!-- FAQ -->
   <section id="faq" class="py-20 md:py-28 bg-white">
     <div class="max-w-3xl mx-auto px-6">
       <div class="text-center mb-14">
@@ -757,6 +1123,7 @@
           <h2 class="text-3xl md:text-4xl font-light tracking-tighter leading-tight text-forest-950">Частые вопросы</h2>
         </div>
       </div>
+
       <div style="display:flex;flex-direction:column;gap:0.75rem">
         <div class="reveal reveal-delay-1 faq-item bg-forest-50 rounded-2xl overflow-hidden">
           <button class="faq-toggle w-full flex items-center justify-between p-6 text-left" style="background:none;border:none;cursor:pointer" onclick="toggleFaq(this)">
@@ -765,6 +1132,7 @@
           </button>
           <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Зависит от цели. Для универсального старта — синтезатор. Если важна фортепианная техника — цифровое пианино с молоточковой механикой.</p></div>
         </div>
+
         <div class="reveal reveal-delay-2 faq-item bg-forest-50 rounded-2xl overflow-hidden">
           <button class="faq-toggle w-full flex items-center justify-between p-6 text-left" style="background:none;border:none;cursor:pointer" onclick="toggleFaq(this)">
             <span class="text-forest-950 font-medium text-base pr-4">В чём разница между рабочей станцией и синтезатором?</span>
@@ -772,6 +1140,7 @@
           </button>
           <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Синтезатор — аккомпанемент, ритмы, для любителей. Рабочая станция — секвенсер, запись, глубокий редактор тембров, для аранжировщиков.</p></div>
         </div>
+
         <div class="reveal reveal-delay-3 faq-item bg-forest-50 rounded-2xl overflow-hidden">
           <button class="faq-toggle w-full flex items-center justify-between p-6 text-left" style="background:none;border:none;cursor:pointer" onclick="toggleFaq(this)">
             <span class="text-forest-950 font-medium text-base pr-4">Что такое сценический инструмент без динамиков?</span>
@@ -779,13 +1148,15 @@
           </button>
           <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Инструмент для подключения к мониторам на сцене. Дома без доп. оборудования не работает. Nord, Roland RD, Yamaha CP — примеры.</p></div>
         </div>
+
         <div class="reveal reveal-delay-4 faq-item bg-forest-50 rounded-2xl overflow-hidden">
           <button class="faq-toggle w-full flex items-center justify-between p-6 text-left" style="background:none;border:none;cursor:pointer" onclick="toggleFaq(this)">
             <span class="text-forest-950 font-medium text-base pr-4">Почему реальная цена выше указанной?</span>
             <iconify-icon icon="mdi:plus" width="22" class="faq-icon text-emerald-600 flex-shrink-0"></iconify-icon>
           </button>
-          <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Портативные модели часто не включают стойку, педаль и нотную полку. Yamaha и Roland экономят на комплектации — учитывайте +3 000-7 000 &#8381;.</p></div>
+          <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Портативные модели часто не включают стойку, педаль и нотную полку. Yamaha и Roland экономят на комплектации — учитывайте +3 000-7 000 ₽.</p></div>
         </div>
+
         <div class="reveal reveal-delay-5 faq-item bg-forest-50 rounded-2xl overflow-hidden">
           <button class="faq-toggle w-full flex items-center justify-between p-6 text-left" style="background:none;border:none;cursor:pointer" onclick="toggleFaq(this)">
             <span class="text-forest-950 font-medium text-base pr-4">Можно ли сначала выбрать тип, а потом модель?</span>
@@ -797,7 +1168,6 @@
     </div>
   </section>
 
-  <!-- FINAL CTA -->
   <section class="py-12 bg-forest-950">
     <div class="max-w-5xl mx-auto px-6">
       <div class="reveal flex flex-col md:flex-row items-center justify-between gap-6">
@@ -810,8 +1180,6 @@
     </div>
   </section>
 
-
-  <!-- TOAST -->
   <div class="toast" id="toast">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.2)">
@@ -825,488 +1193,832 @@
   </div>
 
   <script>
-    // ===== DATA =====
-    const QUIZ_TYPES = {
-      hobby: { type: 'Обучающий синтезатор', tagline: 'Универсальный старт для хобби и домашних вечеров' },
-      learning: { type: 'Цифровое пианино', tagline: 'Фортепианная техника, серьёзные занятия, практика в наушниках' },
-      production: { type: 'MIDI-клавиатура', tagline: 'Контроллер для DAW, создание битов и аранжировок' },
-      stage: { type: 'Сценический инструмент', tagline: 'Живые выступления, премиальные тембры, без аккомпанемента' },
-      allinone: { type: 'Сценическая рабочая станция', tagline: 'Один инструмент на всё — сцена, студия, запись' }
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyfFLVPQQXOVvhrQaXHSufbKr37WVW4fFArIVwHP3Hp_zEQRSskuIELHIHAQDLss5H1/exec';
+
+    const quizState = {
+      steps: ['goal', 'experience', 'format', 'needBuiltInSounds', 'speakers', 'accompaniment', 'budget'],
+      currentStepIndex: 0,
+      answers: {}
     };
 
-    const STEP4_SIMPLE = [
-      { value: 'compact', label: 'Компактный, переносной', icon: 'mdi:resize' },
-      { value: 'stationary', label: 'Стационарный, на подставке', icon: 'mdi:desk' },
-      { value: 'any', label: 'Не важно', icon: 'mdi:emoticon-happy-outline' }
-    ];
-    const STEP4_PRO = [
-      { value: 'hammer', label: 'Молоточковая клавиатура', icon: 'mdi:piano' },
-      { value: 'synth', label: 'Синтезаторная клавиатура', icon: 'mdi:music-note' },
-      { value: 'any', label: 'Не важно', icon: 'mdi:emoticon-happy-outline' }
-    ];
-    const PRO_GOALS = ['production', 'stage', 'allinone'];
+    const stepEls = Array.from(document.querySelectorAll('.quiz-step'));
+    const introEl = document.getElementById('quiz-intro');
+    const stepsWrapEl = document.getElementById('quiz-steps');
+    const loadingEl = document.getElementById('quiz-loading');
+    const errorEl = document.getElementById('quiz-error');
+    const resultEl = document.getElementById('quiz-result');
+    const backBtn = document.getElementById('quiz-back');
+    const stepLabelEl = document.getElementById('quiz-step-label');
+    const progressEl = document.getElementById('quiz-progress');
 
-    // =====================================================================
-    // КОНФИГУРАЦИЯ SaaS-СИСТЕМЫ
-    // =====================================================================
+    const resultTypeEl = document.getElementById('result-type');
+    const resultSummaryEl = document.getElementById('result-summary');
+    const resultWhyWrapEl = document.getElementById('result-why-wrap');
+    const resultWhyEl = document.getElementById('result-why');
+    const resultWarningsWrapEl = document.getElementById('result-warnings-wrap');
+    const resultWarningsEl = document.getElementById('result-warnings');
+    const resultModelsWrapEl = document.getElementById('result-models-wrap');
+    const resultModelsEl = document.getElementById('result-models');
+    const resultAccessoriesWrapEl = document.getElementById('result-accessories-wrap');
+    const resultAccessoriesEl = document.getElementById('result-accessories');
+    const resultPriceWrapEl = document.getElementById('result-price-wrap');
+    const resultRealPriceEl = document.getElementById('result-real-price');
 
-    // --- РЕЖИМ PAYWALL ---
-    // false = результат показывается сразу (бесплатно)
-    // true  = после квиза показывается paywall с кнопкой оплаты
-    const SHOW_PAYWALL = false;
-
-    // --- ССЫЛКА НА ОПЛАТУ (ЮKassa, Robokassa, Tinkoff и т.д.) ---
-    const PAYMENT_URL = 'https://yookassa.ru/my/i-want-to-know-payment';
-
-    // --- GOOGLE APPS SCRIPT (Web App URL) ---
-    // Деплойте Apps Script как Web App (доступ: Anyone) и вставьте URL сюда.
-    // Если пусто — данные берутся из встроенного QUIZ_RESULTS (офлайн-режим).
- const GAS_CATALOG_URL = 'https://script.google.com/macros/s/AKfycbyfFLVPQQXOVvhrQaXHSufbKr37WVW4fFArIVwHP3Hp_zEQRSskuIELHIHAQDLss5H1/exec';
-
-    // --- КЛЮЧ СЕССИИ ДЛЯ ПЛАТНОГО ДОСТУПА ---
-    // После успешной оплаты платёжная система редиректит ?payment=ok&order_id=XXX
-    // Apps Script проверяет order_id и возвращает токен сессии.
-    // Токен хранится в sessionToken (не localStorage — sandbox не поддерживает).
-    let sessionToken = null;
-
-    // =====================================================================
-    // ВСТРОЕННЫЙ КАТАЛОГ (FALLBACK / БЕСПЛАТНЫЙ РЕЖИМ)
-    // Используется если GAS_CATALOG_URL пуст или недоступен.
-    // Формат совпадает с форматом ответа Google Apps Script.
-    // =====================================================================
-
-    const QUIZ_RESULTS = {
+    const localCatalog = {
       hobby: {
-        low:     { type: 'Обучающий синтезатор', models: [{ name: 'Casio CT-S300', price: '8 990 ₽' }, { name: 'Yamaha PSR-E373', price: '13 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'included' }], realPrice: '~13 990 ₽' },
-        mid:     { type: 'Обучающий синтезатор', models: [{ name: 'Yamaha PSR-SX600', price: '22 990 ₽' }, { name: 'Casio CT-X700', price: '17 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'separate' }, { name: 'Наушники', status: 'separate' }], realPrice: '~28 990 ₽' },
-        high:    { type: 'Синтезатор Pro', models: [{ name: 'Yamaha PSR-SX700', price: '38 990 ₽' }, { name: 'Korg PA300', price: '42 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~44 990 ₽' },
-        premium: { type: 'Синтезатор Pro', models: [{ name: 'Yamaha PSR-SX900', price: '89 990 ₽' }, { name: 'Korg PA700', price: '79 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~95 990 ₽' }
+        xlow: {
+          type: 'Обучающий синтезатор',
+          summary: 'Для домашнего старта и первых шагов без сложной настройки.',
+          models: [
+            { name: 'Casio CT-S300', price: '8 990 ₽' },
+            { name: 'Yamaha PSR-E373', price: '13 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'missing' },
+            { name: 'Стойка', status: 'missing' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '13 990–18 990 ₽',
+          why: [
+            'Для хобби важнее простота, чем студийные функции.',
+            'Встроенные динамики подходят для дома.',
+            'Автоаккомпанемент полезен на старте.'
+          ],
+          warnings: [
+            'Не путайте с рабочей станцией — это другой сценарий.',
+            'Часть аксессуаров может покупаться отдельно.'
+          ]
+        },
+        low: {
+          type: 'Обучающий синтезатор',
+          summary: 'Хороший баланс для любителя: ритмы, аккомпанемент и более приятная клавиатура.',
+          models: [
+            { name: 'Yamaha PSR-SX600', price: '22 990 ₽' },
+            { name: 'Casio CT-X700', price: '17 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'missing' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Нотная полка', status: 'separate' }
+          ],
+          realPrice: '23 000–31 000 ₽',
+          why: [
+            'Вы хотите играть дома и получать быстрый результат.',
+            'Этот класс даёт ритмы, тембры и простую навигацию.',
+            'Для хобби он логичнее, чем студийные решения.'
+          ],
+          warnings: [
+            'Не переплачивайте за сложные продвинутые станции.',
+            'Уточните, что входит в комплект.'
+          ]
+        },
+        mid: {
+          type: 'Обучающий синтезатор высокого класса',
+          summary: 'Если нужен более богатый функционал, но без ухода в профессиональную рабочую станцию.',
+          models: [
+            { name: 'Yamaha PSR-SX700', price: '54 990 ₽' },
+            { name: 'Casio CT-X5000', price: '39 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '43 000–62 000 ₽',
+          why: [
+            'Вы остаетесь в домашнем и универсальном сценарии.',
+            'Нужны более качественные звуки и расширенные функции.',
+            'Это ещё не студийная рабочая станция, а понятный любительский класс.'
+          ],
+          warnings: [
+            'Если аккомпанемент не нужен, есть смысл смотреть другой тип.',
+            'Проверьте вес и размеры для дома.'
+          ]
+        },
+        high: {
+          type: 'Универсальный синтезатор / старший аранжировщик',
+          summary: 'Для требовательного домашнего использования и расширенного набора функций.',
+          models: [
+            { name: 'Yamaha PSR-SX900', price: '84 990 ₽' },
+            { name: 'Korg PA700', price: '89 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '89 000–98 000 ₽',
+          why: [
+            'Нужен универсальный инструмент с серьёзным запасом функций.',
+            'Есть интерес к богатому аккомпанементу и качественным звукам.',
+            'Это верх любительского / полупро сегмента.'
+          ],
+          warnings: [
+            'Для простого старта это может быть избыточно.',
+            'Проверьте, не нужна ли вам уже рабочая станция.'
+          ]
+        }
       },
+
       learning: {
-        low:     { type: 'Цифровое пианино', models: [{ name: 'Casio CDP-S350', price: '14 990 ₽' }, { name: 'Yamaha P-45A', price: '13 490 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~14 990 ₽' },
-        mid:     { type: 'Цифровое пианино', models: [{ name: 'Casio PX-S1100', price: '28 990 ₽' }, { name: 'Yamaha P-125A', price: '29 990 ₽' }], accessories: [{ name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Нотная полка', status: 'separate' }], realPrice: '~33 990 ₽' },
-        high:    { type: 'Цифровое пианино Pro', models: [{ name: 'Roland FP-60X', price: '49 990 ₽' }, { name: 'Casio PX-S5000', price: '44 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~57 990 ₽' },
-        premium: { type: 'Цифровое пианино Pro', models: [{ name: 'Yamaha CLP-745', price: '119 990 ₽' }, { name: 'Roland FP-90X', price: '89 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~109 990 ₽' }
+        xlow: {
+          type: 'Базовый клавишный старт',
+          summary: 'В этом бюджете полноценное цифровое пианино встречается редко, поэтому лучше честно рассматривать компромиссный старт.',
+          models: [
+            { name: 'Yamaha PSR-E373', price: '13 990 ₽' },
+            { name: 'Casio CT-S300', price: '8 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Педаль', status: 'missing' },
+            { name: 'Стойка', status: 'missing' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '13 000–18 000 ₽',
+          why: [
+            'Полноценная молоточковая механика обычно стоит дороже.',
+            'Это временный старт для первых шагов.',
+            'Лучше честно понимать ограничения бюджета.'
+          ],
+          warnings: [
+            'Для фортепианной техники лучше копить на цифровое пианино.',
+            'Не ждите ощущения настоящего пианино.'
+          ]
+        },
+        low: {
+          type: 'Цифровое пианино',
+          summary: 'Лучший вход в обучение: 88 клавиш и базовая молоточковая механика.',
+          models: [
+            { name: 'Casio CDP-S110', price: '31 990 ₽' },
+            { name: 'Yamaha P-145', price: '34 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Педаль', status: 'included' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '35 000–42 000 ₽',
+          why: [
+            'Для обучения важна правильная механика клавиш.',
+            'Этот класс лучше подходит для постановки техники.',
+            '88 клавиш дают полный диапазон.'
+          ],
+          warnings: [
+            'Часто стойка продаётся отдельно.',
+            'Уточняйте тип педали в коробке.'
+          ]
+        },
+        mid: {
+          type: 'Цифровое пианино',
+          summary: 'Комфортный выбор для регулярных занятий и более приятного ощущения игры.',
+          models: [
+            { name: 'Roland FP-10', price: '44 990 ₽' },
+            { name: 'Yamaha P-225', price: '67 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Педаль', status: 'included' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '49 000–74 000 ₽',
+          why: [
+            'Вы выбираете именно обучение, а не просто домашнее хобби.',
+            'Средний сегмент даёт более приятную механику и звук.',
+            'Такой класс лучше для долгой практики.'
+          ],
+          warnings: [
+            'Портативные версии не всегда включают стойку.',
+            'Для маленькой комнаты заранее проверьте габариты.'
+          ]
+        },
+        high: {
+          type: 'Цифровое пианино высокого класса',
+          summary: 'Сильный выбор для серьёзных занятий, где важны звук, механика и долгий срок использования.',
+          models: [
+            { name: 'Kawai ES120', price: '79 990 ₽' },
+            { name: 'Roland FP-30X', price: '82 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Педаль', status: 'included' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Нотная полка', status: 'included' }
+          ],
+          realPrice: '84 000–95 000 ₽',
+          why: [
+            'В этом бюджете уже можно брать серьёзный инструмент надолго.',
+            'Клавиатура и звук заметно лучше начального уровня.',
+            'Подходит для регулярной практики и роста.'
+          ],
+          warnings: [
+            'Проверьте комплектацию подставкой и тройной педалью.',
+            'Не переплачивайте за лишние функции, если нужен именно учебный формат.'
+          ]
+        }
       },
+
       production: {
-        low:     { type: 'MIDI-клавиатура', models: [{ name: 'Arturia MiniLab Mk3', price: '7 990 ₽' }, { name: 'Akai MPK Mini Mk3', price: '8 990 ₽' }], accessories: [{ name: 'Кабель USB', status: 'included' }, { name: 'DAW-лицензия', status: 'separate' }], realPrice: '~11 990 ₽' },
-        mid:     { type: 'MIDI-клавиатура', models: [{ name: 'Arturia KeyLab Essential 49', price: '17 990 ₽' }, { name: 'Native Instruments S49 Mk3', price: '24 990 ₽' }], accessories: [{ name: 'DAW', status: 'separate' }, { name: 'Аудиоинтерфейс', status: 'separate' }], realPrice: '~28 990 ₽' },
-        high:    { type: 'Рабочая станция', models: [{ name: 'Yamaha MX61', price: '39 990 ₽' }, { name: 'Roland FA-06', price: '54 990 ₽' }], accessories: [{ name: 'Стойка', status: 'separate' }], realPrice: '~54 990 ₽' },
-        premium: { type: 'Рабочая станция Pro', models: [{ name: 'Yamaha Montage M6', price: '199 000 ₽' }, { name: 'Korg Kronos 61', price: '149 000 ₽' }], accessories: [{ name: 'Стойка', status: 'separate' }, { name: 'Педаль тройная', status: 'separate' }], realPrice: '~165 000 ₽' }
+        xlow: {
+          type: 'Компактная MIDI-клавиатура',
+          summary: 'Самый логичный старт для работы с ноутбуком и виртуальными инструментами.',
+          models: [
+            { name: 'Arturia MiniLab 3', price: '12 990 ₽' },
+            { name: 'M-Audio Keystation Mini 32', price: '8 990 ₽' }
+          ],
+          accessories: [
+            { name: 'USB-кабель', status: 'included' },
+            { name: 'Педаль', status: 'missing' },
+            { name: 'Звуковая карта', status: 'separate' }
+          ],
+          realPrice: '13 000–22 000 ₽',
+          why: [
+            'Для продакшена важнее DAW и VST, чем встроенные звуки.',
+            'Это дешевле и гибче для старта в музыке на компьютере.',
+            'Компактный формат удобен для рабочего места.'
+          ],
+          warnings: [
+            'Без компьютера это не самостоятельный инструмент.',
+            'Проверьте удобство размера клавиш.'
+          ]
+        },
+        low: {
+          type: 'MIDI-клавиатура',
+          summary: 'Оптимальный сегмент для домашнего продакшена и уверенного старта в DAW.',
+          models: [
+            { name: 'Novation Launchkey 49 MK3', price: '24 990 ₽' },
+            { name: 'Arturia KeyLab Essential 49', price: '29 990 ₽' }
+          ],
+          accessories: [
+            { name: 'USB-кабель', status: 'included' },
+            { name: 'Пэды/фейдеры', status: 'included' },
+            { name: 'Педаль', status: 'separate' }
+          ],
+          realPrice: '25 000–34 000 ₽',
+          why: [
+            'Есть интеграция с DAW и удобное управление.',
+            'Это лучше для продакшена, чем бытовой синтезатор.',
+            'Уровень бюджета уже даёт хороший контроль.'
+          ],
+          warnings: [
+            'Уточните совместимость с вашей DAW.',
+            'Если хотите играть без компьютера, нужен другой тип.'
+          ]
+        },
+        mid: {
+          type: 'Продвинутая MIDI-клавиатура',
+          summary: 'Для серьёзной студийной работы, автоматизации и гибкого управления.',
+          models: [
+            { name: 'Native Instruments Komplete Kontrol S49', price: '59 990 ₽' },
+            { name: 'Arturia KeyLab MKII 49', price: '62 990 ₽' }
+          ],
+          accessories: [
+            { name: 'USB-кабель', status: 'included' },
+            { name: 'Пэды/энкодеры', status: 'included' },
+            { name: 'Педаль', status: 'separate' }
+          ],
+          realPrice: '60 000–68 000 ₽',
+          why: [
+            'Подходит для студийного контроля и удобной работы с софтом.',
+            'Этот уровень даёт лучшее ощущение сборки и управления.',
+            'Хорошо подходит для растущих задач в продакшене.'
+          ],
+          warnings: [
+            'Не переплачивайте, если вам нужен только ввод нот.',
+            'Проверьте экосистему и комплектный софт.'
+          ]
+        },
+        high: {
+          type: 'Рабочая станция / продвинутый продакшн-инструмент',
+          summary: 'Если продакшен нужен не только через DAW, а ещё и как самостоятельный музыкальный центр.',
+          models: [
+            { name: 'Korg Kross 2', price: '79 990 ₽' },
+            { name: 'Roland FA-06', price: '94 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Стойка', status: 'separate' }
+          ],
+          realPrice: '84 000–102 000 ₽',
+          why: [
+            'Вы можете хотеть и встроенные звуки, и работу без компьютера.',
+            'Рабочая станция даёт более самостоятельный формат.',
+            'Это логично при большем бюджете и расширенных задачах.'
+          ],
+          warnings: [
+            'Сложнее в освоении, чем MIDI-клавиатура.',
+            'Покупать такой класс для простого старта не всегда рационально.'
+          ]
+        }
       },
+
       stage: {
-        low:     { type: 'Синтезатор начального уровня', models: [{ name: 'Casio CT-X3000', price: '12 490 ₽' }, { name: 'Yamaha PSR-E473', price: '14 990 ₽' }], accessories: [{ name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~14 990 ₽' },
-        mid:     { type: 'Сценический синтезатор', models: [{ name: 'Korg Kross 2 61', price: '28 990 ₽' }, { name: 'Roland Juno-DS61', price: '34 990 ₽' }], accessories: [{ name: 'Кейс', status: 'missing' }, { name: 'Стойка', status: 'missing' }, { name: 'Педаль', status: 'missing' }], realPrice: '~34 990 ₽' },
-        high:    { type: 'Сценическое пианино', models: [{ name: 'Roland FP-60X', price: '49 990 ₽' }, { name: 'Yamaha CP73', price: '67 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~59 990 ₽' },
-        premium: { type: 'Сценическое пианино Pro', models: [{ name: 'Yamaha CP88', price: '129 000 ₽' }, { name: 'Nord Stage 4', price: '289 000 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'included' }], realPrice: '~149 000 ₽' }
+        xlow: {
+          type: 'Компромиссный сценический старт',
+          summary: 'Полноценный сценический инструмент в этом бюджете почти недоступен, поэтому это временный компромисс.',
+          models: [
+            { name: 'Casio CT-X700', price: '17 990 ₽' },
+            { name: 'Yamaha PSR-EW310', price: '21 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Стойка', status: 'missing' },
+            { name: 'Педаль', status: 'missing' },
+            { name: 'Блок питания', status: 'included' }
+          ],
+          realPrice: '21 000–28 000 ₽',
+          why: [
+            'Для настоящей сцены бюджет обычно должен быть выше.',
+            'Это скорее временный вариант для репетиций.',
+            'Можно начать, но с пониманием компромиссов.'
+          ],
+          warnings: [
+            'Это не полноценный сценический синтезатор.',
+            'Лучше планировать апгрейд при первых выступлениях.'
+          ]
+        },
+        low: {
+          type: 'Универсальный клавишный старт для репетиций',
+          summary: 'Подходит для первых выступлений и репетиций, но не заменяет полноценный сценический класс.',
+          models: [
+            { name: 'Yamaha PSR-E473', price: '33 990 ₽' },
+            { name: 'Casio CT-X3000', price: '29 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Блок питания', status: 'included' }
+          ],
+          realPrice: '35 000–42 000 ₽',
+          why: [
+            'Даёт рабочий старт для репетиций и небольших выступлений.',
+            'Бюджет пока ограничивает выбор сценического сегмента.',
+            'Это практичнее, чем брать совсем домашний вариант.'
+          ],
+          warnings: [
+            'Профессионального сценического запаса здесь мало.',
+            'Следите за коммутацией и устойчивостью стойки.'
+          ]
+        },
+        mid: {
+          type: 'Сценический синтезатор',
+          summary: 'Уже ближе к реальному концертному сценарию: без лишнего бытового функционала, с упором на тембры и удобство на сцене.',
+          models: [
+            { name: 'Korg Kross 2 61', price: '59 990 ₽' },
+            { name: 'Roland Juno-DS61', price: '64 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Блок питания', status: 'included' }
+          ],
+          realPrice: '64 000–73 000 ₽',
+          why: [
+            'Ваш сценарий — сцена, а не просто дом.',
+            'Этот класс даёт более подходящие концертные тембры.',
+            'Внешняя акустика здесь нормальна.'
+          ],
+          warnings: [
+            'Без внешнего звука дома может быть неудобно.',
+            'Проверьте вес и набор выходов.'
+          ]
+        },
+        high: {
+          type: 'Сценический инструмент',
+          summary: 'Правильный выбор для уверенных выступлений: хорошие тембры, удобство на сцене и надёжный форм-фактор.',
+          models: [
+            { name: 'Roland RD-88', price: '96 990 ₽' },
+            { name: 'Yamaha CK61', price: '89 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Чехол', status: 'separate' }
+          ],
+          realPrice: '95 000–110 000 ₽',
+          why: [
+            'В этом бюджете уже можно брать инструмент именно под сцену.',
+            'Ставка делается на надёжность, звук и концертный workflow.',
+            'Это лучше, чем бытовой синтезатор с лишними функциями.'
+          ],
+          warnings: [
+            'Часто нет встроенных динамиков.',
+            'Закладывайте бюджет на стойку, педаль и переноску.'
+          ]
+        }
       },
+
       allinone: {
-        low:     { type: 'Обучающий синтезатор', models: [{ name: 'Casio CT-S500', price: '12 990 ₽' }, { name: 'Casio CT-S300', price: '8 990 ₽' }], accessories: [{ name: 'Блок питания', status: 'included' }, { name: 'Педаль сустейна', status: 'missing' }, { name: 'Стойка', status: 'missing' }], realPrice: '~12 990 ₽' },
-        mid:     { type: 'Аранжировщик', models: [{ name: 'Yamaha PSR-SX600', price: '22 990 ₽' }, { name: 'Casio CT-X700', price: '17 990 ₽' }], accessories: [{ name: 'Педаль', status: 'missing' }, { name: 'Стойка', status: 'separate' }], realPrice: '~28 990 ₽' },
-        high:    { type: 'Рабочая станция / Аранжировщик Pro', models: [{ name: 'Korg PA300', price: '42 990 ₽' }, { name: 'Roland BK-9', price: '54 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~54 990 ₽' },
-        premium: { type: 'Топовый аранжировщик', models: [{ name: 'Korg PA700', price: '79 990 ₽' }, { name: 'Yamaha PSR-SX900', price: '89 990 ₽' }], accessories: [{ name: 'Педаль тройная', status: 'separate' }, { name: 'Стойка', status: 'separate' }], realPrice: '~89 990 ₽' }
-      }
-    };
-
-    const STEPS = ['goal', 'experience', 'budget', 'format'];
-    let answers = {};
-
-    // =====================================================================
-    // ПОЛУЧЕНИЕ ДАННЫХ ИЗ КАТАЛОГА (Google Apps Script или встроенный)
-    // =====================================================================
-
-    /**
-     * Запрашивает расширенный каталог из Google Apps Script.
-     * GAS должен принимать параметры: action=catalog&goal=...&budget=...&token=...
-     * и возвращать JSON: { ok: true, data: { type, models:[], accessories:[], realPrice } }
-     * Если GAS_CATALOG_URL пуст или запрос завершился ошибкой — используется fallback.
-     */
-    async function fetchCatalogData(goal, budget, token) {
-      if (!GAS_CATALOG_URL) return null;
-
-      // budget квиза: low/mid/high/premium → GAS знает только low/mid/high
-      const gasBudget = (budget === 'premium') ? 'high' : (budget || 'mid');
-
-      // goal квиза → goal для GAS (hobby/allinone → stage → Синтезатор)
-      const gasGoal = (goal === 'hobby' || goal === 'allinone') ? 'stage' : (goal || 'learning');
-
-      // hammer/synth — передаём из шага 4 квиза
-      const fmt = answers.format || '';
-
-      // plan: после оплаты token = orderId → smart; иначе start
-      const plan = (token && typeof token === 'string' && token.length > 2) ? 'smart' : 'start';
-
-      try {
-        const url = new URL(GAS_CATALOG_URL);
-        url.searchParams.set('action', 'paidResult');
-        url.searchParams.set('goal',   gasGoal);
-        url.searchParams.set('budget', gasBudget);
-        url.searchParams.set('plan',   plan);
-        if (fmt === 'hammer' || fmt === 'synth') url.searchParams.set('format', fmt);
-
-        const res  = await fetch(url.toString(), { mode: 'cors' });
-        const json = await res.json();
-        if (!json.ok || !json.models || !json.models.length) return null;
-
-        // Адаптируем формат GAS → renderResult
-        return {
-          type:   json.type || '',
-          _badge: 'Из каталога КлавирОН' + (json.totalFound ? ' · найдено ' + json.totalFound : ''),
-          models: json.models.map(function(m) { return { name: m.name, price: m.price }; }),
-          accessories: (json.accessories || []).map(function(a) {
-            return { name: a.name, status: a.included ? 'included' : (a.price > 0 ? 'missing' : 'separate') };
-          }),
-          realPrice: json.realPrice || ''
-        };
-      } catch (e) {
-        console.warn('КлавирОН: fetchCatalogData ошибка:', e);
-        return null;
-      }
-    }
-
-    /**
-     * Проверяет оплату через Google Apps Script.
-     * GAS должен принимать: action=verify&order_id=...
-     * и возвращать: { ok: true, token: '...' } или { ok: false }
-     */
-    async function verifyPayment(orderId) {
-      // GAS не имеет action=verify — используем orderId как токен.
-      // Перед запуском с реальной оплатой добавить action=verify в GAS.
-      if (!orderId || orderId.length < 4) return { ok: false };
-      return { ok: true, token: orderId };
-    }
-
-    // =====================================================================
-    // REVEAL ON SCROLL
-    // =====================================================================
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('is-visible'); observer.unobserve(el.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // =====================================================================
-    // NAVBAR
-    // =====================================================================
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(10,24,20,0.85)';
-        navbar.style.backdropFilter = 'blur(24px)';
-        navbar.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-      } else {
-        navbar.style.background = 'transparent';
-        navbar.style.backdropFilter = 'none';
-        navbar.style.borderBottom = 'none';
-      }
-    });
-
-    // =====================================================================
-    // FAQ
-    // =====================================================================
-    function toggleFaq(btn) {
-      const item = btn.closest('.faq-item');
-      const answer = item.querySelector('.faq-answer');
-      const icon = item.querySelector('.faq-icon');
-      const isOpen = answer.classList.contains('open');
-      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
-      document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotated'));
-      if (!isOpen) { answer.classList.add('open'); icon.classList.add('rotated'); }
-    }
-
-    // =====================================================================
-    // TOAST
-    // =====================================================================
-    function showToast(text) {
-      const t = document.getElementById('toast');
-      if (text) document.getElementById('toastText').textContent = text;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
-
-    // =====================================================================
-    // QUIZ — MACHINE STATE
-    // =====================================================================
-    function selectOption(step, value, btn) {
-      answers[step] = value;
-      const stepNum = STEPS.indexOf(step) + 1;
-      document.querySelectorAll('[data-step="' + stepNum + '"] .quiz-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      setTimeout(() => showStep(stepNum + 1), 350);
-    }
-
-    function showStep(num) {
-      for (let i = 1; i <= 4; i++) {
-        const dot = document.getElementById('dot' + i);
-        if (dot) dot.classList.toggle('filled', i <= num);
-      }
-      document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
-      if (num === 4) renderStep4();
-      const next = document.querySelector('[data-step="' + num + '"]');
-      if (next) next.classList.add('active');
-      else showResult();
-    }
-
-    function renderStep4() {
-      const isPro = PRO_GOALS.includes(answers.goal);
-      const variants = isPro ? STEP4_PRO : STEP4_SIMPLE;
-      document.getElementById('step4Title').textContent = isPro ? 'Какой тип клавиатуры нужен?' : 'Какой формат вам удобнее?';
-      document.getElementById('step4Options').innerHTML = variants.map(v =>
-        '<button class="quiz-btn" onclick="selectOption(\'format\',\'' + v.value + '\',this)">' +
-        '<div class="quiz-btn-icon"><iconify-icon icon="' + v.icon + '" width="20" style="color:#10b981"></iconify-icon></div>' + v.label +
-        '</button>'
-      ).join('');
-    }
-
-    // =====================================================================
-    // РЕЗУЛЬТАТ — ОСНОВНОЙ FLOW
-    // Поддерживает три режима:
-    //   1) SHOW_PAYWALL=false → показываем результат сразу из fallback
-    //   2) SHOW_PAYWALL=true  → показываем paywall, после оплаты — каталог
-    //   3) GAS_CATALOG_URL задан + sessionToken → каталог из GAS
-    // =====================================================================
-    async function showResult() {
-      document.getElementById('quizSteps').style.display = 'none';
-      const progress = document.querySelector('.quiz-progress');
-      if (progress) progress.style.display = 'none';
-
-      const goal = answers.goal || 'hobby';
-      const budget = answers.budget || 'mid';
-
-      if (SHOW_PAYWALL && !sessionToken) {
-        // Показываем paywall
-        const info = QUIZ_TYPES[answers.goal] || QUIZ_TYPES.hobby;
-        document.getElementById('paywallType').textContent = info.type;
-        document.getElementById('paywallTagline').textContent = info.tagline;
-        const orderId = generateOrderId();
-        _pendingOrderId = orderId;
-        try { sessionStorage.setItem('kv_pending_order', orderId); } catch(e){}
-        const payUrl = PAYMENT_URL + (PAYMENT_URL.includes('?') ? '&' : '?') + 'order_id=' + orderId;
-        document.getElementById('payButton').href = payUrl;
-        document.getElementById('quizPaywall').classList.add('active');
-        return;
-      }
-
-      // Попытка загрузить из каталога GAS
-      showLoadingResult();
-      const catalogData = await fetchCatalogData(goal, budget, sessionToken);
-
-      // Fallback на встроенные данные
-      // Учитываем answers.format: hammer → молоточковая клавиатура, synth → синтезаторная
-      const fmt = answers.format || '';
-      let effectiveGoal = goal;
-      if (fmt === 'hammer' && (goal === 'stage' || goal === 'allinone' || goal === 'hobby')) {
-        // Молоточковая клавиатура — переключаемся на ветку learning (цифровые пианино)
-        effectiveGoal = 'learning';
-      }
-      const fallbackBase = (QUIZ_RESULTS[effectiveGoal] || QUIZ_RESULTS.hobby)[budget] || QUIZ_RESULTS.hobby.mid;
-      // Клонируем чтобы не мутировать константу
-      const fallbackData = Object.assign({}, fallbackBase);
-      if (fmt === 'hammer' && effectiveGoal === 'learning') {
-        fallbackData._badge = 'С молоточковой клавиатурой';
-      } else if (fmt === 'synth' && goal === 'learning') {
-        fallbackData._badge = 'С синтезаторной клавиатурой';
-      }
-      const data = catalogData || fallbackData;
-      // Учитываем answers.experience: beginner / confident
-      const exp = answers.experience || '';
-      if (!catalogData && data.models && data.models.length > 1) {
-        if (exp === 'beginner') {
-          // Ставим первой более доступную модель (меньшая цена)
-          data.models = data.models.slice().sort(function(a, b) {
-            const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 999999;
-            const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 999999;
-            return pa - pb;
-          });
-          if (!data._badge) data._badge = 'Рекомендуем для начинающих';
-        } else if (exp === 'confident') {
-          // Ставим первой более продвинутую модель (большая цена)
-          data.models = data.models.slice().sort(function(a, b) {
-            const pa = parseInt((a.price || '').replace(/[^0-9]/g,'')) || 0;
-            const pb = parseInt((b.price || '').replace(/[^0-9]/g,'')) || 0;
-            return pb - pa;
-          });
-          if (!data._badge) data._badge = 'Для уверенных музыкантов';
+        xlow: {
+          type: 'Стартовый универсальный клавишный',
+          summary: 'В этом бюджете «один инструмент на всё» означает компромисс и базовый домашний формат.',
+          models: [
+            { name: 'Casio CT-S300', price: '8 990 ₽' },
+            { name: 'Yamaha PSR-E373', price: '13 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'missing' },
+            { name: 'Стойка', status: 'missing' }
+          ],
+          realPrice: '13 000–18 000 ₽',
+          why: [
+            'Бюджет ограничивает глубину универсальности.',
+            'На старте важнее взять понятный инструмент, чем всё сразу.',
+            'Такой вариант покрывает базовые домашние задачи.'
+          ],
+          warnings: [
+            'Не ожидайте профессионального уровня во всех сценариях.',
+            'Скорее всего позже понадобится апгрейд.'
+          ]
+        },
+        low: {
+          type: 'Универсальный домашний инструмент',
+          summary: 'Хороший вариант, если хочется один инструмент для игры, обучения и простого творчества.',
+          models: [
+            { name: 'Casio CT-X3000', price: '29 990 ₽' },
+            { name: 'Yamaha PSR-EW425', price: '34 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Стойка', status: 'separate' }
+          ],
+          realPrice: '34 000–42 000 ₽',
+          why: [
+            'Один инструмент должен быть понятным и гибким.',
+            'Этот сегмент покрывает дом, игру и лёгкий креатив.',
+            'Баланс универсальности и простоты здесь лучше всего.'
+          ],
+          warnings: [
+            'Не путайте универсальность с профессиональной глубиной.',
+            'Проверьте, нужна ли вам 76-клавишная версия.'
+          ]
+        },
+        mid: {
+          type: 'Рабочая станция начального уровня / универсальный полупро инструмент',
+          summary: 'Подходит тем, кто хочет один более серьёзный инструмент под разные сценарии.',
+          models: [
+            { name: 'Korg Kross 2', price: '59 990 ₽' },
+            { name: 'Roland Juno-DS61', price: '64 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Стойка', status: 'separate' }
+          ],
+          realPrice: '64 000–73 000 ₽',
+          why: [
+            'Вы ищете один инструмент под разные задачи.',
+            'Этот сегмент уже ближе к реальной универсальности.',
+            'Он логичнее, чем брать бытовой стартовый синтезатор.'
+          ],
+          warnings: [
+            'Порог входа выше, чем у простых домашних моделей.',
+            'Стоит заранее понять, какие функции для вас действительно важны.'
+          ]
+        },
+        high: {
+          type: 'Рабочая станция / универсальный продвинутый инструмент',
+          summary: 'Самый логичный выбор, если нужен один серьёзный инструмент с широкими возможностями.',
+          models: [
+            { name: 'Korg Krome EX', price: '99 990 ₽' },
+            { name: 'Yamaha MODX6+', price: '109 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Блок питания', status: 'included' },
+            { name: 'Педаль', status: 'separate' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Чехол', status: 'separate' }
+          ],
+          realPrice: '105 000–120 000 ₽',
+          why: [
+            'У вас запрос на один главный инструмент, а не на узкую задачу.',
+            'Такой класс реально перекрывает больше сценариев.',
+            'Это лучший кандидат на универсальную роль.'
+          ],
+          warnings: [
+            'Сложнее в освоении и настройке.',
+            'Покупать такой класс без понятной задачи бывает избыточно.'
+          ]
         }
       }
+    };
 
-      // Если GAS вернул флаг isPremium — добавляем лейбл
-      if (catalogData && catalogData.isPremium) {
-        data._badge = 'Расширенный каталог';
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const icon = btn.querySelector('.faq-icon');
+      const isOpen = answer.classList.contains('open');
+
+      document.querySelectorAll('.faq-answer.open').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.faq-icon.rotated').forEach(el => el.classList.remove('rotated'));
+
+      if (!isOpen) {
+        answer.classList.add('open');
+        icon.classList.add('rotated');
+      }
+    }
+
+    function initReveal() {
+      const items = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      items.forEach(item => io.observe(item));
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toastText');
+      toastText.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function buildProgress() {
+      progressEl.innerHTML = quizState.steps.map((_, i) => '<div class="quiz-progress-dot" data-dot-index="' + i + '"></div>').join('');
+    }
+
+    function updateProgress() {
+      const dots = progressEl.querySelectorAll('.quiz-progress-dot');
+      dots.forEach((dot, i) => {
+        dot.classList.remove('is-active', 'is-done');
+        if (i < quizState.currentStepIndex) dot.classList.add('is-done');
+        if (i === quizState.currentStepIndex) dot.classList.add('is-active');
+      });
+      stepLabelEl.textContent = 'Шаг ' + (quizState.currentStepIndex + 1) + ' из ' + quizState.steps.length;
+      backBtn.hidden = quizState.currentStepIndex === 0;
+    }
+
+    function setMode(mode) {
+      introEl.hidden = mode !== 'intro';
+      stepsWrapEl.hidden = mode !== 'steps';
+      loadingEl.hidden = mode !== 'loading';
+      errorEl.hidden = mode !== 'error';
+      resultEl.hidden = mode !== 'result';
+    }
+
+    function showStep(stepName) {
+      stepEls.forEach(el => {
+        el.hidden = el.dataset.step !== stepName;
+      });
+      updateProgress();
+      setMode('steps');
+    }
+
+    function goToStep(index) {
+      quizState.currentStepIndex = index;
+      showStep(quizState.steps[index]);
+    }
+
+    function nextStep() {
+      const nextIndex = quizState.currentStepIndex + 1;
+      if (nextIndex >= quizState.steps.length) {
+        submitQuiz();
+        return;
+      }
+      goToStep(nextIndex);
+    }
+
+    function previousStep() {
+      if (quizState.currentStepIndex === 0) return;
+      goToStep(quizState.currentStepIndex - 1);
+    }
+
+    function prettyStatus(status) {
+      if (status === 'included') return { text: 'В комплекте', className: 'accessory-included' };
+      if (status === 'missing') return { text: 'Нет в комплекте', className: 'accessory-missing' };
+      return { text: 'Отдельно', className: 'accessory-separate' };
+    }
+
+    function renderList(target, items) {
+      target.innerHTML = items.map(item => '<li>' + item + '</li>').join('');
+    }
+
+    function renderModels(models) {
+      resultModelsEl.innerHTML = models.map(model => {
+        return `
+          <div class="result-model-card">
+            <div class="result-model-name">${model.name || ''}</div>
+            <div class="result-model-price">${model.price || ''}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAccessories(accessories) {
+      resultAccessoriesEl.innerHTML = accessories.map(item => {
+        const view = prettyStatus(item.status);
+        return `
+          <div class="accessory-row">
+            <div>${item.name || ''}</div>
+            <div class="accessory-status ${view.className}">${view.text}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function normalizeApiResult(apiData) {
+      if (!apiData || typeof apiData !== 'object') return null;
+
+      const root = apiData.result && typeof apiData.result === 'object' ? apiData.result : apiData;
+
+      if (!root.type && !root.summary && !root.models && !root.accessories && !root.realPrice) {
+        return null;
       }
 
-      hideLoadingResult();
-      renderResult(data);
+      return {
+        type: root.type || 'Подходящий тип инструмента',
+        summary: root.summary || '',
+        models: Array.isArray(root.models) ? root.models : [],
+        accessories: Array.isArray(root.accessories) ? root.accessories : [],
+        realPrice: root.realPrice || '',
+        why: Array.isArray(root.why) ? root.why : [],
+        warnings: Array.isArray(root.warnings) ? root.warnings : []
+      };
     }
 
-    // Спиннер ожидания
-    function showLoadingResult() {
-      document.getElementById('quizResult').classList.add('active');
-      document.getElementById('resultModels').innerHTML =
-        '<div style="text-align:center;padding:24px;color:#4a6b5d;font-size:11pt">' +
-        '<iconify-icon icon="mdi:loading" width="24" style="color:#10b981;animation:spin 1s linear infinite"></iconify-icon>' +
-        '<br><span style="margin-top:8px;display:block">Загружаем подбор…</span></div>';
-      document.getElementById('resultAccessories').innerHTML = '';
-      document.getElementById('resultRealPrice').textContent = '';
-    }
-    function hideLoadingResult() {
-      document.getElementById('quizResult').classList.remove('active');
-    }
+    function pickLocalResult(answers) {
+      let goal = answers.goal || 'hobby';
+      let budget = answers.budget || 'low';
 
-    // Счётчик для pending order_id (не localStorage)
-    let _pendingOrderId = (function(){ try { return sessionStorage.getItem('kv_pending_order') || null; } catch(e){ return null; } })();
+      if (goal === 'production' && answers.needBuiltInSounds === 'yes' && (budget === 'mid' || budget === 'high')) {
+        goal = 'allinone';
+      }
 
-    function generateOrderId() {
-      return 'kv_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+      if (goal === 'learning' && answers.format === 'synth' && budget === 'xlow') {
+        return localCatalog.learning.xlow;
+      }
+
+      if (goal === 'stage' && answers.speakers === 'yes' && budget !== 'high') {
+        return localCatalog.stage[budget] || localCatalog.stage.low;
+      }
+
+      if (goal === 'allinone' && answers.format === 'hammer' && (budget === 'mid' || budget === 'high')) {
+        return {
+          type: 'Цифровое пианино / сценическое пианино',
+          summary: 'Вы ищете универсальность, но с приоритетом на пианинную механику и ощущение игры.',
+          models: [
+            { name: 'Yamaha P-225', price: '67 990 ₽' },
+            { name: 'Roland FP-30X', price: '82 990 ₽' }
+          ],
+          accessories: [
+            { name: 'Педаль', status: 'included' },
+            { name: 'Стойка', status: 'separate' },
+            { name: 'Блок питания', status: 'included' }
+          ],
+          realPrice: budget === 'mid' ? '72 000–79 000 ₽' : '84 000–95 000 ₽',
+          why: [
+            'Вы хотите один инструмент, но именно с пианинным ощущением.',
+            'Молоточковая клавиатура важнее синтезаторной универсальности.',
+            'Такой выбор честнее отражает ваш сценарий.'
+          ],
+          warnings: [
+            'Если нужны продвинутые студийные функции, нужен другой класс.',
+            'Проверьте наличие встроенных динамиков для дома.'
+          ]
+        };
+      }
+
+      return (localCatalog[goal] && localCatalog[goal][budget]) || localCatalog.hobby.low;
     }
 
     function renderResult(data) {
-      document.getElementById('quizPaywall').classList.remove('active');
-      document.getElementById('quizResult').classList.add('active');
-      document.getElementById('resultType').textContent = (data._badge || data.type) || '';
+      resultTypeEl.textContent = data.type || '';
+      resultSummaryEl.textContent = data.summary || '';
 
-      // Бейдж источника (каталог GAS vs встроенный)
-      const sourceEl = document.getElementById('resultSourceBadge');
-      if (sourceEl) {
-        sourceEl.style.display = data._badge ? 'inline-flex' : 'none';
-        sourceEl.textContent = data._badge || '';
+      if (data.realPrice) {
+        resultRealPriceEl.textContent = data.realPrice;
+        resultPriceWrapEl.hidden = false;
+      } else {
+        resultPriceWrapEl.hidden = true;
       }
 
-      const modelsEl = document.getElementById('resultModels');
-      modelsEl.innerHTML = (data.models || []).map(m =>
-        '<div class="result-model-card"><div class="result-model-name">' + m.name + '</div><div class="result-model-price">' + m.price + '</div></div>'
-      ).join('');
-
-      const accEl = document.getElementById('resultAccessories');
-      const statusMap = {
-        included: { text: 'В комплекте', cls: 'accessory-included' },
-        missing:  { text: 'Докупить!',   cls: 'accessory-missing' },
-        separate: { text: 'Опционально', cls: 'accessory-separate' }
-      };
-      accEl.innerHTML = (data.accessories || []).map(a => {
-        const s = statusMap[a.status] || statusMap.separate;
-        return '<div class="accessory-row"><span>' + a.name + '</span><span class="' + s.cls + '">' + s.text + '</span></div>';
-      }).join('');
-      // Банкетка нужна только для пианинных инструментов (learning + hobby), не для MIDI/сцены
-      const _g = answers.goal || '';
-      if (_g === 'learning' || _g === 'hobby' || _g === 'allinone') {
-        accEl.innerHTML += '<div class="accessory-row"><span style="color:#94a3b8">Банкетка</span><span class="accessory-separate">всегда отдельно</span></div>';
+      if (Array.isArray(data.models) && data.models.length) {
+        renderModels(data.models);
+        resultModelsWrapEl.hidden = false;
+      } else {
+        resultModelsWrapEl.hidden = true;
       }
-      document.getElementById('resultRealPrice').textContent = data.realPrice || '';
+
+      if (Array.isArray(data.accessories) && data.accessories.length) {
+        renderAccessories(data.accessories);
+        resultAccessoriesWrapEl.hidden = false;
+      } else {
+        resultAccessoriesWrapEl.hidden = true;
+      }
+
+      if (Array.isArray(data.why) && data.why.length) {
+        renderList(resultWhyEl, data.why);
+        resultWhyWrapEl.hidden = false;
+      } else {
+        resultWhyWrapEl.hidden = true;
+      }
+
+      if (Array.isArray(data.warnings) && data.warnings.length) {
+        renderList(resultWarningsEl, data.warnings);
+        resultWarningsWrapEl.hidden = false;
+      } else {
+        resultWarningsWrapEl.hidden = true;
+      }
+
+      setMode('result');
+    }
+
+    function showError(message) {
+      errorEl.innerHTML = '<div class="quiz-error-box">' + message + '</div>';
+      setMode('error');
+    }
+
+    async function submitQuiz() {
+      setMode('loading');
+
+      const payload = { ...quizState.answers };
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const data = await res.json();
+        const normalized = normalizeApiResult(data);
+
+        if (normalized) {
+          renderResult(normalized);
+        } else {
+          renderResult(pickLocalResult(payload));
+        }
+      } catch (e) {
+        renderResult(pickLocalResult(payload));
+      }
     }
 
     function resetQuiz() {
-      answers = {};
-      sessionToken = null;
-      _pendingOrderId = null;
-      try { sessionStorage.removeItem('kv_pending_order'); } catch(e){}
-      ['quizResult', 'quizPaywall', 'quizError'].forEach(id => document.getElementById(id).classList.remove('active'));
-      document.getElementById('quizSteps').style.display = 'block';
-      const progress = document.querySelector('.quiz-progress');
-      if (progress) progress.style.display = 'flex';
-      document.querySelectorAll('.quiz-btn').forEach(b => b.classList.remove('selected'));
-      if (window.location.search) window.history.replaceState({}, '', window.location.pathname);
-      for (let i = 1; i <= 4; i++) {
-        const dot = document.getElementById('dot' + i);
-        if (dot) dot.classList.toggle('filled', i === 1);
-      }
-      document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
-      document.querySelector('.quiz-step[data-step="1"]').classList.add('active');
+      quizState.currentStepIndex = 0;
+      quizState.answers = {};
+      errorEl.innerHTML = '';
+      resultTypeEl.textContent = '';
+      resultSummaryEl.textContent = '';
+      resultWhyEl.innerHTML = '';
+      resultWarningsEl.innerHTML = '';
+      resultModelsEl.innerHTML = '';
+      resultAccessoriesEl.innerHTML = '';
+      resultRealPriceEl.textContent = '';
+      resultWhyWrapEl.hidden = true;
+      resultWarningsWrapEl.hidden = true;
+      resultModelsWrapEl.hidden = true;
+      resultAccessoriesWrapEl.hidden = true;
+      resultPriceWrapEl.hidden = true;
+      goToStep(0);
+      showToast('Квиз сброшен');
     }
 
-    // =====================================================================
-    // DEMO MODE  (?demo=true)
-    // =====================================================================
-    function loadDemoData() {
-      const demo = {
-        type: 'Цифровое пианино',
-        _badge: 'Демо-режим',
-        models: [
-          { name: 'Yamaha P-125',   price: '29 990 ₽' },
-          { name: 'Roland FP-30X',  price: '39 990 ₽' },
-          { name: 'Kawai ES120',    price: '42 990 ₽' }
-        ],
-        accessories: [
-          { name: 'Стойка',       status: 'missing'   },
-          { name: 'Педаль',       status: 'missing'   },
-          { name: 'Нотная полка', status: 'separate'  }
-        ],
-        realPrice: '~38 990 ₽ (+16%)'
-      };
-      document.getElementById('quizSteps').style.display = 'none';
-      const progress = document.querySelector('.quiz-progress');
-      if (progress) progress.style.display = 'none';
-      document.getElementById('quizPaywall').classList.remove('active');
-      renderResult(demo);
-      showToast('Демо-режим активен');
-    }
+    document.getElementById('quiz-start').addEventListener('click', () => {
+      goToStep(0);
+    });
 
-    // =====================================================================
-    // ПРОВЕРКА URL-ПАРАМЕТРОВ ПРИ ЗАГРУЗКЕ
-    // Поддерживаемые параметры:
-    //   ?demo=true              — показать демо-результат
-    //   ?payment=ok&order_id=X  — вернулись после оплаты, проверяем платёж
-    // =====================================================================
-    (async function checkUrlParams() {
-      const params = new URLSearchParams(window.location.search);
+    backBtn.addEventListener('click', previousStep);
+    document.getElementById('quiz-restart').addEventListener('click', resetQuiz);
 
-      if (params.get('demo') === 'true') {
-        loadDemoData();
-        return;
+    document.querySelectorAll('[data-field][data-value]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const field = btn.dataset.field;
+        const value = btn.dataset.value;
+        quizState.answers[field] = value;
+        nextStep();
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        nav.style.background = 'rgba(10,24,20,.75)';
+        nav.style.backdropFilter = 'blur(14px)';
+        nav.style.borderBottom = '1px solid rgba(255,255,255,.06)';
+      } else {
+        nav.style.background = 'transparent';
+        nav.style.backdropFilter = 'none';
+        nav.style.borderBottom = 'none';
       }
+    });
 
-      if (params.get('payment') === 'ok') {
-        const orderId = params.get('order_id') || _pendingOrderId;
-        if (!orderId) {
-          document.getElementById('quizError').classList.add('active');
-          document.getElementById('quizSteps').style.display = 'none';
-          const progress = document.querySelector('.quiz-progress');
-          if (progress) progress.style.display = 'none';
-          return;
-        }
-
-        // Верифицируем через GAS (или dev-режим)
-        showToast('Проверяем оплату…');
-        const result = await verifyPayment(orderId);
-        window.history.replaceState({}, '', window.location.pathname); // убираем ?payment=ok из URL
-
-        if (result.ok) {
-          sessionToken = result.token;
-          try { sessionStorage.removeItem('kv_pending_order'); } catch(e){}
-          if (answers.goal && answers.budget) {
-            // Ответы уже есть — сразу показываем результат
-            showToast('Оплата подтверждена! Загружаем подбор…');
-            await showResult();
-          } else {
-            // Ответов нет — прокручиваем к квизу с подсказкой
-            showToast('Оплата подтверждена! Пройдите квиз ниже 👇');
-            const quizEl = document.getElementById('quiz');
-            if (quizEl) quizEl.scrollIntoView({ behavior: 'smooth' });
-          }
-        } else {
-          document.getElementById('quizError').classList.add('active');
-          document.getElementById('quizSteps').style.display = 'none';
-          const progress = document.querySelector('.quiz-progress');
-          if (progress) progress.style.display = 'none';
-        }
-      }
-    })();
+    buildProgress();
+    initReveal();
+    setMode('intro');
   </script>
-
-  <!-- FOOTER -->
-  <footer class="bg-forest-950 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 0h60v60H0z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%220.5%22/%3E%3C/svg%3E')"></div>
-    <div class="max-w-5xl mx-auto px-6 py-16 relative z-10">
-      <div class="h-px mb-12" style="background:linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent)"></div>
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-white/25 text-xs tracking-wide">© 2025–2026 КлавирON</p>
-        <div class="flex items-center gap-4">
-          <a href="privacy.html" class="text-white/30 hover:text-white/60 text-xs tracking-wide transition-colors duration-300">Политика конфиденциальности</a>
-          <span class="text-white/10">·</span>
-          <a href="terms.html" class="text-white/30 hover:text-white/60 text-xs tracking-wide transition-colors duration-300">Условия использования</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
 </body>
 </html>
