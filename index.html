@@ -361,6 +361,10 @@
       background: #e8f4ef;
       border-color: #96c3ad;
     }
+    .quiz-option.is-selected {
+      background: #d1fae5;
+      border-color: #10b981;
+    }
     .quiz-actions {
       display: flex;
       justify-content: space-between;
@@ -700,7 +704,7 @@
         </div>
 
         <div class="reveal reveal-delay-2 bg-forest-950 rounded-[2rem] p-8 card-hover relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none" style="background:rgba(16,185,129,0.1);filter:blur(64px)"></div>
+          <div class="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events:none" style="background:rgba(16,185,129,0.1);filter:blur(64px)"></div>
           <div class="cat-icon-bg mb-6" style="background:linear-gradient(to bottom right, rgba(16,185,129,0.2), rgba(16,185,129,0.05));border:1px solid rgba(16,185,129,0.2)"><iconify-icon icon="mdi:music-clef-treble" width="32" class="text-emerald-400"></iconify-icon></div>
           <div class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4" style="background:rgba(16,185,129,0.1);color:#34d399">Серьёзные занятия</div>
           <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">Цифровое пианино</h3>
@@ -1771,6 +1775,9 @@
     function showStep(stepName) {
       stepEls.forEach(el => {
         el.hidden = el.dataset.step !== stepName;
+        el.querySelectorAll('[data-field]').forEach(b => {
+          b.classList.toggle('is-selected', b.dataset.value === quizState.answers[b.dataset.field]);
+        });
       });
       updateProgress();
       setMode('steps');
@@ -1851,21 +1858,20 @@
     function pickLocalResult(answers) {
       let goal = answers.goal || 'hobby';
       let budget = answers.budget || 'low';
+      const experience = answers.experience || 'beginner';
+
+      let result;
 
       if (goal === 'production' && answers.needBuiltInSounds === 'yes' && (budget === 'mid' || budget === 'high')) {
         goal = 'allinone';
       }
 
       if (goal === 'learning' && answers.format === 'synth' && budget === 'xlow') {
-        return localCatalog.learning.xlow;
-      }
-
-      if (goal === 'stage' && answers.speakers === 'yes' && budget !== 'high') {
-        return localCatalog.stage[budget] || localCatalog.stage.low;
-      }
-
-      if (goal === 'allinone' && answers.format === 'hammer' && (budget === 'mid' || budget === 'high')) {
-        return {
+        result = localCatalog.learning.xlow;
+      } else if (goal === 'stage' && answers.speakers === 'yes' && budget !== 'high') {
+        result = localCatalog.stage[budget] || localCatalog.stage.low;
+      } else if (goal === 'allinone' && answers.format === 'hammer' && (budget === 'mid' || budget === 'high')) {
+        result = {
           type: 'Цифровое пианино / сценическое пианино',
           summary: 'Вы ищете универсальность, но с приоритетом на пианинную механику и ощущение игры.',
           models: [
@@ -1888,9 +1894,25 @@
             'Проверьте наличие встроенных динамиков для дома.'
           ]
         };
+      } else {
+        result = (localCatalog[goal] && localCatalog[goal][budget]) || localCatalog.hobby.low;
       }
 
-      return (localCatalog[goal] && localCatalog[goal][budget]) || localCatalog.hobby.low;
+      // FIX #2: Apply experience-based adjustments
+      const enhanced = JSON.parse(JSON.stringify(result));
+
+      if (experience === 'advanced' && budget !== 'high') {
+        enhanced.warnings = (enhanced.warnings || []).concat(
+          'Для вашего уровня может быть интересен более высокий сегмент — посмотрите следующий бюджетный шаг.'
+        );
+      }
+      if (experience === 'beginner' && (goal === 'production' || goal === 'stage') && budget === 'high') {
+        enhanced.warnings = (enhanced.warnings || []).concat(
+          'Для начинающего этот сегмент может быть избыточным — убедитесь, что он действительно нужен.'
+        );
+      }
+
+      return enhanced;
     }
 
     function renderResult(data) {
@@ -1946,7 +1968,6 @@
       const payload = { ...quizState.answers };
 
       try {
-        // GAS Web App expects GET with query params, not POST with JSON body
         const params = new URLSearchParams({
           action: 'previewResult',
           goal: payload.goal || 'hobby',
@@ -1958,9 +1979,11 @@
           budget: payload.budget || 'low'
         });
 
+        // FIX #5: cache: 'no-store' to avoid GAS caching
         const res = await fetch(API_URL + '?' + params.toString(), {
           method: 'GET',
-          redirect: 'follow'
+          redirect: 'follow',
+          cache: 'no-store'
         });
 
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -1969,7 +1992,6 @@
         const normalized = normalizeApiResult(data);
 
         if (normalized) {
-          // Merge API data with local catalog for models/accessories/prices
           const localData = pickLocalResult(payload);
           renderResult({
             type: normalized.type,
@@ -1984,6 +2006,9 @@
           renderResult(pickLocalResult(payload));
         }
       } catch (e) {
+        // FIX #4: console.error + toast instead of silent fallback
+        console.error('Quiz API error:', e);
+        showToast('Не удалось получить свежие данные — показываем стандартные рекомендации');
         renderResult(pickLocalResult(payload));
       }
     }
