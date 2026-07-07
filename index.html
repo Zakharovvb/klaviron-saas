@@ -1992,15 +1992,30 @@
 
         if (normalized) {
           const localData = pickLocalResult(payload);
-          renderResult({
-            type: normalized.type,
-            summary: normalized.summary,
-            models: normalized.models.length ? normalized.models : localData.models,
-            accessories: normalized.accessories.length ? normalized.accessories : localData.accessories,
-            realPrice: normalized.realPrice || localData.realPrice || '',
-            why: normalized.why.length ? normalized.why : localData.why,
-            warnings: normalized.warnings.length ? normalized.warnings : localData.warnings
-          });
+          // If API returns models — use API data fully
+          // If API has no models — use localData type+models to avoid mismatch
+          if (normalized.models.length) {
+            renderResult({
+              type: normalized.type,
+              summary: normalized.summary,
+              models: normalized.models,
+              accessories: normalized.accessories.length ? normalized.accessories : localData.accessories,
+              realPrice: normalized.realPrice || localData.realPrice || '',
+              why: normalized.why.length ? normalized.why : localData.why,
+              warnings: normalized.warnings.length ? normalized.warnings : localData.warnings
+            });
+          } else {
+            // API didn't return models — use localData to keep type+models consistent
+            renderResult({
+              type: localData.type,
+              summary: localData.summary,
+              models: localData.models,
+              accessories: localData.accessories,
+              realPrice: localData.realPrice || '',
+              why: localData.why,
+              warnings: localData.warnings
+            });
+          }
         } else {
           renderResult(pickLocalResult(payload));
         }
