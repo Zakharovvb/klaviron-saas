@@ -955,6 +955,56 @@
     </div>
   </section>
 
+  <section id="pricing" class="py-20 md:py-28 bg-white">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <div class="reveal">
+          <span class="text-emerald-600" style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem;display:block">Расширенный подбор</span>
+          <h2 class="text-3xl md:text-5xl font-light tracking-tighter leading-tight text-forest-950 mb-4">Полный результат — <span class="text-emerald-500 font-normal">299 ₽</span></h2>
+          <p class="text-sm leading-relaxed max-w-2xl mx-auto" style="color:rgba(38,72,56,0.6)">Бесплатно вы узнаете свой тип инструмента. За 299 ₽ — конкретные модели с ценами, комплектацию и реальную стоимость владения.</p>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div class="reveal reveal-delay-1 bg-forest-50 rounded-2xl p-8 card-hover">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center flex-shrink-0">
+              <iconify-icon icon="mdi:gift-outline" width="22" class="text-emerald-600"></iconify-icon>
+            </div>
+            <h3 class="font-semibold text-forest-950 tracking-tight">Бесплатно</h3>
+          </div>
+          <ul class="text-sm space-y-2" style="color:rgba(38,72,56,0.7)">
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check" width="16" class="text-emerald-500 flex-shrink-0"></iconify-icon>Тип инструмента</li>
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check" width="16" class="text-emerald-500 flex-shrink-0"></iconify-icon>Краткое описание</li>
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check" width="16" class="text-emerald-500 flex-shrink-0"></iconify-icon>Почему этот тип</li>
+          </ul>
+        </div>
+        <div class="reveal reveal-delay-2 bg-forest-950 rounded-2xl p-8 card-hover relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none" style="background:rgba(16,185,129,0.1);filter:blur(64px)"></div>
+          <div class="flex items-center justify-between mb-4 relative z-10">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(16,185,129,0.15)">
+                <iconify-icon icon="mdi:crown-outline" width="22" class="text-emerald-400"></iconify-icon>
+              </div>
+              <h3 class="font-semibold text-white tracking-tight">Расширенный — 299 ₽</h3>
+            </div>
+            <span class="text-2xl font-bold text-emerald-400">299₽</span>
+          </div>
+          <ul class="text-sm space-y-2 relative z-10" style="color:rgba(255,255,255,0.7)">
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check-circle" width="16" class="text-emerald-400 flex-shrink-0"></iconify-icon>Конкретные модели с актуальными ценами</li>
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check-circle" width="16" class="text-emerald-400 flex-shrink-0"></iconify-icon>Комплектация — что входит, что докупать</li>
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check-circle" width="16" class="text-emerald-400 flex-shrink-0"></iconify-icon>Реальная цена владения с аксессуарами</li>
+            <li class="flex items-center gap-2"><iconify-icon icon="mdi:check-circle" width="16" class="text-emerald-400 flex-shrink-0"></iconify-icon>Предупреждения — чего избегать</li>
+          </ul>
+          <p class="text-xs mt-4 relative z-10" style="color:rgba(255,255,255,0.4)">Оплата через Tinkoff Kassa (Т-Банк) · карта / СБП</p>
+        </div>
+      </div>
+      <div class="text-center mt-10 reveal reveal-delay-3">
+        <a href="#quiz" class="btn-primary px-8 py-4 rounded-full text-emerald-950 font-semibold text-base tracking-wide inline-flex items-center gap-2">Пройти квиз<iconify-icon icon="mdi:arrow-right" width="20"></iconify-icon></a>
+        <p class="text-xs mt-3" style="color:rgba(38,72,56,0.4)">Тип — бесплатно. Полный результат — 299 ₽ после оплаты.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="quiz" class="quiz-section">
     <div class="quiz-shell">
       <div class="text-center mb-10">
@@ -1056,6 +1106,27 @@
         </div>
 
         <div id="quiz-error" hidden></div>
+
+        <div id="quiz-paywall" hidden>
+          <div class="quiz-result-box" style="text-align:center">
+            <h3 id="paywall-type" style="font-size:1.5rem;margin-bottom:.5rem"></h3>
+            <p id="paywall-summary" class="quiz-result-summary" style="margin-bottom:1.5rem"></p>
+            <div style="background:#f2f8f6;border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;text-align:left">
+              <div style="font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#059669;margin-bottom:.75rem">В полном подборе:</div>
+              <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.95rem;color:#264838">
+                <div style="display:flex;align-items:center;gap:.5rem"><iconify-icon icon="mdi:check-circle" width="16" style="color:#059669;flex-shrink:0"></iconify-icon>Конкретные модели с актуальными ценами</div>
+                <div style="display:flex;align-items:center;gap:.5rem"><iconify-icon icon="mdi:check-circle" width="16" style="color:#059669;flex-shrink:0"></iconify-icon>Комплектация — что входит, что докупать</div>
+                <div style="display:flex;align-items:center;gap:.5rem"><iconify-icon icon="mdi:check-circle" width="16" style="color:#059669;flex-shrink:0"></iconify-icon>Реальная цена владения с аксессуарами</div>
+                <div style="display:flex;align-items:center;gap:.5rem"><iconify-icon icon="mdi:check-circle" width="16" style="color:#059669;flex-shrink:0"></iconify-icon>Предупреждения — чего избегать</div>
+              </div>
+            </div>
+            <button id="paywall-btn" type="button" class="btn-primary px-8 py-4 rounded-full text-emerald-950 font-bold text-lg inline-flex items-center gap-2" style="border:none;cursor:pointer">
+              Получить подбор — 299 ₽
+              <iconify-icon icon="mdi:arrow-right" width="20"></iconify-icon>
+            </button>
+            <p style="font-size:.8rem;color:rgba(38,72,56,.4);margin-top:.75rem">Оплата через Tinkoff Kassa · карта / СБП</p>
+          </div>
+        </div>
 
         <div id="quiz-result" hidden>
           <div class="quiz-result-box">
@@ -1217,6 +1288,11 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbyfFLVPQQXOVvhrQaXHSufbKr37WVW4fFArIVwHP3Hp_zEQRSskuIELHIHAQDLss5H1/exec';
+
+    // PAYWALL: false = всё бесплатно, true = paywall активен
+    const PAYMENT_ENABLED = false;
+    let sessionToken = null;
+    let pendingOrderId = null;
 
     const quizState = {
       steps: ['goal', 'experience', 'format', 'needBuiltInSounds', 'speakers', 'accompaniment', 'budget'],
@@ -1934,6 +2010,49 @@
       return enhanced;
     }
 
+    function showPaywall(localData, payload) {
+      const paywallEl = document.getElementById('quiz-paywall');
+      document.getElementById('paywall-type').textContent = localData.type || 'Ваш тип определён';
+      document.getElementById('paywall-summary').textContent = localData.summary || '';
+      document.getElementById('paywall-btn').onclick = function() { startPayment(payload); };
+      introEl.hidden = true; stepsWrapEl.hidden = true; loadingEl.hidden = true;
+      errorEl.hidden = true; resultEl.hidden = true; paywallEl.hidden = false;
+    }
+
+    async function startPayment(payload) {
+      const btn = document.getElementById('paywall-btn');
+      btn.textContent = 'Перенаправляем на оплату…';
+      btn.disabled = true;
+      try {
+        const params = new URLSearchParams({ action: 'createpayment', goal: payload.goal || 'hobby', budget: payload.budget || 'low', experience: payload.experience || 'beginner', format: payload.format || 'synth', amount: '29900' });
+        const res = await fetch(API_URL + '?' + params.toString(), { redirect: 'follow', cache: 'no-store' });
+        const data = await res.json();
+        if (data.ok && data.paymentUrl) { pendingOrderId = data.orderId; window.location.href = data.paymentUrl; }
+        else { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
+      } catch (e) { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
+    }
+
+    async function handlePaymentReturn() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('payment') === 'ok') {
+        const orderId = params.get('order_id') || pendingOrderId;
+        window.history.replaceState({}, '', window.location.pathname);
+        if (orderId) {
+          showToast('Проверяем оплату…');
+          try {
+            const vParams = new URLSearchParams({ action: 'verify', order_id: orderId });
+            const res = await fetch(API_URL + '?' + vParams.toString(), { redirect: 'follow', cache: 'no-store' });
+            const data = await res.json();
+            sessionToken = data.ok ? (data.token || orderId) : 'dev_' + Date.now();
+            showToast(data.ok ? 'Оплата подтверждена!' : 'DEV: показываем результат');
+          } catch (e) { sessionToken = 'dev_' + Date.now(); }
+        }
+      } else if (params.get('payment') === 'fail') {
+        window.history.replaceState({}, '', window.location.pathname);
+        showToast('Оплата не удалась. Попробуйте снова.');
+      }
+    }
+
     function renderResult(data) {
       resultTypeEl.textContent = data.type || '';
       resultSummaryEl.textContent = data.summary || '';
@@ -1985,6 +2104,12 @@
       setMode('loading');
 
       const payload = { ...quizState.answers };
+
+      if (PAYMENT_ENABLED && !sessionToken) {
+        const localData = pickLocalResult(payload);
+        showPaywall(localData, payload);
+        return;
+      }
 
       try {
         const params = new URLSearchParams({
@@ -2099,6 +2224,8 @@
     buildProgress();
     initReveal();
     setMode('intro');
+
+    handlePaymentReturn();
   </script>
 </body>
 </html>
