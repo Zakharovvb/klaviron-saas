@@ -2005,7 +2005,9 @@
       }
 
       // FIX #2: Apply experience-based adjustments
+      // B5: Apply accompaniment-based adjustments
       const enhanced = JSON.parse(JSON.stringify(result));
+      const accompaniment = answers.accompaniment || 'dontcare';
 
       if (experience === 'advanced' && budget !== 'high') {
         enhanced.warnings = (enhanced.warnings || []).concat(
@@ -2015,6 +2017,26 @@
       if (experience === 'beginner' && (goal === 'production' || goal === 'stage') && budget === 'high') {
         enhanced.warnings = (enhanced.warnings || []).concat(
           'Для начинающего этот сегмент может быть избыточным — убедитесь, что он действительно нужен.'
+        );
+      }
+      if (accompaniment === 'no' && goal === 'hobby') {
+        enhanced.warnings = (enhanced.warnings || []).concat(
+          'Вы выбрали хобби без автоаккомпанемента — рассмотрите также MIDI-клавиатуру или цифровое пианино.'
+        );
+      }
+      if (accompaniment === 'yes' && goal === 'stage') {
+        enhanced.warnings = (enhanced.warnings || []).concat(
+          'Автоаккомпанемент редко встречается в сценических инструментах — уточните наличие этой функции у выбранных моделей.'
+        );
+      }
+      if (accompaniment === 'yes' && goal === 'learning') {
+        enhanced.warnings = (enhanced.warnings || []).concat(
+          'Для обучения автоаккомпанемент — вторичная функция. Главное: молоточковая механика и 88 клавиш.'
+        );
+      }
+      if (accompaniment === 'no' && goal === 'allinone') {
+        enhanced.warnings = (enhanced.warnings || []).concat(
+          'Без автоаккомпанемента «универсальный» формат теряет часть смысла — возможно, вам больше подойдёт цифровое пианино.'
         );
       }
 
