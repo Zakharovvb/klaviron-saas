@@ -391,6 +391,339 @@ function jsonOutput_(obj) {
 }
 
 /**
+ * === КВИЗ: ПРЕВЬЮ-РЕЗУЛЬТАТ (бесплатно) ===
+ * Читает Google Sheets, фильтрует по ответам квиза, возвращает type+summary+why+warnings.
+ * Модели НЕ возвращает (они в платной части).
+ *
+ * Вызов: ?action=previewResult&goal=learning&budget=low&format=hammer&...
+ */
+
+var SHEET_CATALOG_GID = '1303803798';
+
+function getPreviewResult_(params) {
+  var goal = norm_(params.goal || 'hobby');
+  var budget = norm_(params.budget || 'low');
+  var experience = norm_(params.experience || 'beginner');
+  var format = norm_(params.format || 'synth');
+  var needBuiltInSounds = norm_(params.needBuiltInSounds || 'yes');
+  var speakers = norm_(params.speakers || 'yes');
+  var accompaniment = norm_(params.accompaniment || 'dontcare');
+
+  // Корректировка бюджета по опыту
+  var adjustedBudget = adjustBudgetGAS_(goal, experience, budget);
+
+  // Получаем все модели из таблицы
+  var allModels = readCatalogFromSheet_();
+
+  // Фильтруем по критериям
+  var filtered = filterModels_(allModels, goal, adjustedBudget, format, needBuiltInSounds, speakers, accompaniment);
+
+  if (filtered.length === 0) {
+    return {
+      ok: true,
+      type: 'Подходящий инструмент',
+      summary: 'Не удалось подобрать точную рекомендацию по вашим параметрам.',
+      why: ['Попробуйте изменить бюджет или формат клавиатуры.'],
+      warnings: []
+    };
+  }
+
+  // Берём первую подходящую модель для определения типа
+  var firstModel = filtered[0];
+
+  // Определяем тип по goal + format
+  var typeInfo = determineTypeGAS_(goal, format, adjustedBudget, accompaniment);
+
+  // Формируем warnings
+  var warnings = buildWarningsGAS_(goal, experience, adjustedBudget, accompaniment, format);
+
+  return {
+    ok: true,
+    type: typeInfo.type,
+    summary: typeInfo.summary,
+    why: typeInfo.why,
+    warnings: warnings
+  };
+}
+
+/**
+ * === КВИЗ: ПЛАТНЫЙ РЕЗУЛЬТАТ (после оплаты) ===
+ * Возвращает модели + accessories + realPrice.
+ * Вызов: ?action=paidresult&goal=learning&budget=low&format=hammer&...&order_id=klv_xxx
+ */
+function getPaidResult_(params) {
+  var goal = norm_(params.goal || 'hobby');
+  var budget = norm_(params.budget || 'low');
+  var experience = norm_(params.experience || 'beginner');
+  var format = norm_(params.format || 'synth');
+  var needBuiltInSounds = norm_(params.needBuiltInSounds || 'yes');
+  var speakers = norm_(params.speakers || 'yes');
+  var accompaniment = norm_(params.accompaniment || 'dontcare');
+
+  // Корректировка бюджета
+  var adjustedBudget = adjustBudgetGAS_(goal, experience, budget);
+
+  // Читаем и фильтруем модели
+  var allModels = readCatalogFromSheet_();
+  var filtered = filterModels_(allModels, goal, adjustedBudget, format, needBuiltInSounds, speakers, accompaniment);
+
+  // Формируем accessories на основе goal
+  var accessories = buildAccessoriesGAS_(goal, format, adjustedBudget);
+
+  // Считаем realPrice
+  var realPrice = computeRealPriceGAS_(filtered, accessories);
+
+  var typeInfo = determineTypeGAS_(goal, format, adjustedBudget, accompaniment);
+  var warnings = buildWarningsGAS_(goal, experience, adjustedBudget, accompaniment, format);
+
+  return {
+    type: typeInfo.type,
+    summary: typeInfo.summary,
+    models: filtered.map(function(m) {
+      return { name: m.name || '', price: m.price || '' };
+    }),
+    accessories: accessories,
+    realPrice: realPrice,
+    why: typeInfo.why,
+    warnings: warnings
+  };
+}
+
+/**
+ * === HTML лендинга (заглушка — лендинг на GitHub Pages) ===
+ */
+function getHtml_() {
+  return '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=https://klaviron.ru/"></head><body>Redirecting to <a href="https://klaviron.ru/">klaviron.ru</a></body></html>';
+}
+
+/**
+ * === Чтение каталога из Google Sheets ===
+ */
+function readCatalogFromSheet_() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheets = ss.getSheets();
+
+  // Ищем лист по gid или по имени
+  var sheet = null;
+  for (var i = 0; i < sheets.length; i++) {
+    if (String(sheets[i].getSheetId()) === SHEET_CATALOG_GID) {
+      sheet = sheets[i];
+      break;
+    }
+  }
+  if (!sheet) sheet = sheets[0]; // fallback на первый лист
+
+  var values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+
+  var headers = values[0].map(function(h) { return String(h || '').trim().toLowerCase(); });
+
+  // Определяем колонки по заголовкам
+  var colName = findColumn_(headers, ['модель', 'название', 'наименование']);
+  var colPrice = findColumn_(headers, ['цена', 'price']);
+  var colKeys = findColumn_(headers, ['клавиши', 'количество клавиш']);
+  var colSpeakers = findColumn_(headers, ['динамики', 'встроенные динамики']);
+  var colKeyboardType = findColumn_(headers, ['тип клавиатуры', 'клавиатура']);
+  var colAccompaniment = findColumn_(headers, ['автоаккомпанемент', 'аккомпанемент', 'ритмы']);
+  var colType = findColumn_(headers, ['тип', 'категория']);
+  var colGoal = findColumn_(headers, ['цель', 'назначение']);
+  var colBudget = findColumn_(headers, ['бюджет', 'сегмент']);
+
+  var models = [];
+  for (var i = 1; i < values.length; i++) {
+    var row = values[i];
+    if (!row[colName] && !row[0]) continue;
+
+    models.push({
+      name: colName >= 0 ? String(row[colName] || '') : String(row[0] || ''),
+      price: colPrice >= 0 ? String(row[colPrice] || '') : '',
+      keys: colKeys >= 0 ? String(row[colKeys] || '') : '',
+      speakers: colSpeakers >= 0 ? String(row[colSpeakers] || '') : '',
+      keyboardType: colKeyboardType >= 0 ? String(row[colKeyboardType] || '') : '',
+      accompaniment: colAccompaniment >= 0 ? String(row[colAccompaniment] || '') : '',
+      type: colType >= 0 ? String(row[colType] || '') : '',
+      goal: colGoal >= 0 ? String(row[colGoal] || '') : '',
+      budget: colBudget >= 0 ? String(row[colBudget] || '') : ''
+    });
+  }
+
+  return models;
+}
+
+function findColumn_(headers, possibleNames) {
+  for (var i = 0; i < possibleNames.length; i++) {
+    var idx = headers.indexOf(possibleNames[i].toLowerCase());
+    if (idx >= 0) return idx;
+  }
+  return -1;
+}
+
+/**
+ * === Фильтрация моделей по критериям квиза ===
+ */
+function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers, accompaniment) {
+  var result = [];
+
+  for (var i = 0; i < models.length; i++) {
+    var m = models[i];
+    var match = true;
+
+    // Фильтр по аккомпанементу (столбец J — «Автоаккомпанемент»)
+    if (accompaniment === 'yes') {
+      var hasAccomp = norm_(m.accompaniment).indexOf('да') !== -1 || norm_(m.accompaniment).indexOf('yes') !== -1;
+      if (!hasAccomp) match = false;
+    } else if (accompaniment === 'no') {
+      // Для "no" — не фильтруем строго, оставляем все
+      // (логика "no" обрабатывается на уровне выбора типа)
+    }
+
+    // Фильтр по типу клавиатуры (если указан)
+    if (format === 'hammer') {
+      var isHammer = norm_(m.keyboardType).indexOf('молот') !== -1 || norm_(m.keyboardType).indexOf('88') !== -1;
+      if (!isHammer && m.keyboardType) match = false;
+    } else if (format === 'synth') {
+      var isSynth = norm_(m.keyboardType).indexOf('синт') !== -1 || norm_(m.keyboardType).indexOf('орган') !== -1;
+      // Не фильтруем строго — синтезаторная может быть не указана
+    }
+
+    if (match) result.push(m);
+  }
+
+  // Ограничиваем до 2 моделей (как в quiz-engine.js)
+  return result.slice(0, 2);
+}
+
+/**
+ * === Корректировка бюджета по опыту (GAS-версия) ===
+ */
+function adjustBudgetGAS_(goal, experience, budget) {
+  if (experience === 'beginner' && (goal === 'production' || goal === 'stage') && budget === 'high') {
+    return 'mid';
+  }
+  if (experience === 'advanced' && budget !== 'high') {
+    var order = ['xlow', 'low', 'mid', 'high'];
+    var i = order.indexOf(budget);
+    if (i >= 0 && i < order.length - 1) return order[i + 1];
+  }
+  return budget;
+}
+
+/**
+ * === Определение типа инструмента (GAS-версия) ===
+ */
+function determineTypeGAS_(goal, format, budget, accompaniment) {
+  // Базовые типы по goal
+  var types = {
+    hobby: { type: 'Обучающий синтезатор', summary: 'Для домашнего старта и первых шагов.', why: ['Простота важнее студийных функций.', 'Встроенные динамики для дома.', 'Автоаккомпанемент полезен.'] },
+    learning: { type: 'Цифровое пианино', summary: '88 клавиш, молоточковая механика для обучения.', why: ['Правильная механика.', '88 клавиш — полный диапазон.', 'Подходит для постановки техники.'] },
+    production: { type: 'MIDI-клавиатура', summary: 'Контроллер для компьютера и цифровой студии.', why: ['Цифровая студия важнее встроенных звуков.', 'Дешевле и гибче.', 'Компактный формат.'] },
+    stage: { type: 'Сценический синтезатор', summary: 'Тембры и удобство для выступлений.', why: ['Сценический сегмент.', 'Концертные тембры.', 'Внешняя акустика нормальна.'] },
+    allinone: { type: 'Универсальный инструмент', summary: 'Один инструмент под разные задачи.', why: ['Понятный и гибкий.', 'Покрывает дом и творчество.', 'Баланс универсальности.'] }
+  };
+
+  // Особый случай: learning + synth + accompaniment=yes → синтезатор
+  if (goal === 'learning' && format === 'synth' && accompaniment === 'yes') {
+    return {
+      type: 'Обучающий синтезатор',
+      summary: 'Синтезаторная клавиатура с ритмами и аккомпанементом для освоения музыки.',
+      why: ['Для аккомпанемента нужен синтезатор, не цифровое пианино.', 'Ритмы и тембры для творческого старта.', 'Автоаккомпанемент — оркестр под руками.']
+    };
+  }
+
+  // Особый случай: production + needBuiltInSounds=yes → рабочая станция
+  if (goal === 'production') {
+    return {
+      type: 'Рабочая станция',
+      summary: 'Самостоятельный инструмент со встроенными звуками для продакшена.',
+      why: ['Встроенные звуки без отдельного модуля.', 'Работа и без компьютера, и с DAW.', 'Сегмент для начинающего продакшна.']
+    };
+  }
+
+  var t = types[goal] || types.hobby;
+  return t;
+}
+
+/**
+ * === Формирование warnings (GAS-версия) ===
+ */
+function buildWarningsGAS_(goal, experience, budget, accompaniment, format) {
+  var warnings = [];
+
+  if (experience === 'advanced' && budget !== 'high') {
+    warnings.push('Для вашего уровня может быть интересен более высокий сегмент.');
+  }
+  if (experience === 'beginner' && (goal === 'production' || goal === 'stage') && budget === 'high') {
+    warnings.push('Для начинающего этот сегмент может быть избыточным.');
+  }
+  if (goal === 'learning' && format === 'synth' && accompaniment === 'yes') {
+    warnings.push('Для обучения фортепианной технике нужна молоточковая клавиатура. Этот синтезатор лучше подходит для освоения ритмов и аккомпанемента.');
+  }
+  if (goal === 'learning' && format === 'hammer' && accompaniment === 'yes') {
+    warnings.push('Для обучения автоаккомпанемент — вторичная функция. Главное: молоточковая механика и 88 клавиш. Не все цифровые пианино имеют ритмы.');
+  }
+
+  return warnings;
+}
+
+/**
+ * === Формирование accessories (GAS-версия) ===
+ */
+function buildAccessoriesGAS_(goal, format, budget) {
+  var accessories = [
+    { name: 'Блок питания', status: 'included' },
+    { name: 'Педаль', status: goal === 'learning' || goal === 'stage' ? 'included' : 'separate' },
+    { name: 'Стойка', status: 'separate' },
+    { name: 'Подставка для нот (пюпитр)', status: 'included' }
+  ];
+
+  if (goal === 'production') {
+    accessories = [
+      { name: 'USB-кабель', status: 'included' },
+      { name: 'Педаль', status: 'separate' },
+      { name: 'Звуковая карта', status: 'separate' }
+    ];
+  }
+
+  return accessories;
+}
+
+/**
+ * === Расчёт realPrice (GAS-версия) ===
+ */
+function computeRealPriceGAS_(models, accessories) {
+  if (!models || models.length === 0) return '';
+
+  var prices = models.map(function(m) {
+    return parseInt(String(m.price || '0').replace(/[^\d]/g, ''), 10) || 0;
+  });
+
+  var minModel = Math.min.apply(null, prices);
+  var maxModel = Math.max.apply(null, prices);
+
+  var missingCost = 0;
+  var estimates = {
+    'Блок питания': 1500, 'Педаль': 2500, 'Педаль (тройная)': 5000,
+    'Стойка': 5000, 'Подставка для нот (пюпитр)': 800, 'USB-кабель': 500,
+    'Звуковая карта': 8000, 'Чехол': 4000
+  };
+
+  for (var i = 0; i < accessories.length; i++) {
+    if (accessories[i].status !== 'included') {
+      missingCost += estimates[accessories[i].name] || 0;
+    }
+  }
+
+  var min = minModel + missingCost;
+  var max = maxModel + missingCost;
+
+  return formatPriceGAS_(min) + '–' + formatPriceGAS_(max);
+}
+
+function formatPriceGAS_(num) {
+  return num.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₽';
+}
+
+/**
  * === ТЕСТОВЫЕ ФУНКЦИИ (запускать в редакторе) ===
  */
 
