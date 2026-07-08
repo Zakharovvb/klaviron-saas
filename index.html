@@ -1953,31 +1953,48 @@
       return { text: 'Отдельно', className: 'accessory-separate' };
     }
 
+    // XSS-1,2,3 fix: textContent вместо innerHTML для пользовательских данных
     function renderList(target, items) {
-      target.innerHTML = items.map(item => '<li>' + item + '</li>').join('');
+      target.replaceChildren();
+      items.forEach(text => {
+        const li = document.createElement('li');
+        li.textContent = String(text || '');
+        target.appendChild(li);
+      });
     }
 
     function renderModels(models) {
-      resultModelsEl.innerHTML = models.map(model => {
-        return `
-          <div class="result-model-card">
-            <div class="result-model-name">${model.name || ''}</div>
-            <div class="result-model-price">${model.price || ''}</div>
-          </div>
-        `;
-      }).join('');
+      resultModelsEl.replaceChildren();
+      models.forEach(model => {
+        const card = document.createElement('div');
+        card.className = 'result-model-card';
+        const name = document.createElement('div');
+        name.className = 'result-model-name';
+        name.textContent = model.name || '';
+        const price = document.createElement('div');
+        price.className = 'result-model-price';
+        price.textContent = model.price || '';
+        card.appendChild(name);
+        card.appendChild(price);
+        resultModelsEl.appendChild(card);
+      });
     }
 
     function renderAccessories(accessories) {
-      resultAccessoriesEl.innerHTML = accessories.map(item => {
+      resultAccessoriesEl.replaceChildren();
+      accessories.forEach(item => {
         const view = prettyStatus(item.status);
-        return `
-          <div class="accessory-row">
-            <div>${item.name || ''}</div>
-            <div class="accessory-status ${view.className}">${view.text}</div>
-          </div>
-        `;
-      }).join('');
+        const row = document.createElement('div');
+        row.className = 'accessory-row';
+        const name = document.createElement('div');
+        name.textContent = item.name || '';
+        const status = document.createElement('div');
+        status.className = 'accessory-status ' + view.className;
+        status.textContent = view.text;
+        row.appendChild(name);
+        row.appendChild(status);
+        resultAccessoriesEl.appendChild(row);
+      });
     }
 
     function normalizeApiResult(apiData) {
@@ -2046,8 +2063,11 @@
         const params = new URLSearchParams({ action: 'createpayment', goal: payload.goal || 'hobby', budget: payload.budget || 'low', experience: payload.experience || 'beginner', format: payload.format || 'synth', amount: '29900' });
         const res = await fetch(API_URL + '?' + params.toString(), { redirect: 'follow', cache: 'no-store' });
         const data = await res.json();
-        if (data.ok && data.paymentUrl) { pendingOrderId = data.orderId; window.location.href = data.paymentUrl; }
-        else { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
+        // XSS-5 fix: валидация paymentUrl перед редиректом
+        if (data.ok && data.paymentUrl && isSafeUrl(data.paymentUrl)) {
+          pendingOrderId = data.orderId;
+          window.location.href = data.paymentUrl;
+        } else { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
       } catch (e) { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
     }
 
@@ -2148,15 +2168,20 @@
       setMode('result');
     }
 
+    // XSS-4 fix: textContent вместо innerHTML
     function showError(message) {
-      errorEl.innerHTML = '<div class="quiz-error-box">' + message + '</div>';
+      errorEl.replaceChildren();
+      const box = document.createElement('div');
+      box.className = 'quiz-error-box';
+      box.textContent = String(message || '');
+      errorEl.appendChild(box);
       setMode('error');
     }
 
     async function submitQuiz() {
       setMode('loading');
 
-      const payload = { ...quizState.answers };
+      const payload = sanitizePayload(quizState.answers); // XSS-6 fix: валидация
 
       if (PAYMENT_ENABLED && !sessionToken) {
         const localData = pickLocalResult(payload);
@@ -2220,10 +2245,39 @@
       }
     }
 
+    // XSS-5 helper: валидация URL (только http/https)
+    function isSafeUrl(url) {
+      try {
+        const u = new URL(url, window.location.origin);
+        return u.protocol === 'https:' || u.protocol === 'http:';
+      } catch { return false; }
+    }
+
+    // XSS-6 fix: валидация payload перед отправкой в API
+    function sanitizePayload(answers) {
+      const allowed = {
+        goal: ['hobby', 'learning', 'production', 'stage', 'allinone'],
+        experience: ['beginner', 'intermediate', 'advanced'],
+        format: ['synth', 'hammer'],
+        needBuiltInSounds: ['yes', 'no'],
+        speakers: ['yes', 'no', 'dontcare'],
+        accompaniment: ['yes', 'no', 'dontcare'],
+        budget: ['xlow', 'low', 'mid', 'high']
+      };
+      const clean = {};
+      for (const key in allowed) {
+        if (answers[key] && allowed[key].indexOf(answers[key]) !== -1) {
+          clean[key] = answers[key];
+        }
+      }
+      return clean;
+    }
+
     function resetQuiz() {
       quizState.currentStepIndex = 0;
       quizState.answers = {};
       quizState.steps = ALL_STEPS.slice();
+      pendingOrderId = null; // PAY-3 fix: очистка после сброса
       errorEl.innerHTML = '';
       resultTypeEl.textContent = '';
       resultSummaryEl.textContent = '';
