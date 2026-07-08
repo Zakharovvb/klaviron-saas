@@ -127,6 +127,20 @@ test('S6 learning + synth + xlow → compromise', () => {
   assertEqual(r.id, 'learning_piano_compromise');
 });
 
+test('S6a learning + synth + accompaniment=yes → синтезатор (не цифровое пианино)', () => {
+  const r = pickResult({ goal: 'learning', experience: 'beginner', format: 'synth', needBuiltInSounds: 'yes', speakers: 'yes', accompaniment: 'yes', budget: 'low' });
+  assertEqual(r.id, 'hobby_synth_low', 'синтезаторная клавиатура + аккомпанемент → должен быть синтезатор');
+  assert(r.type.includes('синтезатор'), 'тип должен быть синтезатором, не цифровым пианино');
+  assert(r.contextWarnings.length > 0, 'должно быть предупреждение о молоточковой клавиатуре');
+});
+
+test('S6b learning + hammer + accompaniment=yes → цифровое пианино + warning', () => {
+  const r = pickResult({ goal: 'learning', experience: 'beginner', format: 'hammer', needBuiltInSounds: 'yes', speakers: 'yes', accompaniment: 'yes', budget: 'low' });
+  assertEqual(r.id, 'learning_piano_basic', 'молоточковая + аккомпанемент → цифровое пианино');
+  assert(r.type.includes('Цифровое пианино'), 'тип должен быть цифровым пианино');
+  assert(r.contextWarnings.some(w => w.includes('аккомпанемент')), 'должно быть предупреждение про аккомпанемент');
+});
+
 test('S7 stage + synth + speakers=yes + low → synth_low (не warning)', () => {
   const r = pickResult({ goal: 'stage', experience: 'beginner', format: 'synth', needBuiltInSounds: 'yes', speakers: 'yes', accompaniment: 'no', budget: 'low' });
   assertEqual(r.id, 'stage_synth_low', 'должен быть stage_synth_low, а не warning');

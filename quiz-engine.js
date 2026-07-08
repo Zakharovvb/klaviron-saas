@@ -721,6 +721,27 @@
       case 'learning': {
         if (effectiveAnswers.format === 'synth' && effectiveAnswers.budget === 'xlow') {
           situationKey = 'learning_piano_compromise';
+        } else if (effectiveAnswers.format === 'synth' && effectiveAnswers.accompaniment === 'yes') {
+          // Синтезаторная клавиатура + хочет аккомпанемент → обучающий синтезатор, не цифровое пианино
+          // Цифровое пианино не имеет ритмов/аккомпанемента — это другой инструмент
+          switch (effectiveAnswers.budget) {
+            case 'xlow': situationKey = 'hobby_synth_xlow'; break;
+            case 'low':  situationKey = 'hobby_synth_low'; break;
+            case 'mid':  situationKey = 'hobby_synth_mid'; break;
+            case 'high': situationKey = 'hobby_synth_high'; break;
+            default:     situationKey = 'hobby_synth_low';
+          }
+          contextWarnings.push('Для обучения фортепианной технике нужна молоточковая клавиатура. Этот синтезатор лучше подходит для освоения ритмов и аккомпанемента.');
+        } else if (effectiveAnswers.accompaniment === 'yes' && effectiveAnswers.format === 'hammer') {
+          // Молоточковая механика + хочет аккомпанемент → цифровое пианино, но предупредить
+          switch (effectiveAnswers.budget) {
+            case 'xlow': situationKey = 'learning_piano_compromise'; break;
+            case 'low':  situationKey = 'learning_piano_basic'; break;
+            case 'mid':  situationKey = 'learning_piano_mid'; break;
+            case 'high': situationKey = 'learning_piano_high'; break;
+            default:     situationKey = 'learning_piano_basic';
+          }
+          contextWarnings.push('Для обучения автоаккомпанемент — вторичная функция. Главное: молоточковая механика и 88 клавиш. Не все цифровые пианино имеют ритмы.');
         } else if (effectiveAnswers.needBuiltInSounds === 'no') {
           // Базовый набор тембров всё равно будет — отличие в том, что пользователь
           // не предъявляет требований к разнообразию звуков.
