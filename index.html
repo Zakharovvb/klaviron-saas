@@ -1305,8 +1305,21 @@
     let sessionToken = null;
     let pendingOrderId = null;
 
+    const ALL_STEPS = ['goal', 'experience', 'format', 'needBuiltInSounds', 'speakers', 'accompaniment', 'budget'];
+
+    function getVisibleSteps(goal) {
+      if (!goal) return ALL_STEPS;
+      return ALL_STEPS.filter(function(step) {
+        if (step === 'goal' || step === 'experience' || step === 'needBuiltInSounds' || step === 'budget') return true;
+        if (step === 'format') return goal !== 'production';
+        if (step === 'speakers') return goal !== 'production';
+        if (step === 'accompaniment') return ['hobby', 'learning', 'allinone'].indexOf(goal) !== -1;
+        return true;
+      });
+    }
+
     const quizState = {
-      steps: ['goal', 'experience', 'format', 'needBuiltInSounds', 'speakers', 'accompaniment', 'budget'],
+      steps: ALL_STEPS.slice(),
       currentStepIndex: 0,
       answers: {}
     };
@@ -1903,6 +1916,11 @@
       goToStep(nextIndex);
     }
 
+    function previousVisibleStep() {
+      if (quizState.currentStepIndex === 0) return;
+      goToStep(quizState.currentStepIndex - 1);
+    }
+
     function previousStep() {
       if (quizState.currentStepIndex === 0) return;
       goToStep(quizState.currentStepIndex - 1);
@@ -2218,6 +2236,7 @@
     function resetQuiz() {
       quizState.currentStepIndex = 0;
       quizState.answers = {};
+      quizState.steps = ALL_STEPS.slice();
       errorEl.innerHTML = '';
       resultTypeEl.textContent = '';
       resultSummaryEl.textContent = '';
@@ -2249,6 +2268,11 @@
         const field = btn.dataset.field;
         const value = btn.dataset.value;
         quizState.answers[field] = value;
+        // Rebuild visible steps when goal is selected
+        if (field === 'goal') {
+          quizState.steps = getVisibleSteps(value);
+          buildProgress();
+        }
         nextStep();
       });
     });
