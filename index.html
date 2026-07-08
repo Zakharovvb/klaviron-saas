@@ -294,7 +294,10 @@
     #result-models-wrap[hidden],
     #result-accessories-wrap[hidden],
     #result-price-wrap[hidden],
-    #quiz-back[hidden] {
+    #quiz-back[hidden],
+    #result-tradeoff-wrap[hidden],
+    #result-next-steps-wrap[hidden],
+    #result-upgrade-wrap[hidden] {
       display: none !important;
     }
     .quiz-kicker {
@@ -1026,7 +1029,7 @@
 
       <div class="quiz-card">
         <div id="quiz-intro">
-          <h3 class="quiz-panel-title">Начнём с короткого маршрута из 7 шагов</h3>
+          <h3 class="quiz-panel-title">Начнём с короткого маршрута</h3>
           <p class="quiz-note">Результат включает тип, примеры моделей, комплектацию и ориентир по реальной стоимости.</p>
           <div class="text-center mt-8">
             <button id="quiz-start" type="button" class="btn-primary px-8 py-4 rounded-full text-emerald-950 font-semibold text-base tracking-wide inline-flex items-center gap-2">
@@ -1172,6 +1175,21 @@
               <ul id="result-warnings" class="quiz-result-list"></ul>
             </div>
 
+            <div id="result-tradeoff-wrap" class="quiz-result-block" hidden>
+              <h4>Компромисс</h4>
+              <div id="result-tradeoff" style="background:#fef3c7;border:1px solid #fde68a;border-radius:.9rem;padding:.85rem 1rem;color:#92400e;line-height:1.55"></div>
+            </div>
+
+            <div id="result-next-steps-wrap" class="quiz-result-block" hidden>
+              <h4>Что дальше</h4>
+              <ul id="result-next-steps" class="quiz-result-list"></ul>
+            </div>
+
+            <div id="result-upgrade-wrap" class="quiz-result-block" hidden>
+              <h4>Путь развития</h4>
+              <div id="result-upgrade" style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:.9rem;padding:.85rem 1rem;color:#075985;line-height:1.55"></div>
+            </div>
+
             <div class="mt-8 flex flex-col sm:flex-row gap-3">
               <button id="quiz-restart" type="button" class="quiz-secondary">Пройти заново</button>
               <a href="#categories" class="btn-primary px-6 py-3 rounded-full text-emerald-950 font-semibold text-sm tracking-wide inline-flex items-center justify-center gap-2">
@@ -1297,6 +1315,7 @@
     </div>
   </div>
 
+  <script src="quiz-engine.js"></script>
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbyfFLVPQQXOVvhrQaXHSufbKr37WVW4fFArIVwHP3Hp_zEQRSskuIELHIHAQDLss5H1/exec';
 
@@ -1309,13 +1328,7 @@
 
     function getVisibleSteps(goal) {
       if (!goal) return ALL_STEPS;
-      return ALL_STEPS.filter(function(step) {
-        if (step === 'goal' || step === 'experience' || step === 'needBuiltInSounds' || step === 'budget') return true;
-        if (step === 'format') return goal !== 'production';
-        if (step === 'speakers') return goal !== 'production';
-        if (step === 'accompaniment') return ['hobby', 'learning', 'allinone'].indexOf(goal) !== -1;
-        return true;
-      });
+      return QuizEngine.getStepsForGoal(goal);
     }
 
     const quizState = {
@@ -1346,7 +1359,14 @@
     const resultAccessoriesEl = document.getElementById('result-accessories');
     const resultPriceWrapEl = document.getElementById('result-price-wrap');
     const resultRealPriceEl = document.getElementById('result-real-price');
+    const resultTradeoffWrapEl = document.getElementById('result-tradeoff-wrap');
+    const resultTradeoffEl = document.getElementById('result-tradeoff');
+    const resultNextStepsWrapEl = document.getElementById('result-next-steps-wrap');
+    const resultNextStepsEl = document.getElementById('result-next-steps');
+    const resultUpgradeWrapEl = document.getElementById('result-upgrade-wrap');
+    const resultUpgradeEl = document.getElementById('result-upgrade');
 
+    /* localCatalog заменён на QuizEngine.pickResult() — мёртвый код ниже закомментирован
     const localCatalog = {
       hobby: {
         xlow: {
@@ -1831,6 +1851,7 @@
         }
       }
     };
+    */
 
     function toggleFaq(btn) {
       const answer = btn.nextElementSibling;
@@ -1979,86 +2000,33 @@
       };
     }
 
+    // Адаптер: делегирует к QuizEngine.pickResult() и нормализует поля для renderResult
     function pickLocalResult(answers) {
-      let goal = answers.goal || 'hobby';
-      let budget = answers.budget || 'low';
-      const experience = answers.experience || 'beginner';
+      const result = QuizEngine.pickResult(answers);
 
-      let result;
-
-      if (goal === 'production' && answers.needBuiltInSounds === 'yes' && (budget === 'mid' || budget === 'high')) {
-        goal = 'allinone';
+      // Собираем warnings: объединяем contextWarnings + budgetAdjusted.reason (если есть)
+      let warnings = [];
+      if (Array.isArray(result.contextWarnings) && result.contextWarnings.length) {
+        warnings = warnings.concat(result.contextWarnings);
       }
-
-      if (goal === 'learning' && answers.format === 'synth' && budget === 'xlow') {
-        result = localCatalog.learning.xlow;
-      } else if (goal === 'stage' && answers.speakers === 'yes' && budget !== 'high') {
-        result = localCatalog.stage[budget] || localCatalog.stage.low;
-      } else if (goal === 'allinone' && answers.format === 'hammer' && (budget === 'mid' || budget === 'high')) {
-        result = {
-          type: 'Цифровое пианино',
-          summary: 'Вы ищете универсальность, но с приоритетом на пианинную механику и ощущение игры.',
-          models: [
-            { name: 'Yamaha P-225', price: '80 000 ₽' },
-            { name: 'Roland FP-30X', price: '72 000 ₽' }
-          ],
-          accessories: [
-            { name: 'Педаль', status: 'included' },
-            { name: 'Стойка', status: 'separate' },
-            { name: 'Блок питания', status: 'included' }
-          ],
-          realPrice: budget === 'mid' ? '72 000–85 000 ₽' : '72 000–85 000 ₽',
-          why: [
-            'Вы хотите один инструмент, но именно с пианинным ощущением.',
-            'Молоточковая клавиатура важнее синтезаторной универсальности.',
-            'Такой выбор честнее отражает ваш сценарий.'
-          ],
-          warnings: [
-            'Если нужны продвинутые студийные функции, нужен другой класс.',
-            'Проверьте наличие встроенных динамиков для дома.'
-          ]
-        };
-      } else {
-        result = (localCatalog[goal] && localCatalog[goal][budget]) || localCatalog.hobby.low;
+      if (result.budgetAdjusted && result.budgetAdjusted.reason) {
+        warnings = warnings.concat(result.budgetAdjusted.reason);
       }
 
-      // FIX #2: Apply experience-based adjustments
-      // B5: Apply accompaniment-based adjustments
-      const enhanced = JSON.parse(JSON.stringify(result));
-      const accompaniment = answers.accompaniment || 'dontcare';
-
-      if (experience === 'advanced' && budget !== 'high') {
-        enhanced.warnings = (enhanced.warnings || []).concat(
-          'Для вашего уровня может быть интересен более высокий сегмент — посмотрите следующий бюджетный шаг.'
-        );
-      }
-      if (experience === 'beginner' && (goal === 'production' || goal === 'stage') && budget === 'high') {
-        enhanced.warnings = (enhanced.warnings || []).concat(
-          'Для начинающего этот сегмент может быть избыточным — убедитесь, что он действительно нужен.'
-        );
-      }
-      if (accompaniment === 'no' && goal === 'hobby') {
-        enhanced.warnings = (enhanced.warnings || []).concat(
-          'Вы выбрали хобби без автоаккомпанемента — рассмотрите также MIDI-клавиатуру или цифровое пианино.'
-        );
-      }
-      if (accompaniment === 'yes' && goal === 'stage') {
-        enhanced.warnings = (enhanced.warnings || []).concat(
-          'Автоаккомпанемент редко встречается в сценических инструментах — уточните наличие этой функции у выбранных моделей.'
-        );
-      }
-      if (accompaniment === 'yes' && goal === 'learning') {
-        enhanced.warnings = (enhanced.warnings || []).concat(
-          'Для обучения автоаккомпанемент — вторичная функция. Главное: молоточковая механика и 88 клавиш.'
-        );
-      }
-      if (accompaniment === 'no' && goal === 'allinone') {
-        enhanced.warnings = (enhanced.warnings || []).concat(
-          'Без автоаккомпанемента «универсальный» формат теряет часть смысла — возможно, вам больше подойдёт цифровое пианино.'
-        );
-      }
-
-      return enhanced;
+      return {
+        type: result.type || '',
+        summary: result.summary || '',
+        models: result.models || [],
+        accessories: result.accessories || [],
+        realPrice: result.realPrice || '',
+        why: result.why || [],
+        warnings: warnings,
+        // Новые поля
+        tradeoff: result.tradeoff || '',
+        nextSteps: result.nextSteps || [],
+        upgradePath: result.upgradePath || '',
+        budgetAdjusted: result.budgetAdjusted || null
+      };
     }
 
     function showPaywall(localData, payload) {
@@ -2153,6 +2121,30 @@
         resultWarningsWrapEl.hidden = true;
       }
 
+      // Новые поля: tradeoff
+      if (data.tradeoff) {
+        resultTradeoffEl.textContent = data.tradeoff;
+        resultTradeoffWrapEl.hidden = false;
+      } else {
+        resultTradeoffWrapEl.hidden = true;
+      }
+
+      // Новые поля: nextSteps
+      if (Array.isArray(data.nextSteps) && data.nextSteps.length) {
+        renderList(resultNextStepsEl, data.nextSteps);
+        resultNextStepsWrapEl.hidden = false;
+      } else {
+        resultNextStepsWrapEl.hidden = true;
+      }
+
+      // Новые поля: upgradePath
+      if (data.upgradePath) {
+        resultUpgradeEl.textContent = data.upgradePath;
+        resultUpgradeWrapEl.hidden = false;
+      } else {
+        resultUpgradeWrapEl.hidden = true;
+      }
+
       setMode('result');
     }
 
@@ -2208,19 +2200,14 @@
               accessories: normalized.accessories.length ? normalized.accessories : localData.accessories,
               realPrice: normalized.realPrice || localData.realPrice || '',
               why: normalized.why.length ? normalized.why : localData.why,
-              warnings: normalized.warnings.length ? normalized.warnings : localData.warnings
+              warnings: normalized.warnings.length ? normalized.warnings : localData.warnings,
+              tradeoff: localData.tradeoff,
+              nextSteps: localData.nextSteps,
+              upgradePath: localData.upgradePath
             });
           } else {
-            // API didn't return models — use localData to keep type+models consistent
-            renderResult({
-              type: localData.type,
-              summary: localData.summary,
-              models: localData.models,
-              accessories: localData.accessories,
-              realPrice: localData.realPrice || '',
-              why: localData.why,
-              warnings: localData.warnings
-            });
+            // API didn't return models — use localData (QuizEngine) to keep type+models consistent
+            renderResult(localData);
           }
         } else {
           renderResult(pickLocalResult(payload));
@@ -2245,11 +2232,17 @@
       resultModelsEl.innerHTML = '';
       resultAccessoriesEl.innerHTML = '';
       resultRealPriceEl.textContent = '';
+      resultTradeoffEl.textContent = '';
+      resultNextStepsEl.innerHTML = '';
+      resultUpgradeEl.textContent = '';
       resultWhyWrapEl.hidden = true;
       resultWarningsWrapEl.hidden = true;
       resultModelsWrapEl.hidden = true;
       resultAccessoriesWrapEl.hidden = true;
       resultPriceWrapEl.hidden = true;
+      resultTradeoffWrapEl.hidden = true;
+      resultNextStepsWrapEl.hidden = true;
+      resultUpgradeWrapEl.hidden = true;
       document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
       goToStep(0);
       showToast('Квиз сброшен');
