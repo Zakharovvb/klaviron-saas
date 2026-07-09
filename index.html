@@ -2067,8 +2067,16 @@
         if (data.ok && data.paymentUrl && isSafeUrl(data.paymentUrl)) {
           pendingOrderId = data.orderId;
           window.location.href = data.paymentUrl;
-        } else { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
-      } catch (e) { sessionToken = 'dev_' + Date.now(); showToast('DEV: оплата пропущена'); submitQuiz(); }
+        } else {
+          btn.textContent = 'Получить подбор — 299 ₽';
+          btn.disabled = false;
+          showToast('Не удалось создать платёж. Попробуйте снова.');
+        }
+      } catch (e) {
+        btn.textContent = 'Получить подбор — 299 ₽';
+        btn.disabled = false;
+        showToast('Ошибка сети. Попробуйте снова.');
+      }
     }
 
     async function handlePaymentReturn() {
@@ -2083,17 +2091,25 @@
             const vParams = new URLSearchParams({ action: 'verify', order_id: orderId });
             const res = await fetch(API_URL + '?' + vParams.toString(), { redirect: 'follow', cache: 'no-store' });
             const data = await res.json();
-            sessionToken = data.ok ? (data.token || orderId) : 'dev_' + Date.now();
-            setMode('loading');
-            document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">✅</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата подтверждена!</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Полный отчёт разблокирован</div><button id="post-payment-continue" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Смотреть результат</button>';
-            document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('post-payment-continue').addEventListener('click', () => { submitQuiz(); });
+            if (data.ok) {
+              sessionToken = data.token || orderId;
+              setMode('loading');
+              document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">✅</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата подтверждена!</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Полный отчёт разблокирован</div><button id="post-payment-continue" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Смотреть результат</button>';
+              document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('post-payment-continue').addEventListener('click', () => { submitQuiz(); });
+            } else {
+              // Оплата НЕ подтверждена — НЕ даём доступ
+              setMode('loading');
+              document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">❌</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата не подтверждена</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Платёж не был завершён. Попробуйте снова.</div><button id="post-payment-retry" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Повторить оплату</button>';
+              document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('post-payment-retry').addEventListener('click', () => { setMode('intro'); });
+            }
           } catch (e) {
-            sessionToken = 'dev_' + Date.now();
+            // Ошибка API — НЕ даём доступ
             setMode('loading');
-            document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">✅</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата подтверждена!</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Полный отчёт разблокирован</div><button id="post-payment-continue" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Смотреть результат</button>';
+            document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">⚠️</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Не удалось проверить оплату</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Свяжитесь с нами, если оплата прошла.</div><button id="post-payment-retry" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Повторить</button>';
             document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('post-payment-continue').addEventListener('click', () => { submitQuiz(); });
+            document.getElementById('post-payment-retry').addEventListener('click', () => { setMode('intro'); });
           }
         }
       } else if (params.get('payment') === 'fail') {
@@ -2190,8 +2206,9 @@
       }
 
       try {
+        const actionName = sessionToken ? 'paidResult' : 'previewResult';
         const params = new URLSearchParams({
-          action: 'previewResult',
+          action: actionName,
           goal: payload.goal || 'hobby',
           experience: payload.experience || 'beginner',
           format: payload.format || 'synth',
