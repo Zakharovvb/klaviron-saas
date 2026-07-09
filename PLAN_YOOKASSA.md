@@ -1,4 +1,4 @@
-# План интеграции ЮKassa
+﻿# План интеграции ЮKassa
 
 ## Почему ЮKassa вместо Tinkoff
 - ✅ Работает с самозанятыми **без ИП** (Tinkoff требует ИП/ООО)
@@ -34,8 +34,8 @@
 - ~~`TINKOFF_SECRET_KEY`~~
 
 Добавить новые:
-- `YUKASSA_SHOP_ID` = ваш_shop_id
-- `YUKASSA_SECRET_KEY` = ваш_secret_key
+- `YUKASSA_SHOP_ID` = 1402830
+- `YUKASSA_SECRET_KEY` = ПОЛУЧИТЬ ИЗ ЛИЧНОГО КАБИНЕТА ЮKASSA
 
 ## Шаги развёртывания
 
