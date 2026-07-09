@@ -1,4 +1,4 @@
-# Cline Context — КлавирON
+﻿# Cline Context — КлавирON
 # Файл для восстановления состояния Cline на другой машине
 # Последнее обновление: 08.07.2026, коммит fc1aeb3
 
@@ -6,7 +6,7 @@
 
 ```
 Открой проект klaviron-saas. Прочитай файл CLINE_CONTEXT.md — там полное состояние проекта.
-Текущая задача: после получения ключей Tinkoff Kassa — скопировать код из tinkoff_backend.gs
+Текущая задача: после получения ключей ЮKassa — скопировать код из yookassa_backend.gs
 в Apps Script, переразвернуть Web App, вставить ключи в Script Properties,
 включить PAYMENT_ENABLED=true в index.html и протестировать оплату.
 Точка отката: git tag v1.0-stable (git reset --hard v1.0-stable).
@@ -20,7 +20,7 @@
 - **Папка:** `C:\Users\user\Yandex.Disk\Документы\Код\VS cod\Cline\klaviron-saas`
 - **Домен:** https://klaviron.ru (GitHub Pages, custom domain)
 - **Backup:** https://klaviron.github.io
-- **Описание:** Лендинг + квиз для подбора клавишных инструментов. Платный результат 299 ₽ через Tinkoff Kassa.
+- **Описание:** Лендинг + квиз для подбора клавишных инструментов. Платный результат 299 ₽ через ЮKassa.
 
 ## 2. ТЕКУЩЕЕ СОСТОЯНИЕ (коммит 245cdff)
 
@@ -31,11 +31,11 @@
 - ✅ GAS-бэкенд полный: getPreviewResult_ + getPaidResult_ + getHtml_
 - ✅ Столбец J в Google Sheets переименован: «Автоаккомпанемент» (да/нет)
 - ✅ Домен klaviron.ru делегирован (HTTP работает, HTTPS ждёт SSL)
-- ✅ Tinkoff Kassa: шаги 0-6 готовы (бэкенд, оферта, футер, paywall DEV-режим)
+- ✅ ЮKassa: шаги 0-6 готовы (бэкенд, оферта, футер, paywall DEV-режим)
 - ✅ Security: XSS-1-6 + PAY-3 исправлены (аудит безопасности)
 
 ### Что осталось:
-- ⏳ Шаг 7: Регистрация в Tinkoff Kassa → получить Terminal Key + Secret Key
+- ⏳ Шаг 7: Регистрация в ЮKassa → получить Shop ID + Secret Key
 - ❌ Шаг 8: Тестирование оплаты
 - ❌ Шаг 9: Деплой в продакшен (PAYMENT_ENABLED=true)
 - ⏳ HTTPS: дождаться SSL от GitHub, обновить canonical/og:url на https://klaviron.ru/
@@ -52,11 +52,11 @@ git reset --hard v1.0-stable  # откат
 klaviron-saas/
 ├── index.html              # Лендинг + квиз (основной файл)
 ├── quiz-engine.js          # Движок квиза (22 ситуации, 29 тестов)
-├── tinkoff_backend.gs      # GAS-бэкенд: платежи + превью + платный результат
-├── terms.html              # Оферта (реквизиты, 299₽, Tinkoff)
+├── yookassa_backend.gs      # GAS-бэкенд: платежи + превью + платный результат
+├── terms.html              # Оферта (реквизиты, 299₽, yookassa)
 ├── privacy.html            # Политика конфиденциальности
 ├── ИСТОРИЯ_ПРОЕКТА.md      # Полная история коммитов и решений
-├── PLAN_TINKOFF.md         # План интеграции Tinkoff (9 шагов)
+├── PLAN_YOOKASSA.md         # План интеграции yookassa (9 шагов)
 ├── REKVIZITY.md            # Реквизиты самозанятого
 ├── CLINE_CONTEXT.md        # Этот файл
 ├── CNAME                   # klaviron.ru
@@ -76,12 +76,12 @@ klaviron-saas/
 - `PAYMENT_ENABLED = false` — paywall выключен (DEV-режим)
 - Новые поля результата: `tradeoff`, `nextSteps`, `upgradePath`
 
-### Бэкенд (tinkoff_backend.gs → Google Apps Script):
+### Бэкенд (yookassa_backend.gs → Google Apps Script):
 - `doGet` — роутинг: config, previewResult, paidResult, verify, createPayment
 - `getPreviewResult_` — читает Google Sheets, фильтрует по столбцу J, возвращает type+summary+why+warnings
 - `getPaidResult_` — возвращает модели+accessories+realPrice (после оплаты)
-- `createPaymentFromQuiz_` — создание платежа Tinkoff
-- `handleTinkoffWebhook_` — webhook от Tinkoff
+- `createPaymentFromQuiz_` — создание платежа yookassa
+- `handleyookassaWebhook_` — webhook от yookassa
 - `verifyPaymentServer_` — проверка оплаты
 - `readCatalogFromSheet_` — чтение Google Sheets (динамический поиск колонок)
 
@@ -129,19 +129,19 @@ node вариант/quiz-engine.test.js
 # Ожидаемый результат: ИТОГО: 29 прошло, 0 упало
 ```
 
-## 8. СЛЕДУЮЩИЕ ШАГИ (после ключей Tinkoff)
+## 8. СЛЕДУЮЩИЕ ШАГИ (после ключей yookassa)
 
-1. Зайти на https://www.tinkoff.ru/kassa/
+1. Зайти на https://www.yookassa.ru/kassa/
 2. Авторизоваться по паспорту/Т-Банк ID
 3. Указать: самозанятый, ИНН 272322019546
 4. Указать сайт: https://klaviron.ru
-5. Получить Terminal Key + Secret Key
+5. Получить Shop ID + Secret Key
 6. Вставить ключи в Script Properties (Apps Script):
-   - `TINKOFF_TERMINAL_KEY` = terminal_key
-   - `TINKOFF_SECRET_KEY` = secret_key
-7. Скопировать код из `tinkoff_backend.gs` в редактор Apps Script
+   - `YUKASSA_SHOP_ID` = terminal_key
+   - `YUKASSA_SECRET_KEY` = secret_key
+7. Скопировать код из `yookassa_backend.gs` в редактор Apps Script
 8. Переразвернуть Web App (Execute as: Me, Access: Anyone)
-9. Настроить URLs в Tinkoff:
+9. Настроить URLs в yookassa:
    - Success: `https://klaviron.ru/?payment=ok`
    - Fail: `https://klaviron.ru/?payment=fail`
    - Webhook: `https://script.google.com/macros/s/AKfycbyfFLVPQQXOVvhrQaXHSufbKr37WVW4fFArIVwHP3Hp_zEQRSskuIELHIHAQDLss5H1/exec`
