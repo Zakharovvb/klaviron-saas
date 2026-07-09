@@ -1317,7 +1317,7 @@
 
   <script src="quiz-engine.js"></script>
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyYL5CnPFMfWImF_2Jv2lJAnutdrkQxRf0MTqOPPzRSndD1_tGT_2Cw-3SZWxVzte0W/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxvNFBehX8KyZ-f4wTfObs4hftMLqRcS1_0MIyp2Q8EcTauWcadBGrjdAcEBQGjQDlY/exec';
 
     // PAYWALL: false = всё бесплатно, true = paywall активен
     const PAYMENT_ENABLED = true;
@@ -2278,6 +2278,7 @@
       quizState.answers = {};
       quizState.steps = ALL_STEPS.slice();
       pendingOrderId = null; // PAY-3 fix: очистка после сброса
+      sessionToken = null; // FIX: одна оплата = один результат
       errorEl.innerHTML = '';
       resultTypeEl.textContent = '';
       resultSummaryEl.textContent = '';
