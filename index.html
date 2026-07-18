@@ -910,7 +910,7 @@
               <div class="num-badge">4</div>
               <div>
                 <h3 class="text-xl font-semibold tracking-tight text-forest-950 mb-2">Комплектация</h3>
-                <p class="text-sm leading-relaxed" style="color:rgba(38,72,56,0.6)">Стойка, педаль, подставка для нот (пюпитр) часто не входят — +3 000-7 000 ? к цене. Casio комплектнее Yamaha.</p>
+                <p class="text-sm leading-relaxed" style="color:rgba(38,72,56,0.6)">Стойка, педаль, подставка для нот (пюпитр) часто не входят — +3 000-7 000 ₽ к цене. Casio комплектнее Yamaha.</p>
               </div>
             </div>
           </div>
@@ -1099,10 +1099,10 @@
           <div class="quiz-step" data-step="budget" hidden>
             <h3 class="quiz-panel-title">Какой бюджет?</h3>
             <div class="quiz-options">
-              <button class="quiz-option" type="button" data-field="budget" data-value="xlow">До 20 000 ?</button>
-              <button class="quiz-option" type="button" data-field="budget" data-value="low">20 000–50 000 ?</button>
-              <button class="quiz-option" type="button" data-field="budget" data-value="mid">50 000–90 000 ?</button>
-              <button class="quiz-option" type="button" data-field="budget" data-value="high">От 90 000 ?</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="xlow">До 20 000 ₽</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="low">20 000–50 000 ₽</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="mid">50 000–90 000 ₽</button>
+              <button class="quiz-option" type="button" data-field="budget" data-value="high">От 90 000 ₽</button>
             </div>
           </div>
 
@@ -1135,7 +1135,7 @@
               </div>
             </div>
             <button id="paywall-btn" type="button" class="btn-primary px-8 py-4 rounded-full text-emerald-950 font-bold text-lg inline-flex items-center gap-2" style="border:none;cursor:pointer">
-              Получить подбор — 299 ?
+              Получить подбор — 299 ₽
               <iconify-icon icon="mdi:arrow-right" width="20"></iconify-icon>
             </button>
             <p style="font-size:.8rem;color:rgba(38,72,56,.4);margin-top:.75rem">Оплата через ЮKassa · карта / СБП</p>
@@ -1257,7 +1257,7 @@
             <span class="text-forest-950 font-medium text-base pr-4">Почему реальная цена выше указанной?</span>
             <iconify-icon icon="mdi:plus" width="22" class="faq-icon text-emerald-600 flex-shrink-0"></iconify-icon>
           </button>
-          <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Портативные модели часто не включают стойку, педаль и подставку для нот (пюпитр). Yamaha и Roland экономят на комплектации — учитывайте +3 000-7 000 ?.</p></div>
+          <div class="faq-answer px-6 pb-0"><p class="text-sm leading-relaxed pb-6" style="color:rgba(38,72,56,0.6)">Портативные модели часто не включают стойку, педаль и подставку для нот (пюпитр). Yamaha и Roland экономят на комплектации — учитывайте +3 000-7 000 ₽.</p></div>
         </div>
 
         <div class="reveal reveal-delay-5 faq-item bg-forest-50 rounded-2xl overflow-hidden">
@@ -2079,15 +2079,39 @@
           pendingOrderId = data.orderId;
           window.location.href = data.paymentUrl;
         } else {
-          btn.textContent = 'Получить подбор — 299 ?';
+          btn.textContent = 'Получить подбор — 299 ₽';
           btn.disabled = false;
           showToast('Не удалось создать платёж. Попробуйте снова.');
         }
       } catch (e) {
-        btn.textContent = 'Получить подбор — 299 ?';
+        btn.textContent = 'Получить подбор — 299 ₽';
         btn.disabled = false;
         showToast('Ошибка сети. Попробуйте снова.');
       }
+    }
+
+    // Retry-логика для verify: 3 попытки через 3 секунды
+    async function verifyWithRetry(orderId, maxAttempts, delayMs) {
+      maxAttempts = maxAttempts || 3;
+      delayMs = delayMs || 3000;
+      for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          var vParams = new URLSearchParams({ action: 'verify', order_id: orderId });
+          var res = await fetch(API_URL + '?' + vParams.toString(), { redirect: 'follow', cache: 'no-store' });
+          var data = await res.json();
+          if (data.ok) return data;
+          if (attempt < maxAttempts) {
+            document.querySelector('.quiz-loading-box').innerHTML = '<div class="quiz-spinner"></div><div>Проверяем оплату… попытка ' + attempt + ' из ' + maxAttempts + '</div>';
+            await new Promise(function(r) { setTimeout(r, delayMs); });
+          }
+        } catch (e) {
+          if (attempt < maxAttempts) {
+            document.querySelector('.quiz-loading-box').innerHTML = '<div class="quiz-spinner"></div><div>Проверяем оплату… попытка ' + attempt + ' из ' + maxAttempts + '</div>';
+            await new Promise(function(r) { setTimeout(r, delayMs); });
+          }
+        }
+      }
+      return null;
     }
 
     async function handlePaymentReturn() {
@@ -2098,30 +2122,21 @@
         if (orderId) {
           setMode('loading');
           document.querySelector('.quiz-loading-box').innerHTML = '<div class="quiz-spinner"></div><div>Проверяем оплату…</div>';
-          try {
-            const vParams = new URLSearchParams({ action: 'verify', order_id: orderId });
-            const res = await fetch(API_URL + '?' + vParams.toString(), { redirect: 'follow', cache: 'no-store' });
-            const data = await res.json();
-            if (data.ok) {
+          const data = await verifyWithRetry(orderId);
+          if (data && data.ok) {
               sessionToken = data.token || orderId;
               setMode('loading');
               document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">?</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата подтверждена!</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Полный отчёт разблокирован</div><button id="post-payment-continue" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Смотреть результат</button>';
               document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
               document.getElementById('post-payment-continue').addEventListener('click', () => { submitQuiz(); });
-            } else {
-              // Оплата НЕ подтверждена — НЕ даём доступ
+          } else {
+            // Оплата НЕ подтверждена после 3 попыток — НЕ даём доступ
               setMode('loading');
               document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">?</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата не подтверждена</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Платёж не был завершён. Попробуйте снова.</div><button id="post-payment-retry" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Повторить оплату</button>';
               document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
               document.getElementById('post-payment-retry').addEventListener('click', () => { setMode('intro'); });
             }
-          } catch (e) {
-            // Ошибка API — НЕ даём доступ
-            setMode('loading');
-            document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">??</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Не удалось проверить оплату</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Свяжитесь с нами, если оплата прошла.</div><button id="post-payment-retry" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Повторить</button>';
-            document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('post-payment-retry').addEventListener('click', () => { setMode('intro'); });
-          }
+
         }
       } else if (params.get('payment') === 'fail') {
         window.history.replaceState({}, '', window.location.pathname);
