@@ -4,7 +4,7 @@
 // Запуск: node test-gas-api.js
 // =============================================================================
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyNb6f53rWuTh86jX8lLuYUoAE9q2GnnPUoxqNtgDe6bxHnfNs0AirHs0tRFgOX5UWj/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw3SyAhlaCtMIxWQB9XtjXhwa_fNigrwFXL3WrHGuLX4l325BA4Lnv1LbQ9wIG3IeBi/exec';
 
 let passed = 0;
 let failed = 0;
