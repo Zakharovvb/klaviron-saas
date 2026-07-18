@@ -301,8 +301,6 @@ function updateOrderPaymentId_(orderId, paymentId) {
 }
 
 function getProp_(key) {
-  if (key === 'YUKASSA_SHOP_ID') return '1402830';
-  if (key === 'YUKASSA_SECRET_KEY') return 'live_A7ySTp25jSy1QVrh0wCsCBYjgTsSKICejQQgAPn5vrM';
   return PropertiesService.getScriptProperties().getProperty(key);
 }
 
