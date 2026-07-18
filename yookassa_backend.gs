@@ -23,7 +23,50 @@ function doGet(e) {
   if (action === 'paidresult' || action === 'catalog') return jsonOutput_({ ok: true, data: getPaidResult_(e.parameter || {}) });
   if (action === 'verify') return jsonOutput_(verifyPaymentServer_(String((e.parameter && (e.parameter.order_id || e.parameter.orderId)) || '')));
   if (action === 'createpayment') return jsonOutput_(createPaymentFromQuiz_(e.parameter || {}));
+  if (action === 'debug') return jsonOutput_(debugCatalog_());
   return HtmlService.createHtmlOutput(getHtml_()).setTitle('КлавирON').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function debugCatalog_() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheets = ss.getSheets();
+  var sheet = null;
+  for (var i = 0; i < sheets.length; i++) {
+    if (String(sheets[i].getSheetId()) === SHEET_CATALOG_GID) { sheet = sheets[i]; break; }
+  }
+  if (!sheet) sheet = sheets[0];
+  var values = sheet.getDataRange().getValues();
+  var headers = values[0].map(function(h) { return String(h || '').trim().toLowerCase(); });
+  var colKeyboardType = findColumn_(headers, ['тип клавиатуры', 'клавиатура']);
+  var colCategory = findColumn_(headers, ['категория']);
+  var colType = findColumn_(headers, ['тип инструмента', 'тип']);
+  // Собираем ВСЕ уникальные значения типа клавиатуры
+  var ktUnique = {};
+  var ktValues = [];
+  if (colKeyboardType >= 0) {
+    for (var i = 1; i < values.length; i++) {
+      var kt = String(values[i][colKeyboardType] || '');
+      if (!ktUnique[kt]) { ktUnique[kt] = 0; ktValues.push(kt); }
+      ktUnique[kt]++;
+    }
+  }
+  // Тест filterModels_ с format=hammer
+  var allModels = readCatalogFromSheet_();
+  var filtered = filterModels_(allModels, 'hobby', 'low', 'hammer', 'yes', 'yes', 'yes');
+  // Показываем детали отфильтрованных моделей
+  var filteredDetails = filtered.map(function(m) {
+    return { name: m.name, keyboardType: m.keyboardType, category: m.category, priceNum: m.priceNum };
+  });
+  return {
+    colKeyboardType: colKeyboardType,
+    colCategory: colCategory,
+    colType: colType,
+    keyboardTypeUnique: ktUnique,
+    keyboardTypeValues: ktValues,
+    totalRows: values.length - 1,
+    filteredCount: filtered.length,
+    filteredDetails: filteredDetails
+  };
 }
 
 function doPost(e) {
@@ -503,13 +546,14 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
         var catForKt = norm_(m.category);
         var nameForKt = norm_(m.fullName + ' ' + m.name);
         if (format === 'hammer') {
-          // Отбраковываем синтезаторы по категории ИЛИ по названию
-          if (catForKt.indexOf('синтезатор') !== -1 && catForKt.indexOf('цифровое пианино') === -1) match = false;
-          if (nameForKt.indexOf('синтезатор') !== -1 && nameForKt.indexOf('пианино') === -1) match = false;
+          // Отбраковываем синтезаторы по категории, но ИСКЛЮЧАЕМ DGX-640/650
+          // (синтезаторы с молоточковой клавиатурой и автоаккомпанементом)
+          if (catForKt.indexOf('синтезатор') !== -1 && catForKt.indexOf('цифровое пианино') === -1) {
+            if (nameForKt.indexOf('dgx') === -1) match = false;
+          }
         }
         if (format === 'synth') {
           if (catForKt.indexOf('цифровое пианино') !== -1) match = false;
-          if (nameForKt.indexOf('цифровое пианино') !== -1 || nameForKt.indexOf('молоточковая') !== -1) match = false;
         }
       } else {
         var ktMatch2 = false;
@@ -621,7 +665,7 @@ function determineTypeGAS_(goal, format, budget, accompaniment) {
     allinone: { type: 'Универсальный инструмент', summary: 'Один инструмент под разные задачи.', why: ['Понятный и гибкий.', 'Покрывает дом и творчество.', 'Баланс универсальности.'] }
   };
   // FIX: hobby + hammer (mid/high) = цифровое пианино (как в quiz-engine.js)
-  if (goal === 'hobby' && format === 'hammer' && (budget === 'mid' || budget === 'high')) {
+  if (goal === 'hobby' && format === 'hammer') {
     return {
       type: 'Цифровое пианино',
       summary: 'Молоточковая механика для домашних занятий.',
