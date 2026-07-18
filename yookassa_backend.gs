@@ -567,6 +567,11 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
       var hasAccomp = norm_(m.accompaniment).indexOf('да') !== -1;
       if (!hasAccomp) match = false;
     }
+    // FIX: при accompaniment=no — исключаем модели С автоаккомпанементом
+    if (match && accompaniment === 'no' && m.accompaniment) {
+      var hasAccompNo = norm_(m.accompaniment).indexOf('да') !== -1;
+      if (hasAccompNo) match = false;
+    }
     if (match) result.push(m);
   }
   // Прогрессивная релаксация: если мало моделей, ослабляем фильтры по очереди
