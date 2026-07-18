@@ -1317,7 +1317,7 @@
 
   <script src="quiz-engine.js"></script>
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycby1XNcboUcBoI_4g7DDmwtGEpfMMGMKsBrJ2irceuOTJv6PLQQriXmZFmd5x_EADQo/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyiTs8OLDT0_AKad-uaY4ocKWHL9BxVB_XUz5krzawsFqOmTAe96loPoQSFAeSLTHFb/exec';
 
     // PAYWALL: false = всё бесплатно, true = paywall активен
     const PAYMENT_ENABLED = true;
@@ -2011,7 +2011,10 @@
     function normalizeApiResult(apiData) {
       if (!apiData || typeof apiData !== 'object') return null;
 
-      const root = apiData.result && typeof apiData.result === 'object' ? apiData.result : apiData;
+      // FIX: GAS getPaidResult_ возвращает {ok:true, data:{...}} — ищем data, не result
+      let root = apiData;
+      if (apiData.data && typeof apiData.data === 'object') root = apiData.data;
+      else if (apiData.result && typeof apiData.result === 'object') root = apiData.result;
 
       if (!root.type && !root.summary && !root.models && !root.accessories && !root.realPrice) {
         return null;
