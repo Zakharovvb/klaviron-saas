@@ -476,6 +476,11 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
   };
   var range = budgetRanges[budget] || budgetRanges['low'];
   var categories = goalCategories[goal] || goalCategories['hobby'];
+  // FIX: при format=hammer добавляем 'цифровое пианино' к категориям,
+  // т.к. молоточковая клавиатура = цифровое пианино, даже если goal=hobby
+  if (format === 'hammer' && categories.indexOf('цифровое пианино') === -1) {
+    categories = categories.concat(['цифровое пианино']);
+  }
   var formatKeys = formatMatch[format] || [];
   var result = [];
   for (var i = 0; i < models.length; i++) {
@@ -490,13 +495,29 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
       }
       if (!catMatch) match = false;
     }
-    if (match && formatKeys.length > 0 && m.keyboardType) {
-      var ktLower = norm_(m.keyboardType);
-      var ktMatch = false;
-      for (var k = 0; k < formatKeys.length; k++) {
-        if (ktLower.indexOf(formatKeys[k]) !== -1) { ktMatch = true; break; }
+    if (match && formatKeys.length > 0) {
+      var ktLower2 = norm_(m.keyboardType);
+      // При format=hammer: если тип клавиатуры пустой, проверяем категорию
+      // Если категория "Синтезатор" — это не молоточковая, отбраковываем
+      if (ktLower2.length === 0) {
+        var catForKt = norm_(m.category);
+        var nameForKt = norm_(m.fullName + ' ' + m.name);
+        if (format === 'hammer') {
+          // Отбраковываем синтезаторы по категории ИЛИ по названию
+          if (catForKt.indexOf('синтезатор') !== -1 && catForKt.indexOf('цифровое пианино') === -1) match = false;
+          if (nameForKt.indexOf('синтезатор') !== -1 && nameForKt.indexOf('пианино') === -1) match = false;
+        }
+        if (format === 'synth') {
+          if (catForKt.indexOf('цифровое пианино') !== -1) match = false;
+          if (nameForKt.indexOf('цифровое пианино') !== -1 || nameForKt.indexOf('молоточковая') !== -1) match = false;
+        }
+      } else {
+        var ktMatch2 = false;
+        for (var k2 = 0; k2 < formatKeys.length; k2++) {
+          if (ktLower2.indexOf(formatKeys[k2]) !== -1) { ktMatch2 = true; break; }
+        }
+        if (!ktMatch2) match = false;
       }
-      if (!ktMatch && ktLower.length > 0) match = false;
     }
     if (match && accompaniment === 'yes' && m.accompaniment) {
       var hasAccomp = norm_(m.accompaniment).indexOf('да') !== -1;
@@ -504,8 +525,10 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
     }
     if (match) result.push(m);
   }
+  // Прогрессивная релаксация: если мало моделей, ослабляем фильтры по очереди
   if (result.length < 3) {
-    var relaxed = [];
+    // Уровень 1: снимаем бюджетный фильтр, оставляем категорию + тип клавиатуры
+    var relaxed1 = [];
     for (var j = 0; j < models.length; j++) {
       var rm = models[j];
       var rMatch = true;
@@ -517,17 +540,62 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
         }
         if (!rCatMatch) rMatch = false;
       }
-      if (rMatch && formatKeys.length > 0 && rm.keyboardType) {
+      // FIX: применяем ту же логику типа клавиатуры что и в основном фильтре
+      if (rMatch && formatKeys.length > 0) {
         var rKtLower = norm_(rm.keyboardType);
-        var rKtMatch = false;
-        for (var rk = 0; rk < formatKeys.length; rk++) {
-          if (rKtLower.indexOf(formatKeys[rk]) !== -1) { rKtMatch = true; break; }
+        if (rKtLower.length === 0) {
+          var rCatForKt = norm_(rm.category);
+          if (format === 'hammer' && rCatForKt.indexOf('синтезатор') !== -1 && rCatForKt.indexOf('цифровое пианино') === -1) rMatch = false;
+          if (format === 'synth' && rCatForKt.indexOf('цифровое пианино') !== -1) rMatch = false;
+        } else {
+          var rKtMatch = false;
+          for (var rk = 0; rk < formatKeys.length; rk++) {
+            if (rKtLower.indexOf(formatKeys[rk]) !== -1) { rKtMatch = true; break; }
+          }
+          if (!rKtMatch) rMatch = false;
         }
-        if (!rKtMatch && rKtLower.length > 0) rMatch = false;
       }
-      if (rMatch) relaxed.push(rm);
+      if (rMatch) relaxed1.push(rm);
     }
-    if (relaxed.length > result.length) result = relaxed;
+    if (relaxed1.length > result.length) result = relaxed1;
+  }
+  // Уровень 2: снимаем фильтр типа клавиатуры, НО при format=hammer
+  // всё равно отбраковываем модели с явным типом "синтезаторная"
+  if (result.length < 3) {
+    var relaxed2 = [];
+    for (var j2 = 0; j2 < models.length; j2++) {
+      var rm2 = models[j2];
+      var rMatch2 = true;
+      if (rm2.category) {
+        var rCatLower2 = norm_(rm2.category);
+        var rCatMatch2 = false;
+        for (var rc2 = 0; rc2 < categories.length; rc2++) {
+          if (rCatLower2.indexOf(categories[rc2]) !== -1) { rCatMatch2 = true; break; }
+        }
+        if (!rCatMatch2) rMatch2 = false;
+      }
+      // При format=hammer: отбраковываем синтезаторы по типу, категории ИЛИ fullName
+      if (rMatch2 && format === 'hammer') {
+        var rKtFinal = norm_(rm2.keyboardType);
+        var rCatFinal = norm_(rm2.category);
+        var rNameFinal = norm_(rm2.fullName + ' ' + rm2.name);
+        if (rKtFinal.indexOf('синт') !== -1) rMatch2 = false;
+        if (rCatFinal.indexOf('синтезатор') !== -1 && rCatFinal.indexOf('цифровое пианино') === -1) rMatch2 = false;
+        // Если в названии есть "синтезатор" — это не молоточковая
+        if (rNameFinal.indexOf('синтезатор') !== -1 && rNameFinal.indexOf('пианино') === -1) rMatch2 = false;
+      }
+      // При format=synth: отбраковываем молоточковые по типу, категории ИЛИ fullName
+      if (rMatch2 && format === 'synth') {
+        var rKtFinal2 = norm_(rm2.keyboardType);
+        var rCatFinal2 = norm_(rm2.category);
+        var rNameFinal2 = norm_(rm2.fullName + ' ' + rm2.name);
+        if (rKtFinal2.indexOf('молот') !== -1) rMatch2 = false;
+        if (rCatFinal2.indexOf('цифровое пианино') !== -1) rMatch2 = false;
+        if (rNameFinal2.indexOf('цифровое пианино') !== -1 || rNameFinal2.indexOf('молоточковая') !== -1) rMatch2 = false;
+      }
+      if (rMatch2) relaxed2.push(rm2);
+    }
+    if (relaxed2.length > result.length) result = relaxed2;
   }
   return result.slice(0, 3);
 }
