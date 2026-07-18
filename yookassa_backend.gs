@@ -425,7 +425,7 @@ function readCatalogFromSheet_() {
   var colAccompaniment = findColumn_(headers, ['автоаккомпанемент', 'аккомпанемент', 'ритмы']);
   var colCategory = findColumn_(headers, ['категория']);
   var colType = findColumn_(headers, ['тип инструмента', 'тип']);
-  var colUrl = findColumn_(headers, ['url инструмента', 'url', 'ссылка']);
+  var colUrl = findColumn_(headers, ['ссылка поиска на яндекс маркет', 'яндекс маркет', 'url инструмента', 'url', 'ссылка']);
   var models = [];
   for (var i = 1; i < values.length; i++) {
     var row = values[i];
