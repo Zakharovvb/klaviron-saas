@@ -2073,6 +2073,7 @@
       const btn = document.getElementById('paywall-btn');
       btn.textContent = 'Перенаправляем на оплату…';
       btn.disabled = true;
+      try { sessionStorage.setItem('klaviron_quiz_answers', JSON.stringify(payload)); } catch(e) {}
       try {
         const params = new URLSearchParams({ action: 'createpayment', goal: payload.goal || 'hobby', budget: payload.budget || 'low', experience: payload.experience || 'beginner', format: payload.format || 'synth', amount: '29900' });
         const res = await fetch(API_URL + '?' + params.toString(), { redirect: 'follow', cache: 'no-store' });
@@ -2131,7 +2132,13 @@
               setMode('loading');
               document.querySelector('.quiz-loading-box').innerHTML = '<div style="font-size:3rem;margin-bottom:1rem">?</div><div style="font-size:1.3rem;font-weight:600;margin-bottom:.5rem">Оплата подтверждена!</div><div style="color:rgba(38,72,56,0.6);margin-bottom:1.5rem">Полный отчёт разблокирован</div><button id="post-payment-continue" class="btn-primary px-8 py-3 rounded-full text-emerald-950 font-semibold text-sm">Смотреть результат</button>';
               document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-              document.getElementById('post-payment-continue').addEventListener('click', () => { submitQuiz(); });
+              document.getElementById('post-payment-continue').addEventListener('click', () => {
+              try {
+                const saved = JSON.parse(sessionStorage.getItem('klaviron_quiz_answers') || '{}');
+                if (saved && saved.goal) { quizState.answers = saved; quizState.steps = getVisibleSteps(saved.goal); buildProgress(); }
+              } catch(e) {}
+              submitQuiz();
+            });
           } else {
             // Оплата НЕ подтверждена после 3 попыток — НЕ даём доступ
               setMode('loading');
