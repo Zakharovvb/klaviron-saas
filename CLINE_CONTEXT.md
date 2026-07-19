@@ -1,12 +1,12 @@
 # Cline Context — КлавирON
 # Файл для восстановления состояния Cline на другой машине
-# Последнее обновление: 18.07.2026, GAS v24
+# Последнее обновление: 19.07.2026, GAS v26
 
 ## ПРОМПТ ДЛЯ НОВОЙ СЕССИИ (скопируй в Cline на новой машине):
 
 ```
 Открой проект klaviron-saas. Прочитай файл CLINE_CONTEXT.md — там полное состояние проекта.
-Текущая задача: тест оплаты end-to-end на klaviron.ru (GAS v24 развёрнут, createpayment работает, debug endpoint добавлен).
+Текущая задача: тест оплаты end-to-end на klaviron.ru (GAS v26 развёрнут, filterModels_ с разными брендами, priceNum=0 исключён).
 Если DNS error вернётся — добавить retry-логику или мигрировать на Yandex Cloud Functions.
 Точка отката: git tag v1.0-stable (git reset --hard v1.0-stable).
 ```
@@ -87,7 +87,7 @@ klaviron-gas/ (Desktop)
 - GAS API — `previewResult` для превью, fallback на `QuizEngine.pickResult()`
 - `PAYMENT_ENABLED = true` — paywall активен
 - Новые поля результата: `tradeoff`, `nextSteps`, `upgradePath`
-- API_URL: `https://script.google.com/macros/s/AKfycbwgeG8mJM7x2eQox7DUSUl0-LuxMIpmLMSEXYPGK99q6F3Birj0nUXr9IFGeZhCLUEB/exec` (v9)
+- API_URL: `https://script.google.com/macros/s/AKfycbwtcSwycMUsDrkV47JS5rcrMwXmKKI3wJoObOJ4o_s-lIOedY-L-MZbjFLV61pCp6k/exec` (v26)
 
 ### Бэкенд (yookassa_backend.gs / Код.js → Google Apps Script):
 - `doGet` — роутинг: config, previewResult, paidResult, verify, createPayment
@@ -107,7 +107,7 @@ klaviron-gas/ (Desktop)
 - **Столбцы:** Модель, Цена, Клавиши, Динамики, Тип клавиатуры, Автоаккомпанемент (J)
 
 ### GAS API:
-- **Endpoint (v9):** `https://script.google.com/macros/s/AKfycbwgeG8mJM7x2eQox7DUSUl0-LuxMIpmLMSEXYPGK99q6F3Birj0nUXr9IFGeZhCLUEB/exec`
+- **Endpoint (v26):** `https://script.google.com/macros/s/AKfycbwtcSwycMUsDrkV47JS5rcrMwXmKKI3wJoObOJ4o_s-lIOedY-L-MZbjFLV61pCp6k/exec`
 - **Actions:** previewResult, paidResult, createpayment, verify, config
 - **Script ID:** `1pJq9E8g2E57pB9EG2XXQvmJfFrsbjQkJNncxH8duoY1Vm2LFM0I_a1xd`
 
@@ -155,7 +155,8 @@ node test-gas-api.js
 | v2 | AKfycbyYL5C... | Устарел (без фикса цен) |
 | v3 | AKfycbxvNFB... | Устарел |
 | v8 | AKfycbx6z89gr... | Устарел (DNS error, yoomoney.ru) |
-| **v9** | **AKfycbwgeG8mJM7x2eQox7DUSUl0-LuxMIpmLMSEXYPGK99q6F3Birj0nUXr9IFGeZhCLUEB** | **Актуальный** |
+| v9 | AKfycbwgeG8m... | Устарел |
+| **v26** | **AKfycbwtcSwycMUsDrkV47JS5rcrMwXmKKI3wJoObOJ4o_s-lIOedY-L-MZbjFLV61pCp6k** | **Актуальный (@36)** |
 
 ## 9. СЛЕДУЮЩИЕ ШАГИ
 
@@ -163,7 +164,7 @@ node test-gas-api.js
    - Пройти квиз → оплатить 299 ₽ → проверить redirect
    - Если webhook не пришёл → проверить в логах GAS (Stackdriver)
    - Если verify возвращает `ok: false` → проверить orders в Google Sheets
-2. Обновить webhook в ЮKassa на v9 URL
+2. Обновить webhook в ЮKassa на v26 URL
 3. Если DNS error вернётся — миграция на Yandex Cloud Functions
 
 ## 10. ИЗВЕСТНЫЕ ОГРАНИЧЕНИЯ
@@ -199,14 +200,16 @@ node test-gas-api.js
 - [x] Webhook ЮKassa обновлён пользователем
 - [x] Таблица Google Sheets обновлена пользователем (764 строки)
 
-### В работе (файл yookassa_backend.gs изменён, НЕ запушен в GAS):
-- [ ] priceNum=0 исключать (фикс в файле, не деплоен)
-- [ ] Разные производители — 3 модели от разных брендов (логика добавлена, не деплоен)
+### В работе (завершено 19.07.2026):
+- [x] priceNum=0 исключён — GAS v26 развёрнут
+- [x] Разные производители — 3 модели от разных брендов — GAS v26 развёрнут
+- [x] API_URL исправлен (был пустой) — обновлён в index.html и test-gas-api.js
+- [x] Git commit `85ea718` — запушено на оба репозитория
 
-### Текущий deployment GAS: v24
-- AKfycbwgeG8mJM7x2eQox7DUSUl0-LuxMIpmLMSEXYPGK99q6F3Birj0nUXr9IFGeZhCLUEB
-- Файл yookassa_backend.gs содержит НЕЗАПУШЕННЫЕ изменения (priceNum + brand)
-- Нужно: скопировать в Код.js, clasp push, deploy, обновить API_URL, тест
+### Текущий deployment GAS: v26
+- AKfycbwtcSwycMUsDrkV47JS5rcrMwXmKKI3wJoObOJ4o_s-lIOedY-L-MZbjFLV61pCp6k (@36)
+- Тесты: quiz-engine 29/29 ✅, GAS 12/13 ✅ (verify ожидаемо падает)
+- paidResult: 3 модели от РАЗНЫХ брендов во всех 5 сценариях ✓
 
 ### Debug endpoint:
 ?action=debug — показывает структуру таблицы + тест фильтрации
