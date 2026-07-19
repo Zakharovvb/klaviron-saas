@@ -563,14 +563,20 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
         if (!ktMatch2) match = false;
       }
     }
-    if (match && accompaniment === 'yes' && m.accompaniment) {
-      var hasAccomp = norm_(m.accompaniment).indexOf('да') !== -1;
+    // FIX: accompaniment filter — НЕ пропускаем пустые значения при yes
+    if (match && accompaniment === 'yes') {
+      var hasAccomp = m.accompaniment ? norm_(m.accompaniment).indexOf('да') !== -1 : false;
       if (!hasAccomp) match = false;
     }
     // FIX: при accompaniment=no — исключаем модели С автоаккомпанементом
-    if (match && accompaniment === 'no' && m.accompaniment) {
-      var hasAccompNo = norm_(m.accompaniment).indexOf('да') !== -1;
+    if (match && accompaniment === 'no') {
+      var hasAccompNo = m.accompaniment ? norm_(m.accompaniment).indexOf('да') !== -1 : false;
       if (hasAccompNo) match = false;
+    }
+    // FIX: speakers filter — при speakers=yes исключаем модели БЕЗ динамиков
+    if (match && speakers === 'yes') {
+      var hasSpeakers = m.speakers ? norm_(m.speakers).indexOf('да') !== -1 || norm_(m.speakers).indexOf('есть') !== -1 || norm_(m.speakers).indexOf('встро') !== -1 : false;
+      if (!hasSpeakers && m.speakers && m.speakers.length > 0) match = false;
     }
     if (match) result.push(m);
   }
