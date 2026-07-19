@@ -529,7 +529,7 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
   for (var i = 0; i < models.length; i++) {
     var m = models[i];
     var match = true;
-    if (m.priceNum > 0 && (m.priceNum < range[0] || m.priceNum > range[1])) match = false;
+    if (m.priceNum < range[0] || m.priceNum > range[1]) match = false;
     if (match && m.category) {
       var catLower = norm_(m.category);
       var catMatch = false;
