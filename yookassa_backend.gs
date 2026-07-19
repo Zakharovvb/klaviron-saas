@@ -469,6 +469,7 @@ function readCatalogFromSheet_() {
   var colCategory = findColumn_(headers, ['категория']);
   var colType = findColumn_(headers, ['тип инструмента', 'тип']);
   var colUrl = findColumn_(headers, ['ссылка поиска на яндекс маркет', 'яндекс маркет', 'url инструмента', 'url', 'ссылка']);
+  var colBrand = findColumn_(headers, ['бренд', 'производитель', 'brand']);
   var models = [];
   for (var i = 1; i < values.length; i++) {
     var row = values[i];
@@ -476,6 +477,7 @@ function readCatalogFromSheet_() {
     models.push({
       name: colName >= 0 ? String(row[colName] || '') : String(row[0] || ''),
       fullName: colFullName >= 0 ? String(row[colFullName] || '') : '',
+      brand: colBrand >= 0 ? String(row[colBrand] || '') : '',
       price: colPrice >= 0 ? String(row[colPrice] || '') : '',
       priceNum: colPrice >= 0 ? (parseInt(String(row[colPrice] || '0').replace(/[^\d]/g, ''), 10) || 0) : 0,
       keys: colKeys >= 0 ? String(row[colKeys] || '') : '',
@@ -529,6 +531,8 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
   for (var i = 0; i < models.length; i++) {
     var m = models[i];
     var match = true;
+    // FIX: исключаем модели без цены (priceNum=0)
+    if (m.priceNum === 0) match = false;
     if (m.priceNum < range[0] || m.priceNum > range[1]) match = false;
     if (match && m.category) {
       var catLower = norm_(m.category);
@@ -652,7 +656,30 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
     }
     if (relaxed2.length > result.length) result = relaxed2;
   }
-  return result.slice(0, 3);
+  // FIX: выбор моделей от РАЗНЫХ брендов
+  // Сортируем по цене (возрастание), затем выбираем разные бренды
+  result.sort(function(a, b) { return a.priceNum - b.priceNum; });
+  var diversified = [];
+  var usedBrands = {};
+  // Первый проход: берём по одной модели от каждого бренда
+  for (var d = 0; d < result.length; d++) {
+    var brand = norm_(result[d].brand);
+    if (brand && !usedBrands[brand]) {
+      diversified.push(result[d]);
+      usedBrands[brand] = true;
+    }
+    if (diversified.length >= 3) break;
+  }
+  // Если не набрали 3 разных бренда — добиваем из оставшихся
+  if (diversified.length < 3) {
+    for (var d2 = 0; d2 < result.length; d2++) {
+      if (diversified.indexOf(result[d2]) === -1) {
+        diversified.push(result[d2]);
+      }
+      if (diversified.length >= 3) break;
+    }
+  }
+  return diversified.slice(0, 3);
 }
 
 function adjustBudgetGAS_(goal, experience, budget) {
