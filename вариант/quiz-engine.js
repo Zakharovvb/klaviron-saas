@@ -816,8 +816,15 @@
 
       // ===== HOBBY =====
       case 'hobby': {
-        if (effectiveAnswers.format === 'hammer' && (effectiveAnswers.budget === 'mid' || effectiveAnswers.budget === 'high')) {
-          situationKey = 'learning_piano_mid'; // хобби с молоточковой = цифровое пианино
+        if (effectiveAnswers.format === 'hammer') {
+          // FIX: hobby + hammer = цифровое пианино при ЛЮБОМ бюджете (как в GAS determineTypeGAS_)
+          switch (effectiveAnswers.budget) {
+            case 'xlow': situationKey = 'learning_piano_compromise'; break;
+            case 'low':  situationKey = 'learning_piano_basic'; break;
+            case 'mid':  situationKey = 'learning_piano_mid'; break;
+            case 'high': situationKey = 'learning_piano_high'; break;
+            default:     situationKey = 'learning_piano_basic';
+          }
         } else if (effectiveAnswers.accompaniment === 'no') {
           // Без автоаккомпанемента — проще синтезатор
           switch (effectiveAnswers.budget) {

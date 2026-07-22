@@ -527,12 +527,21 @@ function filterModels_(models, goal, budget, format, needBuiltInSounds, speakers
     categories = categories.concat(['цифровое пианино']);
   }
   var formatKeys = formatMatch[format] || [];
+  // FIX: blacklist — не-клавишные инструменты (терменвокс, миди-пэды и т.д.)
+  var blacklistKeywords = ['терменвокс', 'theremin', 'theremini', 'миди-пэд', 'midi pad', 'лаунчпад', 'launchpad', 'beatmaker', 'сэмплер'];
   var result = [];
   for (var i = 0; i < models.length; i++) {
     var m = models[i];
     var match = true;
     // FIX: исключаем модели без цены (priceNum=0)
     if (m.priceNum === 0) match = false;
+    // FIX: blacklist — пропускаем не-клавишные инструменты
+    if (match) {
+      var nameLower = norm_(m.fullName + ' ' + m.name + ' ' + m.type + ' ' + m.category);
+      for (var bl = 0; bl < blacklistKeywords.length; bl++) {
+        if (nameLower.indexOf(blacklistKeywords[bl]) !== -1) { match = false; break; }
+      }
+    }
     if (m.priceNum < range[0] || m.priceNum > range[1]) match = false;
     if (match && m.category) {
       var catLower = norm_(m.category);
